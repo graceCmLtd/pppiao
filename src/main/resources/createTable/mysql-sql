@@ -1,0 +1,137 @@
+CREATE DATABASE `pengpengpiao` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+
+CREATE TABLE `ppp_bill` (
+  `billId` varchar(45) NOT NULL,
+  `billNumber` varchar(45) DEFAULT NULL,
+  `billType` varchar(45) DEFAULT NULL,
+  `acceptor` varchar(45) DEFAULT NULL,
+  `amount` varchar(45) DEFAULT NULL,
+  `maturity` date DEFAULT NULL,
+  `status` varchar(45) DEFAULT NULL,
+  `releaseDate` date DEFAULT NULL,
+  `releaserId` varchar(45) DEFAULT NULL,
+  `billPicsId` int(11) DEFAULT NULL,
+  `transferable` tinyint(4) DEFAULT NULL,
+  `billReferer` varchar(45) DEFAULT NULL,
+  `timeStamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`billId`),
+  UNIQUE KEY `billNumber_UNIQUE` (`billNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+CREATE TABLE `ppp_bill_pics` (
+  `billNumber` varchar(45) NOT NULL,
+  `pic1` mediumblob,
+  `pic2` mediumblob,
+  `updateDate` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `ppp_company` (
+  `companyId` int(11) NOT NULL,
+  `accountName` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `bankId` int(11) DEFAULT NULL,
+  `establishAddr` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `establishBank` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `subBank` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `picId` varchar(45) DEFAULT NULL,
+  `signUpDate` date DEFAULT NULL,
+  `updateDate` date DEFAULT NULL,
+  `timeStamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`companyId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `ppp_company_contact` (
+  `companyId` int(11) NOT NULL,
+  `contactsId` int(11) DEFAULT NULL,
+  `contactsPhone` int(11) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `timeStamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`companyId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+CREATE TABLE `ppp_company_pics` (
+  `picId` int(11) NOT NULL AUTO_INCREMENT,
+  `picContent` mediumblob,
+  `updateDate` date DEFAULT NULL,
+  `companyId` int(11) DEFAULT NULL,
+  `timeStamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`picId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='公司营业执照图片表'
+
+CREATE TABLE `ppp_login_ticket` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(45) DEFAULT NULL,
+  `expired` date DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `ticket` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8
+
+CREATE TABLE `ppp_msg` (
+  `msgId` int(11) NOT NULL,
+  `senderId` int(11) DEFAULT NULL,
+  `receiverId` int(11) DEFAULT NULL,
+  `msgContent` varchar(200) DEFAULT NULL,
+  `sendTime` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`msgId`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+CREATE TABLE `ppp_quote` (
+  `quoteId` int(11) NOT NULL AUTO_INCREMENT,
+  `billNumber` varchar(45) DEFAULT NULL,
+  `quoterId` varchar(45) DEFAULT NULL,
+  `quoteAmount` int(11) DEFAULT NULL,
+  `interest` double DEFAULT NULL,
+  `xPerLakh` int(11) DEFAULT NULL,
+  `status` varchar(45) DEFAULT NULL,
+  `quoteDate` date DEFAULT NULL,
+  `quoteReferer` varchar(45) DEFAULT NULL,
+  `timeStamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`quoteId`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8
+
+CREATE TABLE `ppp_resource_market` (
+  `orderId` varchar(45) DEFAULT NULL,
+  `buyerId` varchar(45) DEFAULT NULL,
+  `amountRange` varchar(45) DEFAULT NULL,
+  `timeLimit` varchar(45) DEFAULT NULL,
+  `type1` varchar(45) DEFAULT NULL COMMENT '国有+国股',
+  `type2` varchar(45) DEFAULT NULL COMMENT '大商',
+  `type3` varchar(45) DEFAULT NULL COMMENT '授信城商',
+  `type4` varchar(45) DEFAULT NULL COMMENT '村镇银行',
+  `billType` varchar(45) DEFAULT NULL COMMENT '电银，纸银，电商，纸商',
+  `priority` varchar(45) DEFAULT NULL,
+  `updateDate` date DEFAULT NULL,
+  `note` varchar(500) DEFAULT NULL,
+  `timeStamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+CREATE TABLE `ppp_transaction` (
+  `transacId` int(11) NOT NULL,
+  `transacType` varchar(45) DEFAULT NULL,
+  `billNumber` varchar(45) DEFAULT NULL,
+  `buyerId` varchar(45) DEFAULT NULL,
+  `sellerId` varchar(45) DEFAULT NULL,
+  `amount` int(11) DEFAULT NULL,
+  `transacStatus` varchar(45) DEFAULT NULL,
+  `transacDate` date DEFAULT NULL,
+  `timeStamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`transacId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+CREATE TABLE `ppp_user` (
+  `user_id` varchar(45) NOT NULL,
+  `user_passwd` varchar(45) NOT NULL,
+  `user_phone` varchar(45) NOT NULL,
+  `user_name` varchar(45) DEFAULT NULL,
+  `user_nickname` varchar(45) DEFAULT NULL,
+  `user_address` varchar(45) DEFAULT NULL,
+  `user_age` varchar(45) DEFAULT NULL,
+  `user_email` varchar(45) DEFAULT NULL,
+  `login_name` varchar(45) DEFAULT NULL,
+  `timeStamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_id_UNIQUE` (`user_id`),
+  UNIQUE KEY `user_phone_UNIQUE` (`user_phone`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

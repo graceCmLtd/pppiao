@@ -1,0 +1,43 @@
+package com.fullcrum.service.sys;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.alibaba.fastjson.JSONObject;
+import com.fullcrum.model.sys.BillEntity;
+
+public interface BillService {
+	
+	public ArrayList<BillEntity> selectAllBill();
+
+	public ArrayList<BillEntity> selectByBillNumber(String billNumber);
+	
+	public void insertBill(BillEntity  billEntity) throws Exception;
+	
+	
+	public void deleteBill(String billNumber);
+	
+	public void update(BillEntity billEntity);
+	
+	public List<Map<String, Object>>  selectByFilter(JSONObject jsonObject);
+	/*List<Map<String, Object>>*/
+	
+	public List<Map<String, Object>> getBillsInquoting(JSONObject jsonObject);
+	
+
+	public List<Map<String, Object>> getBillsReceivedQuote(JSONObject jsonObject);
+
+	public List<Map<String, Object>> getBillsWaitingQuote(JSONObject jsonObject);
+
+	public List<Map<String, Object>> getBillsAuditing(JSONObject jsonObject);
+	
+	public List<Map<String, Object>> getALLIntentions(JSONObject jsonObject);
+
+	public List<Map<String, Object>> getConfirmedIntentions(JSONObject jsonObject);
+	
+	public List<Map<String, Object>> getConfirmingIntentions(JSONObject jsonObject);
+	
+	public List<Map<String, Object>> getRefusedIntentions(JSONObject jsonObject);
+	
+}

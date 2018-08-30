@@ -1,0 +1,35 @@
+package com.fullcrum.service.sys;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.alibaba.fastjson.JSONObject;
+import com.fullcrum.model.sys.QuoteEntity;
+
+public interface QuoteService {
+
+	public ArrayList<QuoteEntity> selectQuoteByQuoteId( int quoteId);
+	
+	public ArrayList<QuoteEntity> selectQuoteByQuoterId(String quoterId);
+	
+	public ArrayList<QuoteEntity> selectQuoteByBillNumber(String billNumber);
+	
+	public void insertQuote(QuoteEntity quoteEntity);
+	
+	
+	public void deleteQuoteByQuoteId( int quoteId);
+	
+	public void updateQuoteStatus(JSONObject jsonObject);
+	
+	
+	public List<Map<String, Object>> getALLQuote(JSONObject jsonObject);
+	
+	public List<Map<String, Object>> getAcceptedQuote(JSONObject jsonObject);
+	
+	public List<Map<String, Object>> getUnderQuote(JSONObject jsonObject);
+	
+	public List<Map<String, Object>> getFailQuote(JSONObject jsonObject);
+	
+
+}

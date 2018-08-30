@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fullcrum.dao.QuoteDao">
+	<resultMap type="com.fullcrum.model.sys.QuoteEntity" id="quoteMap">
+		<id column="quoteId" property="quoteId"/>
+		<result column="billNumber" property="billNumber"/>
+		<result column="quoterId" property="quoterId"/>
+		<result column="quoteAmount" property="quoteAmount"/>
+		<result column="interest" property="interest"/>
+		<result column="xPerLakh" property="xPerLakh"/>
+		<result column="status" property="status"/>
+		<result column="quoteDate" property="quoteDate"/>
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="myQuote">
+		<result column="billNumber" property="billNumber"/>
+		<result column="quoteId" property="quoteId"/>
+		<result column="quoteAmount" property="quoteAmount"/>
+		<result column="quoterId" property="quoterId"/>
+		<result column="interest" property="interest"/>
+		<result column="xPerLakh" property="xPerLakh"/>
+		<result column="quoteDate" property="quoteDate"/>
+		<result column="quoteStatus" property="quoteStatus"/>
+		<result column="billType" property="billType"/>
+		<result column="amount" property="amount"/>
+		<result column="billId" property="billId"/>
+		<result column="acceptor" property="acceptor"/>
+		<result column="maturity" property="maturity"/>
+		<result column="status" property="status"/>
+		<result column="releaseDate" property="releaseDate"/>
+		<result column="releaserId" property="releaserId"/>
+		<result column="billPicsId" property="billPicsId"/>
+		<result column="transferable" property="transferable"/>	
+	</resultMap>
+	
+</mapper>

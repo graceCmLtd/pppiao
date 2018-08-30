@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fullcrum.dao.UserDao">
+	<resultMap type="com.fullcrum.model.sys.UserEntity" id="userMap">
+	<id column="user_id" property="user_id" />
+	<result column="user_passwd" property="user_passwd"/>
+	<result column="user_phone" property="user_phone"/>
+	<result column="user_name" property="user_name"/>
+	<result column="nick_name" property="nick_name"/>
+	<result column="user_address" property="user_address"/>
+	<result column="user_age" property="user_age"/>
+	<result column="user_email" property="user_email"/>
+	<result column="login_name" property="login_name"/> 
+	</resultMap>
+	
+	
+	<!-- select    
+	@param UserEntity
+	@return ArrayList<UserList> -->
+	<select id="select" resultMap="userMap">
+		select * from ppp_user
+		<where>
+			<if test="id != null">user_id = #{user_id}</if>
+			<if test="name != null">and login_name = #{login_name}</if>
+		</where>
+	</select>
+	<!-- del   
+	@param   UserEntity -->
+	
+	<!-- update
+	@param  UserEntity
+	@return void -->
+	
+	<!-- insert 
+	@param UserEntity
+	@return void  -->
+	<insert id="insert">
+		<if test="userEntity != null">
+			insert ppp_user (user_id,user_phone,user_age,login_name,user_passwd,user_name,user_email,user_address) values 
+			(#{userEntity.user_id},#{userEntity.user_phone},#{userEntity.user_age},#{userEntity.login_name},#{userEntity.user_passwd},#{userEntity.user_name},#{userEntity.user_email},#{userEntity.user_address});
+		</if>
+	</insert>
+	
+	
+	<!-- getUserEntityByLoginName
+	@param String login_name
+	@return UserEntity
+	 -->
+	 
+	 
+	 <!-- getUserEntityByPhone
+	 @param Stirng phone
+	 @return UserEntity  -->
+	 
+	 <select id="getUserEntityByPhone" resultMap="userMap">
+	 	<![CDATA[select * from ppp_user]]>
+	 	<where>
+	 		<if test="user_phone != null">
+	 			user_phone = ${user_phone}
+	 		</if>
+	 	</where>
+	 </select>
+	 
+	 
+	<!-- get result of user -->
+	<select id="userList" resultMap="userMap">
+		<![CDATA[select * from ppp_user]]>
+		<where>
+			<if test="login_name != null and login_name != ''">
+				login_name = ${login_name}
+			</if>
+			<![CDATA[ order by user_id desc]]>
+			<if test="pageSize != null and start != null ">
+				limit ${start},${pageSize}
+			</if>
+		</where>
+	</select>
+	
+	
+	<!-- get ammount of users -->
+	
+	<!-- insertUser 
+	@param UserEntity
+	@return void  -->
+	<insert id="insertUser">
+		<if test="userEntity != null">
+			insert ppp_user (user_id,user_phone,user_age,login_name,user_passwd,user_name,user_email,user_address) values 
+			(#{userEntity.user_id},#{userEntity.user_phone},#{userEntity.user_age},#{userEntity.login_name},#{userEntity.user_passwd},#{userEntity.user_name},#{userEntity.user_email},#{userEntity.user_address});
+		</if>
+	</insert>
+	
+	
+	
+	
+</mapper>
+
+

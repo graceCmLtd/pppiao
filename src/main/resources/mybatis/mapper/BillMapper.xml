@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fullcrum.dao.BillDao">
+	<resultMap type="com.fullcrum.model.sys.BillEntity" id="billMap">
+		<id column="billId" property="billId" />
+		<result column="billNumber" property="billNumber"/>
+		<result column="billType" property="billType"/>
+		<!-- 兑换方 -->
+		
+		<result column="acceptor" property="acceptor"/>
+		<result column="amount" property="amount"/>
+		<result column="maturity" property="maturity"/>
+		<result column="status" property="status"/>
+		<result column="releaseDate" property="releaseDate"/>
+		<result column="releaserId" property="releaserId"/>
+		<result column="billPicsId" property="billPicsId"/>
+		<result column="transferable" property="transferable"/>
+		<result column="billReferer" property="billReferer"/>
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="billFilter">
+		<id column="billId" property="billId"/>
+		<result column="billNumber" property="billNumber" />
+		<result column="billType" property="billType"/>
+		<result column="acceptor" property="acceptor"/>
+		<result column="amount" property="amount"/>
+		<result column="maturity" property="maturity"/>
+		<result column="status" property="status"/>
+		<result column="releaseDate" property="releaseDate"/>
+		<result column="releaserId" property="releaserId"/>
+		<result column="billPicsId" property="billPicsId"/>
+		<result column="transferable" property="transferable"/>
+		<result column="billReferer" property="billReferer"/>
+		<result column="countNumber" property="countNumber" />
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="billAboutQuote">
+		<result column="billNumber" property="billNumber"/>
+		<result column="billType" property="billType"/>
+		<result column="acceptor" property="acceptor"/>
+		<result column="amount" property="amount"/>
+		<result column="maturity" property="maturity"/>
+		<result column="status" property="status"/>
+		<result column="releaseDate" property="releaseDate"/>
+		<result column="releaserId" property="releaserId"/>
+		<result column="billPicsId" property="billPicsId"/>
+		<result column="transferable" property="transferable"/>
+		<result column="billReferer" property="billReferer"/>
+		<result column="quoteId" property="quoteId" />
+		<result column="quoteAmount" property="quoteAmount"/>
+		<result column="quoterId" property="quoterId"/>
+		<result column="interest" property="interest"/>
+		<result column="xPerLakh" property="xPerLakh"/>
+		<result column="quoteDate" property="quoteDate"/>
+		<result column="transacId" property="transacId"/>
+		<result column="transacType" property="transacType"/>
+		<result column="buyerId" property="buyerId"/>
+		<result column="sellerId" property="sellerId"/>
+		<result column="transacStatus" property="transacStatus"/>
+		<result column="transacDate" property="transacDate"/>
+	</resultMap>
+	
+		<resultMap type="java.util.Map" id="QuoteIntention">
+		<result column="billNumber" property="billNumber"/>
+		<result column="quoteId" property="quoteId"/>
+		<result column="quoteAmount" property="quoteAmount"/>
+		<result column="quoterId" property="quoterId"/>
+		<result column="interest" property="interest"/>
+		<result column="xPerLakh" property="xPerLakh"/>
+		<result column="quoteDate" property="quoteDate"/>
+		<result column="quoteStatus" property="quoteStatus"/>
+		<result column="billType" property="billType"/>
+		<result column="amount" property="amount"/>
+		<result column="billId" property="billId"/>
+		<result column="acceptor" property="acceptor"/>
+		<result column="maturity" property="maturity"/>
+		<result column="status" property="status"/>
+		<result column="releaseDate" property="releaseDate"/>
+		<result column="releaserId" property="releaserId"/>
+		<result column="billPicsId" property="billPicsId"/>
+		<result column="transferable" property="transferable"/>	
+		<result column="billReferer" property="billReferer"/>
+	</resultMap>
+	
+	
+	<select id="selectByFilter" resultMap="billFilter" >
+	<![CDATA[select a.billId,a.billNumber,a.billType,a.acceptor,a.amount,a.maturity,a.status,a.releaseDate,a.releaserId,a.billPicsId,a.transferable,a.billReferer,case when b.countNumber is null then 0 else b.countNumber end as count from ]]>
+		<![CDATA[(select * from pengpengpiao.ppp_bill as a ]]>
+		<where>
+			<![CDATA[1=1 ]]>
+			<if test="jsonObject != null">
+				<if test="jsonObject.billType !=null">
+					<![CDATA[and billType = #{jsonObject.billType} ]]>
+				</if>
+				<if test="jsonObject.minAmount !=null">
+					<![CDATA[and amount >= ${jsonObject.minAmount}]]>
+				</if>
+				<if test="jsonObject.maxAmount != null">
+					<![CDATA[ and amount < ${jsonObject.maxAmount}]]>
+				</if>
+				<if test="jsonObject.minDate !=null">
+					<![CDATA[ and maturity >= #{jsonObject.minDate}]]>
+				</if>
+				<if test="jsonObject.maxDate != null">
+					<![CDATA[ and maturity < #{jsonObject.maxDate}]]>
+				</if>
+			</if>
+			<![CDATA[and 1=1) a  left join  (select billNumber, count(*) as countNumber  from pengpengpiao.ppp_quote  group by billNumber)  b on a.billNumber=b.billNumber  ]]>
+			<![CDATA[order by a.releaseDate desc limit ${jsonObject.starter},${jsonObject.number}]]>
+		</where>
+		
+	</select>
+	
+	<update id="updateBillByBillNumber">
+		<if test="billEntity != null ">
+			<![CDATA[update ppp_bill set ]]>
+			<if test="billEntity.billType != null ">
+				billType = #{billEntity.billType} ,
+			</if>
+			
+			<if test="billEntity.acceptor != null">
+				acceptor = #{billEntity.acceptor},
+			</if>
+			
+			<if test="billEntity.amount != null">
+				amount = #{billEntity.amount},
+			</if>
+			<if test="billEntity.maturity != null">
+				maturity = #{billEntity.maturity},
+			</if>
+			<if test="billEntity.status != null">
+				status = #{billEntity.status},
+			</if>
+			<if test="billEntity.releaseDate != null">
+				releaseDate  = #{billEntity.releaseDate},
+			</if>
+			<if test="billEntity.releaserId != null">
+				releaserId = #{billEntity.releaserId},
+			</if>
+			<if test="billEntity.billPicsId != null" >
+				billPicsId =#{billEntity.billPicsId}
+			</if>
+			<if test="billEntity.transferable != null" >
+				transferable =#{billEntity.transferable}
+			</if>
+			<where>
+				<if test="billEntity.billNumber != null">
+					billNumber = #{billEntity.billNumber}
+				</if>
+			</where>
+		</if>
+	</update>
+</mapper>
+
+<!-- billNumber varchar(45) PK 
+billType varchar(45) 
+acceptor varchar(45) 
+amount varchar(45) 
+maturity date 
+status varchar(45) 
+releaseDate date 
+releaserId int(11) 
+billPicsId int(11)
+transferable tinyint -->

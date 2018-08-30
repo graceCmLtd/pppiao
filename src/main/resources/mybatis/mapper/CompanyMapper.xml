@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fullcrum.dao.CompanyDao">
+	<resultMap type="com.fullcrum.model.sys.CompanyEntity" id="companyMap">
+		<id column="companyId" property="companyId" />
+		<result column="companyName" property="companyName"/>
+		<result column="contactsId" property="contactsId"/>
+		<result column="contactsPhone" property="contactsPhone"/>
+		<result column="contactsEmail" property="contactsEmail"/>
+		<result column="contactsQQ" property="contactsQQ"/>
+		<result column="bankAccountName" property="bankAccountName"/>
+		<result column="bankAccount" property="bankAccount"/>
+		<result column="bankName" property="bankName"/>
+		<result column="picId" property="picId"/>
+		<result column="signUpAddr" property="signUpAddr"/>
+		<result column="updateDate" property="updateDate"/>
+	</resultMap>
+</mapper>

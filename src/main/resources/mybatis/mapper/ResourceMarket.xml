@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fullcrum.dao.ResourceMarket">
+	<resultMap type="com.fullcrum.model.sys.ResourceMarketEntity" id="resourceMarket">
+		<id column="orderId" property="orderId"/>
+		<result column="buyerId" property="buyerId"/>
+		<result column="amountRange" property="amountRange"/>
+		<result column="timeLimit" property="timeLimit"/>
+		<result column="type1" property="type1"/>
+		<result column="type2" property="type2"/>
+		<result column="type3" property="type3"/>
+		<result column="type4" property="type4"/>
+		<result column="billType" property="billType"/>
+		<result column="updateDate" property="updateDate"/>
+	</resultMap>
+	
+	
+	<resultMap type="java.util.Map" id="resourcePool">
+		<result column="orderId" property="orderId"/>
+		<result column="buyerId" property="buyerId"/>
+		<result column="amountRange" property="amountRange"/>
+		<result column="timeLimit" property="timeLimit"/>
+		<result column="interest" property="interest"/>
+		<result column="acceptor" property="acceptor"/>
+		<result column="billType" property="billType"/>
+		<result column="updateDate" property="updateDate"/>
+	
+	
+	</resultMap>
+	<update id="updateByOrderId">
+		<if test="jsonObject != null">
+			<![CDATA[ update  ppp_resource_market  ]]>
+			<set>
+			<if test="jsonObject.priority != null">
+				<![CDATA[ priority = #{jsonObject.priority},]]>
+			</if>
+			<if test="jsonObject.timeLimit != null">
+				<![CDATA[ timeLimit = #{jsonObject.timeLimit},]]>
+			</if>
+			<if test="jsonObject.type1 != null ">
+				<![CDATA[ type1 = #{jsonObject.type1},]]>
+			</if>
+			<if test="jsonObject.type2 != null ">
+				<![CDATA[ type2 = #{jsonObject.type2},]]>
+			</if>
+			<if test="jsonObject.type3 != null ">
+				<![CDATA[ type3 = #{jsonObject.type3},]]>
+			</if>
+			<if test="jsonObject.type4 != null ">
+				<![CDATA[ type4 = #{jsonObject.type4},]]>
+			</if>
+			<if test="jsonObject.billType != null ">
+				<![CDATA[ billType = #{jsonObject.billType},]]>
+			</if>
+			<if test="jsonObject.updateDate != null ">
+				<![CDATA[ updateDate = #{jsonObject.updateDate},]]>
+			</if>
+			<if test="jsonObject.note != null">
+				<![CDATA[ note = #{jsonObject.note},]]>
+			</if>
+			 orderId=orderId
+			</set>
+			<where>
+				orderId = #{jsonObject.orderId}
+			</where>
+			
+			
+		</if>
+	</update>
+	
+</mapper>
+
+
+
+
+<!-- 
+private String orderId;
+	
+	private String buyerId;
+	
+	private String amountRange;
+	
+	private Date timeLimit;
+	
+	private String type1;
+	
+	private String type2;
+	
+	private String type3;
+	
+	private String type4;
+	
+	private String billType;
+	
+	private Date updateDate; -->

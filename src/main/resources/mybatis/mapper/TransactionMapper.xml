@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fullcrum.dao.TransactionDao">
+	<resultMap type="com.fullcrum.model.sys.TransactionEntity" id="transactionMap">
+		<id column="transacId" property="transactionId"/>
+		<result column="transacType" property="transactionType"/>
+		<result column="billNumber" property="billNumber"/>
+		<result column="buyerId" property="buyerId"/>
+		<result column="sellerId" property="sellerId"/>
+		<result column="amount" property="amount"/>
+		<result column="transacStatus" property="transactionStatus"/>
+		<result column="transacDate" property="transacDate"/>
+	</resultMap>
+</mapper>
