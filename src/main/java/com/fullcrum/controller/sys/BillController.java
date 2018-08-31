@@ -202,16 +202,9 @@ public class BillController {
 			break;
 		}
 		//return null;
+		//为了显示票据市场页面剩余天数这列的数据，获取当前时间
 		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 		String date = sf.format(new Date());
-		/*Date curr_time = null;
-		try {
-			curr_time = sf.parse(date);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		java.sql.Date datesql = new java.sql.Date(curr_time.getTime());*/
 		conditions.put("curr_time", date);
 		
 		return billService.selectByFilter(conditions);
