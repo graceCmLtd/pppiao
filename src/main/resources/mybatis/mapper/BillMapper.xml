@@ -84,7 +84,7 @@
 	
 	
 	<select id="selectByFilter" resultMap="billFilter" >
-	<![CDATA[select a.billId,a.billNumber,a.billType,a.acceptor,a.amount,a.maturity,a.status,a.releaseDate,a.releaserId,a.billPicsId,a.transferable,a.billReferer,case when b.countNumber is null then 0 else b.countNumber end as count from ]]>
+	<![CDATA[select a.billId,a.billNumber,a.billType,a.acceptor,a.amount,a.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},a.maturity)as remain_days,a.status,a.releaseDate,a.releaserId,a.billPicsId,a.transferable,a.billReferer,case when b.countNumber is null then 0 else b.countNumber end as count from ]]>
 		<![CDATA[(select * from pengpengpiao.ppp_bill as a ]]>
 		<where>
 			<![CDATA[1=1 ]]>
