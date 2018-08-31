@@ -9,7 +9,7 @@
 .settings
 .springBeans
 .sts4-cache
-.yml
+/src/main/resources/.yml
 ### IntelliJ IDEA ###
 .idea
 *.iws
