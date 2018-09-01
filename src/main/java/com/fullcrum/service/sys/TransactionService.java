@@ -1,6 +1,8 @@
 package com.fullcrum.service.sys;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.TransactionEntity;
@@ -22,4 +24,8 @@ public interface TransactionService {
 	public void updateTransaction(TransactionEntity transactionEntity);
 	
 	public void updateTransactionStatus(JSONObject jsonObject);
+
+	public List<Map<String, Object>> selectTransInfo(int transactionId);
+
+	public void updateTransStatus(int transactionId);
 }

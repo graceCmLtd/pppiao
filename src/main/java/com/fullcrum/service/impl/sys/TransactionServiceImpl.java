@@ -2,6 +2,8 @@ package com.fullcrum.service.impl.sys;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +73,16 @@ public class TransactionServiceImpl implements TransactionService {
 	public void updateTransactionStatus(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
 		transactionDao.updateTransactionStatus(jsonObject);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectTransInfo(int transactionId) {
+		return transactionDao.selectTransInfo(transactionId);
+	}
+
+	@Override
+	public void updateTransStatus(int transactionId) {
+		transactionDao.updateTransStatus(transactionId);
 	}
 	
 	

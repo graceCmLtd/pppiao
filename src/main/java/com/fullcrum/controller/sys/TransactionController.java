@@ -1,6 +1,8 @@
 package com.fullcrum.controller.sys;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -86,5 +88,19 @@ public class TransactionController {
 		transactionService.updateTransactionStatus(jsonObject);
 		result.put("status", "success");
 		return result;
+	}
+	
+	//交易处理时需要的信息
+	@RequestMapping("/getTransInfo")
+	public List<Map<String,Object>> selecttransInfo(@RequestParam(value="transactionId") int transactionId) {
+		return transactionService.selectTransInfo(transactionId);
+	}
+	
+	//更改交易处理状态
+	//交易状态 1为交易中  0为交易完成
+	@RequestMapping("/updateTransStatus")
+	public String updateTransStatus(@RequestParam(value="transactionId") int transactionId) {
+		transactionService.updateTransStatus(transactionId);
+		return "success";
 	}
 }
