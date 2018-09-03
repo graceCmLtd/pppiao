@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fullcrum.dao.AdminDao">
+	
+	<resultMap type="com.fullcrum.model.sys.AdminEntity" id="adminMap">
+		<id column="" property=""/>
+		<result column="loginName" property="loginName"/>
+		<result column="passwd" property="passwd"/>
+		<result column="nickName" property="nickName"/>
+		<result column="role" property="role"/>
+		
+	</resultMap>
+	
+	<select id="adminLogin" resultMap="adminMap">
+		select * from ppp_admin a 
+		<where>
+			<if test="adminEntity.loginName != null">
+				and a.loginName=#{adminEntity.loginName}
+			</if>
+			<if test="adminEntity.passwd != null">
+				and a.passwd= #{adminEntity.passwd}
+			</if>
+		</where>
+	</select>
+</mapper>
