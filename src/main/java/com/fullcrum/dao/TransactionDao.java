@@ -62,6 +62,6 @@ public interface TransactionDao {
 	@ResultMap(value="getTransInfo")
 	public List<Map<String, Object>> selectTransInfo(@Param("transactionId")int transactionId);
 	
-	@Select({"update ppp_transaction set transacStatus='0' where transacId=#{transactionId} and sellerId is not null and buyerId is not null"})
-	public void updateTransStatus(@Param("transactionId")int transactionId);
+	@Select({"update ppp_transaction set transacStatus=#{transStatus} where transacId=#{transactionId} and sellerId is not null and buyerId is not null"})
+	public void updateTransStatus(@Param("transactionId")int transactionId,@Param("transStatus") String transStatus);
 }

@@ -11,6 +11,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.AdminEntity;
 import com.fullcrum.service.sys.AdminService;
 
+/**
+ * 
+ * @author ermao
+ * 管理员登录接口
+ *
+ */
+
+
 @RestController
 @CrossOrigin
 @RequestMapping("/ppp/admin")
@@ -25,11 +33,15 @@ public class AdminController {
 		
 		JSONObject json = new JSONObject();
 		
+		System.out.println(adminEntity.getLoginName());
+		
 		if(adminEntity.getLoginName() != null && adminEntity.getPasswd() != null){
 			AdminEntity adminInfo = adminService.adminLogin(adminEntity);
-			System.out.println(adminInfo.getLoginName());
 			if(adminInfo != null && !"".equals(adminInfo)) {
-				json.put("status", "sucess");
+				System.out.println(adminInfo.getLoginName());
+				json.put("status", "success");
+			}else {
+				json.put("status", "failed");
 			}
 		}
 		return json;

@@ -81,8 +81,8 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public void updateTransStatus(int transactionId) {
-		transactionDao.updateTransStatus(transactionId);
+	public void updateTransStatus(int transactionId, String transStatus) {
+		transactionDao.updateTransStatus(transactionId,transStatus);
 	}
 	
 	
