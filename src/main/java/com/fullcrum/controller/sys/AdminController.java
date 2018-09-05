@@ -37,7 +37,7 @@ public class AdminController {
 		
 		if(adminEntity.getLoginName() != null && adminEntity.getPasswd() != null){
 			AdminEntity adminInfo = adminService.adminLogin(adminEntity);
-			if(adminInfo != null && !"".equals(adminInfo)) {
+			if(adminInfo != null) {
 				System.out.println(adminInfo.getLoginName());
 				json.put("status", "success");
 			}else {

@@ -90,14 +90,13 @@ public class TransactionController {
 		return result;
 	}
 	
-	//交易处理时需要的信息
+	//交易处理时需要的交易信息
 	@RequestMapping("/getTransInfo")
 	public List<Map<String,Object>> selecttransInfo(@RequestParam(value="transactionId") int transactionId) {
 		return transactionService.selectTransInfo(transactionId);
 	}
 	
 	//更改交易处理状态
-	//交易状态 1为交易中  0为交易完成
 	@RequestMapping("/updateTransStatus")
 	public String updateTransStatus(@RequestBody JSONObject json) {
 		
@@ -106,7 +105,7 @@ public class TransactionController {
 		
 		String msg = null;
 		
-		if(!"".equals(transactionId) && transactionId != null && !"".equals(transStatus) && transStatus != null) {
+		if(transactionId != null && !"".equals(transStatus) && transStatus != null) {
 			switch(transStatus) {
 			case "0":
 				transStatus = "0";
@@ -131,7 +130,7 @@ public class TransactionController {
 			case "4":
 				transStatus = "4";
 				transactionService.updateTransStatus(transactionId,transStatus);
-				msg = "买家已背书，卖家已收款";
+				msg = "买家确认背书，卖家已收款";
 				break;
 			case "5":
 				transStatus = "5";
