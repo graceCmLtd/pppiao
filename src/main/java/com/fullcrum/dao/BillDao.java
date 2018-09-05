@@ -153,5 +153,9 @@ public interface BillDao {
 		@Select({"update ppp_bill set status = '审核完成'  where billNumber = #{billNumber}"})
 		public void updateBillStatus(@Param("billNumber")String billNumber);
 		
+		@Select("select * from ppp_bill")
+		@ResultMap(value="allBills")
+		public List<Map<String, Object>> selectBills();
+		
 		
 }

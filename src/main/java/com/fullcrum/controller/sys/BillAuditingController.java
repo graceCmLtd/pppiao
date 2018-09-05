@@ -23,6 +23,11 @@ public class BillAuditingController {
 	@Resource(name="billAuditingServiceImpl")
 	private BillAuditingService billAuditingService;
 	
+	@RequestMapping("/getBills")
+	public List<Map<String,Object>> getBills(){
+		return billAuditingService.getBills();
+	}
+	
 	@RequestMapping("/getBillInfo")
 	public List<Map<String,Object>> getBillInfo(@RequestParam(value="billNumber")  String billNumber){
 		return billAuditingService.getBillInfo(billNumber);

@@ -18,6 +18,23 @@
 		<result column="billReferer" property="billReferer"/>
 	</resultMap>
 	
+	<resultMap type="java.util.Map" id="allBills">
+		<id column="billId" property="billId" />
+		<result column="billNumber" property="billNumber"/>
+		<result column="billType" property="billType"/>
+		<!-- 兑换方 -->
+		
+		<result column="acceptor" property="acceptor"/>
+		<result column="amount" property="amount"/>
+		<result column="maturity" property="maturity"/>
+		<result column="status" property="status"/>
+		<result column="releaseDate" property="releaseDate"/>
+		<result column="releaserId" property="releaserId"/>
+		<result column="billPicsId" property="billPicsId"/>
+		<result column="transferable" property="transferable"/>
+		<result column="billReferer" property="billReferer"/>
+	</resultMap>
+	
 	<resultMap type="java.util.Map" id="billFilter">
 		<id column="billId" property="billId"/>
 		<result column="billNumber" property="billNumber" />
