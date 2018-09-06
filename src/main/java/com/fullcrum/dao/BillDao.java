@@ -144,7 +144,7 @@ public interface BillDao {
 		public List<Map<String, Object>> getRefusedIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
 		
-		@Select({"select distinct a.*, b.pic1,b.pic2 from ppp_bill a " + 
+		@Select({"select distinct a.*, b.pic1 as pic1,b.pic2 as pic2 from ppp_bill a " + 
 				"left join ppp_bill_pics b on a.billNumber = b.billNumber" + 
 				" where  a.billNumber = #{billNumber}"})
 		@ResultMap(value="getBillInfo")

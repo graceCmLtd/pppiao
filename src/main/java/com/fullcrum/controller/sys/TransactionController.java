@@ -24,6 +24,21 @@ public class TransactionController {
 	@Resource(name="transactionServiceImpl")
 	private TransactionService transactionService;
 	
+	@RequestMapping("/getAllTrans")
+	public ArrayList<TransactionEntity> getAllTrans(){
+		ArrayList<TransactionEntity> list =  transactionService.selectAllTrans();
+		for (TransactionEntity transac : list) {
+			String trans = transac.getTransactionStatus();
+			System.out.println(trans);
+			if(trans.equals("5")) {
+				transac.setTransactionStatus("交易完成");
+			}else {
+				transac.setTransactionStatus("未完成");
+			}
+		}
+		return list;
+	}
+	
 	@RequestMapping("/getByTransacId")
 	public ArrayList<TransactionEntity> getByTransacId(@RequestParam(value="transactionId") String transactionId){
 		
@@ -135,7 +150,7 @@ public class TransactionController {
 			case "5":
 				transStatus = "5";
 				transactionService.updateTransStatus(transactionId,transStatus);
-				msg = "交易完成";
+				msg = "交易结束";
 				break;
 			}
 		}

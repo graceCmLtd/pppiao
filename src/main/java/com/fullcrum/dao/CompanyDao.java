@@ -34,4 +34,8 @@ public interface CompanyDao {
 	@Delete({"delete from " , TABLE_NAME,"where companyName = #{companyEntity.companyName}"})
 	public void  deleteCompany(@Param("companyEntity") CompanyEntity companyEntity);
 	
+	@Select({"select * from ",TABLE_NAME,"where companyId = #{companyId}"})
+	@ResultMap("companyMap")
+	public ArrayList<CompanyEntity> selectByCompanyId(@Param("companyId")String companyId);
+	
 }

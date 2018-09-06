@@ -13,5 +13,9 @@ public interface CompanyService {
 		public void insertCompany(CompanyEntity companyEntity);
 		
 		public void deleteCompany(CompanyEntity companyEntity);
+
+		public ArrayList<CompanyEntity> selectByCompanyId(String companyId);
+
+		
 		
 }

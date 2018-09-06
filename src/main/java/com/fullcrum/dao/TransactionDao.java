@@ -64,4 +64,8 @@ public interface TransactionDao {
 	
 	@Select({"update ppp_transaction set transacStatus=#{transStatus} where transacId=#{transactionId} and sellerId is not null and buyerId is not null"})
 	public void updateTransStatus(@Param("transactionId")int transactionId,@Param("transStatus") String transStatus);
+	
+	@Select({"select * from ppp_transaction"})
+	@ResultMap(value="transactionMap")
+	public ArrayList<TransactionEntity> slectAllTrans();
 }
