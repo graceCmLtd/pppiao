@@ -33,5 +33,8 @@ public interface CompanyPicsDao {
 	@Delete({"delete from ",TABLE_NAME_1,"where companyId = #{companyPicsEntity.contactsId}"})
 	public void deleteCompanyPics(@Param("companyPicsEntity") CompanyPicsEntity companyPicsEntity);
 	
+	@Select({"select * from ",TABLE_NAME_1,"where picId = #{picId}"})
+	public CompanyPicsEntity selectPic(String picId);
+	
 
 }

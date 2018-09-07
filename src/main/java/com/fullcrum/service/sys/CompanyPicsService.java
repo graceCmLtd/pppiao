@@ -14,4 +14,6 @@ public interface CompanyPicsService {
 	public void insertCompanyPicsByJson(JSONObject jsonObject);
 	
 	public void deleteCompanyPics(CompanyPicsEntity companyPicsEntity);
+
+	public CompanyPicsEntity selectPic(String picId);
 }
