@@ -13,6 +13,9 @@ public interface BillService {
 
 	public ArrayList<BillEntity> selectByBillNumber(String billNumber);
 	
+	public List<Map<String, Object>>  selectByBillNumberWithRemainDays(String billNumber,String current_date);
+	
+	
 	public void insertBill(BillEntity  billEntity) throws Exception;
 	
 	

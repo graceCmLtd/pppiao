@@ -27,4 +27,6 @@ public class CompanyPicsController {
 		System.out.println(contactsId);
 		return companyPicsService.selectCompanyPicsByContactsId(contactsId);
 	}
+	
+	
 }

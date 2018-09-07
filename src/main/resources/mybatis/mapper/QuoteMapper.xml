@@ -31,7 +31,14 @@
 		<result column="releaseDate" property="releaseDate"/>
 		<result column="releaserId" property="releaserId"/>
 		<result column="billPicsId" property="billPicsId"/>
-		<result column="transferable" property="transferable"/>	
+		<result column="transferable" property="transferable"/>
+		<result column="companyName" property="companyName"/>
+		<result column="contactsPhone" property="contactsPhone"/>
+		<result column="contactsQQ" property="contactsQQ"/>
+		<result column="bankAccountName" property="bankAccountName"/>
+		<result column="bankName" property="bankName"/>
+		<result column="picId" property="picId"/>	
+		<result column="contactsId" property="contactsId"/>
 	</resultMap>
 	
 </mapper>

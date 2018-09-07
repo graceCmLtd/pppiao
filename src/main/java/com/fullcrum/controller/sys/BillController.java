@@ -1,5 +1,6 @@
 package com.fullcrum.controller.sys;
 
+import java.io.Console;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +46,11 @@ public class BillController {
 	public ArrayList<BillEntity> getBills( @RequestParam(value="billNumber")  String billNumber){
 		
 		return billService.selectByBillNumber(billNumber);
+		
+	}
+	@RequestMapping("/getbillr")
+	public List<Map<String, Object>> getBillsWithRemainDays(@RequestParam(value="billNumber")  String billNumber){
+		return billService.selectByBillNumberWithRemainDays(billNumber, new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 	}
 	
 	@RequestMapping("/addbill")
@@ -214,9 +220,10 @@ public class BillController {
 	public List<Map<String, Object>> getMyBills(@RequestBody JSONObject jsonObject){
 		switch (jsonObject.get("filter").toString()) {
 		case "1":
-			
+			//获取全部票据的报价信息
 			return billService.getBillsInquoting(jsonObject);
 		case "2":
+			//获取已经报价的票据
 			return billService.getBillsReceivedQuote(jsonObject);
 		case "3":
 			return billService.getBillsWaitingQuote(jsonObject);
@@ -229,18 +236,27 @@ public class BillController {
 	
 	@RequestMapping("/getBillsIntentions")
 	public List<Map<String, Object>> getBillsIntentions(@RequestBody JSONObject jsonObject){
+		
+		jsonObject.put("curr_time", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		
 		switch (jsonObject.get("IntentionType").toString()) {
 		case "1":
+			//获取所有意向
 			return billService.getALLIntentions(jsonObject);
 		case "2":
+			//买家已接单
 			return billService.getConfirmedIntentions(jsonObject);
 		case "3":
+			//待买家确认
 			return billService.getConfirmingIntentions(jsonObject);
 		case "4":
+			//买家已拒绝、失效
 			return billService.getRefusedIntentions(jsonObject);
 		case "5":
+			//审核中
 			return billService.getBillsAuditing(jsonObject);
 		default:
+			System.out.println("nothing match the condition intentionType");
 			return null;
 		}
 	}

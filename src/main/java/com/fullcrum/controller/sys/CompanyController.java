@@ -39,6 +39,9 @@ public class CompanyController {
 		
 		//CompanyPicsEntity companyPicsEntity = JSONObject.toJavaObject(jsonObject.getJSONObject("companyPics"), CompanyPicsEntity.class);
 		CompanyEntity companyEntity = JSONObject.toJavaObject(jsonObject.getJSONObject("companyInfo"), CompanyEntity.class);
+		companyEntity.setUpdateDate(new Date(new java.util.Date().getTime()));
+		System.out.println("print   add company jsonobject .xxxxxxxxxxxxxxxxxxx");
+		System.out.println(companyEntity);
 		companyService.insertCompany(companyEntity);
 		companyPicsService.insertCompanyPicsByJson(jsonObject.getJSONObject("companyPics"));
 		
@@ -46,7 +49,7 @@ public class CompanyController {
 		
 		
 		System.out.println("print   add company jsonobject .xxxxxxxxxxxxxxxxxxx");
-		System.out.println(companyEntity.getCompanyId());
+		System.out.println(companyEntity);
 		System.out.println(jsonObject);
 		JSONObject result = new JSONObject();
 		result.put("CompanyAuthentication", true);
