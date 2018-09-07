@@ -42,4 +42,11 @@ public class CompanyServiceImpl implements CompanyService {
 		return companyDao.selectByContactsId(contactsId);
 	}
 
+	@Override
+	public ArrayList<CompanyEntity> selectByCompanyId(String companyId) {
+		// TODO Auto-generated method stub
+		return companyDao.selectByCompanyId(companyId);
+	}
+
+	
 }

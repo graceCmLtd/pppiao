@@ -9,4 +9,6 @@ public interface BillAuditingService {
 
 	public void updateBillStatus(String billNumber);
 
+	public List<Map<String, Object>> getBills();
+
 }

@@ -28,6 +28,16 @@ public class CompanyController {
 	@Resource(name="companyPicsServiceImpl")
 	private CompanyPicsService companyPicsService;
 	
+	@RequestMapping("/getAllCompanys")
+	public ArrayList<CompanyEntity> getAllCompanys(){
+		return companyService.selectAll();
+	}
+	
+	@RequestMapping("/getCompanyInfo")
+	public ArrayList<CompanyEntity> getCompanyInfo(@RequestParam(value="companyId") String companyId){
+		return companyService.selectByCompanyId(companyId);
+	}
+	
 	@RequestMapping("/getCompany")
 	public ArrayList<CompanyEntity> getCompanyById(@RequestParam(value="contactsId") String contactsId){
 		return companyService.selectByContactsId(contactsId);

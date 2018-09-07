@@ -27,5 +27,7 @@ public interface TransactionService {
 
 	public List<Map<String, Object>> selectTransInfo(int transactionId);
 
-	public void updateTransStatus(int transactionId);
+	public void updateTransStatus(int transactionId, String transStatus);
+
+	public ArrayList<TransactionEntity> selectAllTrans();
 }

@@ -27,4 +27,10 @@ public class BillAuditingServiceImpl implements BillAuditingService{
 		billAuditingDao.updateBillStatus(billNumber);
 	}
 
+	@Override
+	public List<Map<String, Object>> getBills() {
+		// TODO Auto-generated method stub
+		return billAuditingDao.selectBills();
+	}
+
 }

@@ -24,6 +24,21 @@ public class TransactionController {
 	@Resource(name="transactionServiceImpl")
 	private TransactionService transactionService;
 	
+	@RequestMapping("/getAllTrans")
+	public ArrayList<TransactionEntity> getAllTrans(){
+		ArrayList<TransactionEntity> list =  transactionService.selectAllTrans();
+		for (TransactionEntity transac : list) {
+			String trans = transac.getTransactionStatus();
+			System.out.println(trans);
+			if(trans.equals("5")) {
+				transac.setTransactionStatus("交易完成");
+			}else {
+				transac.setTransactionStatus("未完成");
+			}
+		}
+		return list;
+	}
+	
 	@RequestMapping("/getByTransacId")
 	public ArrayList<TransactionEntity> getByTransacId(@RequestParam(value="transactionId") String transactionId){
 		
@@ -90,17 +105,56 @@ public class TransactionController {
 		return result;
 	}
 	
-	//交易处理时需要的信息
+	//交易处理时需要的交易信息
 	@RequestMapping("/getTransInfo")
 	public List<Map<String,Object>> selecttransInfo(@RequestParam(value="transactionId") int transactionId) {
 		return transactionService.selectTransInfo(transactionId);
 	}
 	
 	//更改交易处理状态
-	//交易状态 1为交易中  0为交易完成
 	@RequestMapping("/updateTransStatus")
-	public String updateTransStatus(@RequestParam(value="transactionId") int transactionId) {
-		transactionService.updateTransStatus(transactionId);
-		return "success";
+	public String updateTransStatus(@RequestBody JSONObject json) {
+		
+		Integer transactionId =  json.getIntValue("transactionId");
+		String transStatus = json.getString("transStatus");
+		
+		String msg = null;
+		
+		if(transactionId != null && !"".equals(transStatus) && transStatus != null) {
+			switch(transStatus) {
+			case "0":
+				transStatus = "0";
+				transactionService.updateTransStatus(transactionId,transStatus);
+				msg = "交易失败";
+				break;
+			case "1":
+				transStatus = "1";
+				transactionService.updateTransStatus(transactionId,transStatus);
+				msg = "买家正在付款";
+				break;
+			case "2":
+				transStatus = "2";
+				transactionService.updateTransStatus(transactionId,transStatus);
+				msg = "买家已付款，请卖家背书";
+				break;
+			case "3":
+				transStatus = "3";
+				transactionService.updateTransStatus(transactionId,transStatus);
+				msg = "买家确认卖家背书";
+				break;
+			case "4":
+				transStatus = "4";
+				transactionService.updateTransStatus(transactionId,transStatus);
+				msg = "买家确认背书，卖家已收款";
+				break;
+			case "5":
+				transStatus = "5";
+				transactionService.updateTransStatus(transactionId,transStatus);
+				msg = "交易结束";
+				break;
+			}
+		}
+		
+		return msg;       
 	}
 }
