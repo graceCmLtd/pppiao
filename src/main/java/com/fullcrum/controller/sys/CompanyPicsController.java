@@ -1,8 +1,13 @@
 package com.fullcrum.controller.sys;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,4 +32,5 @@ public class CompanyPicsController {
 		System.out.println(contactsId);
 		return companyPicsService.selectCompanyPicsByContactsId(contactsId);
 	}
+	
 }

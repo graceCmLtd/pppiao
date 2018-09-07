@@ -39,4 +39,10 @@ public class CompanyPicsServiceImpl implements CompanyPicsService {
 		// TODO Auto-generated method stub
 		return companyPicsDao.selectCompanyPicsByContactsId(contactsId);
 	}
+
+	@Override
+	public CompanyPicsEntity selectPic(String picId) {
+		// TODO Auto-generated method stub
+		return companyPicsDao.selectPic(picId);
+	}
 }

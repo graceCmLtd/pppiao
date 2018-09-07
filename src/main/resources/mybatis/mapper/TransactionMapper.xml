@@ -19,9 +19,16 @@
 	
 	<resultMap type="java.util.Map" id="getTransInfo">
 		<id column="transacId" property="transactionId"/>
+		<result column="transacType" property="transactionType"/>
+		<result column="billNumber" property="billNumber"/>
+		<result column="buyerId" property="buyerId"/>
+		<result column="sellerId" property="sellerId"/>
 		<result column="amount" property="amount"/>
 		<result column="transacStatus" property="transactionStatus"/>
 		<result column="transacDate" property="transacDate"/>
-		
+		<result column="pic1" property="pic1"/>
+		<result column="pic2" property="pic2"/>
+		<result column="buyer_phone" property="buyer_phone"/>
+		<result column="seller_phone" property="seller_phone"/>
 	</resultMap>
 </mapper>
