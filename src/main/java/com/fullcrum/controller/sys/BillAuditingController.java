@@ -30,6 +30,8 @@ public class BillAuditingController {
 	
 	@RequestMapping("/getBillInfo")
 	public List<Map<String,Object>> getBillInfo(@RequestParam(value="billNumber")  String billNumber){
+		System.out.println("picc result .ddddddddddddddddddddd");
+		System.out.println(billAuditingService.getBillInfo(billNumber).toString());
 		return billAuditingService.getBillInfo(billNumber);
 	}
 	@RequestMapping("/updateBillStatus")

@@ -50,7 +50,7 @@ public interface BillDao {
 
 		String TABLE_NAME = "ppp_bill";
 		
-		String SELECT_FIELDS = "billId,billNumber,billType,acceptor,amount,maturity,status,releaseDate,releaserId,billPicsId ,transferable,billReferer,timeStamp";
+		String SELECT_FIELDS = "billId,billNumber,billType,acceptor,amount,maturity,status,releaseDate,releaserId,billPicsId ,transferable,billReferer,failReason,timeStamp";
 		String INSERT_FIELDS = "billId, billNumber, billType,acceptor,amount,maturity,status,releaseDate,releaserId,billPicsId ,transferable,billReferer";
 		
 		
@@ -164,9 +164,10 @@ public interface BillDao {
 		public List<Map<String, Object>> getRefusedIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
 		
-		@Select({"select distinct a.*, b.pic1 as pic1,b.pic2 as pic2 from ppp_bill a " + 
+		/*@Select({"select distinct a.*, b.pic1 as pic1,b.pic2 as pic2 from ppp_bill a " + 
 				"left join ppp_bill_pics b on a.billNumber = b.billNumber" + 
-				" where  a.billNumber = #{billNumber}"})
+				" where  a.billNumber = #{billNumber}"})*/
+		@Select({"select * from ppp_bill_pics where billNumber = #{billNumber}"})
 		@ResultMap(value="getBillInfo")
 		public List<Map<String, Object>> selectBillInfo(@Param("billNumber")String billNumber);
 		

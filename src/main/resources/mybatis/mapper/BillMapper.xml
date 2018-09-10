@@ -15,6 +15,7 @@
 		<result column="billPicsId" property="billPicsId"/>
 		<result column="transferable" property="transferable"/>
 		<result column="billReferer" property="billReferer"/>
+		<result column="failReason" property="failReason"/>
 	</resultMap>
 	
 	<resultMap type="java.util.Map" id="billMapAll">
@@ -32,6 +33,7 @@
 		<result column="billPicsId" property="billPicsId"/>
 		<result column="transferable" property="transferable"/>
 		<result column="billReferer" property="billReferer"/>
+		<result column="failReason" property="failReason"/>
 		<result column="remain_days" property="remain_days"/>
 	</resultMap>
 	
@@ -50,6 +52,7 @@
 		<result column="billPicsId" property="billPicsId"/>
 		<result column="transferable" property="transferable"/>
 		<result column="billReferer" property="billReferer"/>
+		<result column="failReason" property="failReason"/>
 	</resultMap>
 	
 	<resultMap type="java.util.Map" id="billFilter">
@@ -65,6 +68,7 @@
 		<result column="billPicsId" property="billPicsId"/>
 		<result column="transferable" property="transferable"/>
 		<result column="billReferer" property="billReferer"/>
+		<result column="failReason" property="failReason"/>
 		<result column="countNumber" property="countNumber" />
 	</resultMap>
 	
@@ -130,6 +134,7 @@
 		<result column="billPicsId" property="billPicsId"/>
 		<result column="transferable" property="transferable"/>
 		<result column="billReferer" property="billReferer"/>
+		<result column="failReason" property="failReason"/>
 		<result column="pic1" property="pic1"/>
 		<result column="pic2" property="pic2"/>
 	</resultMap>

@@ -46,6 +46,8 @@ public class BillEntity {
 	
 	private String billReferer;
 	
+	private String failReason;
+	
 
 	public String getBillNumber() {
 		return billNumber;
