@@ -27,24 +27,27 @@ public class QuoteController {
 /*	@Resource(name="transactionServiceImpl")
 	private TransactionService transactionService;*/
 	
+	
+	/*根据报价id 查询报价详情*/
 	@RequestMapping("/getByQuoteId")
 	public ArrayList<QuoteEntity>  getQuoteByQuoteId(@RequestParam(value="quoteId") int quoteId){
 		
 		return quoteService.selectQuoteByQuoteId(quoteId);
 	}
 	
-	
+	/*根据报价  者 id 查询报价详情*/
 	@RequestMapping("/getByQuoterId")
 	public ArrayList<QuoteEntity> getQuoteByQuoterId( @RequestParam(value="quoterId") String quoterId){
 		return quoteService.selectQuoteByQuoterId(quoterId);
 	}
 	
+	/*根据报 票据的 票号 billNumber  查询报价详情*/
 	@RequestMapping("/getByBillNumber")
 	public ArrayList<QuoteEntity> getQuoteByBillNumber(@RequestParam(value="billNumber") String billNumber ){
 		return quoteService.selectQuoteByBillNumber(billNumber);
 	}
 	
-	
+	/*增加 报价 */
 	@RequestMapping("/addQuote")
 	public String addQuote(@RequestBody QuoteEntity quoteEntity) {
 		
@@ -53,6 +56,7 @@ public class QuoteController {
 		
 	}
 	
+	/*根据报价id 删除 报价 */
 	@RequestMapping("/deleteQuote")
 	public String deleteQuote(@RequestParam(value="quoteId") int quoteId) {
 		
@@ -60,6 +64,15 @@ public class QuoteController {
 		return "success";
 	}
 	
+	
+	/*根据筛选条件 查询报价详情
+	 * 
+	 * 当filter字段 为  1 时，查询全部报价
+	 * 当filter字段为2时 ，查询 已经被接受的报价
+	 * 当filter字段为3时，查询正在报价的报价
+	 * 当filter字段为4时，查询失败的报价
+	 * 
+	 * */
 	@RequestMapping("/getMyQuote")
 	public List<Map<String, Object>> getMyQuote(@RequestBody JSONObject jsonObject){
 		
@@ -77,6 +90,10 @@ public class QuoteController {
 		}
 	}
 	
+	/*  
+	 * 增加交易意向
+	 * 
+	 * */
 	@RequestMapping("/submitIntention")
 	public JSONObject updateQuoteStatus(@RequestBody JSONObject jsonObject) {
 		
