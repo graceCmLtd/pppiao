@@ -38,4 +38,7 @@ public interface CompanyDao {
 	@ResultMap("companyMap")
 	public ArrayList<CompanyEntity> selectByCompanyId(@Param("companyId")String companyId);
 	
+	@Select({"update ppp_company set role = #{role}  where companyId = #{companyId}"})
+	public void updateCompanyStatus(@Param("companyId")String companyId, @Param("role")String role);
+	
 }

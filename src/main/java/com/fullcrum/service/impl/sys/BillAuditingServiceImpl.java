@@ -22,9 +22,9 @@ public class BillAuditingServiceImpl implements BillAuditingService{
 	}
 
 	@Override
-	public void updateBillStatus(String billNumber) {
+	public void updateBillStatus(String billNumber,String status,String failReason) {
 		// TODO Auto-generated method stub
-		billAuditingDao.updateBillStatus(billNumber);
+		billAuditingDao.updateBillStatus(billNumber,status,failReason);
 	}
 
 	@Override

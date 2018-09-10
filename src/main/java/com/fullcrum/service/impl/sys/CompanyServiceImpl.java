@@ -48,5 +48,10 @@ public class CompanyServiceImpl implements CompanyService {
 		return companyDao.selectByCompanyId(companyId);
 	}
 
+	@Override
+	public void updateCompanyStatus(String companyId, String role) {
+		companyDao.updateCompanyStatus(companyId,role);
+	}
+
 	
 }

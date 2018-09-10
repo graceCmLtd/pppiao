@@ -46,6 +46,16 @@ public class BillEntity {
 	
 	private String billReferer;
 	
+	private String failReason;
+	
+
+	public String getFailReason() {
+		return failReason;
+	}
+
+	public void setFailReason(String failReason) {
+		this.failReason = failReason;
+	}
 
 	public String getBillNumber() {
 		return billNumber;

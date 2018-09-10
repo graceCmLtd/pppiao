@@ -29,7 +29,7 @@ public class TransactionController {
 		ArrayList<TransactionEntity> list =  transactionService.selectAllTrans();
 		for (TransactionEntity transac : list) {
 			String trans = transac.getTransactionStatus();
-			System.out.println(trans);
+			//System.out.println(trans);
 			if(trans.equals("5")) {
 				transac.setTransactionStatus("交易完成");
 			}else {

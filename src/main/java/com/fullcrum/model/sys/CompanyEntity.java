@@ -50,6 +50,16 @@ public class CompanyEntity {
 	private String  signUpAddr;  //注册时间
 	
 	private Date updateDate;   //更新时间
+	
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	private String role; //公司审核状态
 
 	public int getCompanyId() {
 		return companyId;
