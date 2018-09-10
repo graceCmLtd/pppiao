@@ -16,6 +16,8 @@ public interface CompanyService {
 
 		public ArrayList<CompanyEntity> selectByCompanyId(String companyId);
 
+		public void updateCompanyStatus(String companyId, String role);
+
 		
 		
 }

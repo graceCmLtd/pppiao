@@ -6,10 +6,12 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.service.sys.BillAuditingService;
 
 
@@ -35,9 +37,11 @@ public class BillAuditingController {
 		return billAuditingService.getBillInfo(billNumber);
 	}
 	@RequestMapping("/updateBillStatus")
-	public String updateBillStatus(@RequestParam(value="billNumber")  String billNumber) {
-		
-		billAuditingService.updateBillStatus(billNumber);
+	public String updateBillStatus(@RequestBody JSONObject json) {
+		String billNumber = json.getString("billNumber");
+		String status = json.getString("status");
+		String failReason = json.getString("failReason");
+		billAuditingService.updateBillStatus(billNumber,status,failReason);
 		return "success";
 	}
 }

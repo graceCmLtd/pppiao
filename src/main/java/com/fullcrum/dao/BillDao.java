@@ -171,8 +171,8 @@ public interface BillDao {
 		@ResultMap(value="getBillInfo")
 		public List<Map<String, Object>> selectBillInfo(@Param("billNumber")String billNumber);
 		
-		@Select({"update ppp_bill set status = '审核完成'  where billNumber = #{billNumber}"})
-		public void updateBillStatus(@Param("billNumber")String billNumber);
+		@Select({"update ppp_bill set status = #{status},failReason = #{failReason}  where billNumber = #{billNumber}"})
+		public void updateBillStatus(@Param("billNumber")String billNumber, @Param("status")String status, @Param("failReason")String failReason);
 		
 		@Select("select * from ppp_bill")
 		@ResultMap(value="allBills")

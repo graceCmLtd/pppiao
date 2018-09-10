@@ -75,5 +75,15 @@ public class CompanyController {
 		return "success";
 	}
 	
+	@RequestMapping("/auditCompany")
+	public String auditCompany(@RequestBody JSONObject json) {
+		
+		System.out.println("公司id："+json.getString("companyId") + "审核状态："+json.getString("role"));
+		String companyId = json.getString("companyId");
+		String role = json.getString("role");
+		companyService.updateCompanyStatus(companyId,role);
+		return "success";
+	}
+	
 	
 }

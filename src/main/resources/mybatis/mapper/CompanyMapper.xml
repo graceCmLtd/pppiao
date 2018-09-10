@@ -14,5 +14,6 @@
 		<result column="picId" property="picId"/>
 		<result column="signUpAddr" property="signUpAddr"/>
 		<result column="updateDate" property="updateDate"/>
+		<result column="role" property="role"/>
 	</resultMap>
 </mapper>
