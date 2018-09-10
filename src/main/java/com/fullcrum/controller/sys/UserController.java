@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -13,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.cache.CacheProperties.Redis;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +30,10 @@ import com.fullcrum.model.sys.UserEntity;
 import com.fullcrum.service.sys.CompanyService;
 import com.fullcrum.service.sys.UserService;
 import com.fullcrum.utils.PicValidateUtil;
+import com.fullcrum.utils.SendSms;
+
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.support.RedisClientFactoryBean;
 
 @RestController
 @CrossOrigin
@@ -39,6 +47,9 @@ public class UserController {
 	
 	@Resource(name="companyServiceImpl")
 	private CompanyService companyService;
+	
+	@Autowired
+	private StringRedisTemplate stringRedisTemplate;
 	
 	@CrossOrigin
 	@PostMapping("/adduser")
@@ -130,6 +141,18 @@ public class UserController {
         }
     }*/
 	
+	@RequestMapping("/getPhoneSms")
+	public void getPhoneSms(@RequestBody JSONObject jsonObject) {
+		
+		System.out.println(jsonObject);
+		//Integer string_code = SendSms.SendValidateMsgTo(jsonObject.getString("phone"));
+		System.out.println(jsonObject.getString("phone"));
+		Integer string_code = SendSms.SendValidateMsgTo(jsonObject.getString("phone"));
+		stringRedisTemplate.opsForValue().set(jsonObject.getString("phone"), string_code.toString(), 300, TimeUnit.SECONDS);
+		
+	}
+	
+	
 	@RequestMapping("/register")
 	public JSONObject register(Model model, HttpServletResponse httpServletResponse,@RequestBody JSONObject jsonObject) {
 		Map<String, String> map = null;
@@ -141,28 +164,43 @@ public class UserController {
 			System.out.println("exception  .................");
 			System.out.println(e);
 		}
+		System.out.println("get phone code .................................");
+		//System.out.println(stringRedisTemplate.opsForValue().get(jsonObject.getString("user_phone")));
 		
 		//String next = "xxxx";
 		JSONObject result = new JSONObject();
-        if (map.containsKey("ticket")){
-            Cookie cookie = new Cookie("ticket",map.get("ticket"));
-            cookie.setPath("/");
-            httpServletResponse.addCookie(cookie);
-/*
-            if (StringUtils.isEmptyOrWhitespaceOnly(next))
-                return "redirect:"+next;
-            else
-                return "redirect:/";*/
-            result.put("status","success");
-            result.put("errorMsg", null);
-            return result;
-        }else {
-            model.addAttribute("msg",map.get("msg"));
-            //return "register";
-            result.put("status", "fail");
-            result.put("errorMsg", map.get("msg"));
-            return result;
-        }
+		String msgString = stringRedisTemplate.opsForValue().get(jsonObject.getString("user_phone"));
+		System.out.println(msgString);
+		System.out.println(jsonObject.getString("code"));
+		if ( msgString.equals(jsonObject.getString("code"))) {
+			System.out.println("phone code is validated .......");
+			
+	        if (map.containsKey("ticket")){
+	            Cookie cookie = new Cookie("ticket",map.get("ticket"));
+	            cookie.setPath("/");
+	            httpServletResponse.addCookie(cookie);
+	/*
+	            if (StringUtils.isEmptyOrWhitespaceOnly(next))
+	                return "redirect:"+next;
+	            else
+	                return "redirect:/";*/
+	            result.put("status","success");
+	            result.put("errorMsg", null);
+	            return result;
+	        }else {
+	            model.addAttribute("msg",map.get("msg"));
+	            //return "register";
+	            result.put("status", "fail");
+	            result.put("errorMsg", map.get("msg"));
+	            return result;
+	        }
+		}else {
+			result.put("status", "fail");
+			result.put("errorMsg", "the phone sms is wrong");
+			
+			return result;
+		}
+		
 
 	}
 	

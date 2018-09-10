@@ -28,19 +28,39 @@ releaseDate date
 releaserId int(11) 
 billPicsId int(11) -->
  * 
- * 
+ * lll
+ * ll
+ * billId varchar(45) PK 
+billNumber varchar(45) 
+billType varchar(45) 
+acceptor varchar(45) 
+amount varchar(45) 
+maturity date 
+status varchar(45) 
+releaseDate date 
+releaserId varchar(45) 
+billPicsId int(11) 
+transferable tinyint(4) 
+billReferer varchar(45) 
+timeStamp timestamp
  * */
 
 @Mapper
 public interface BillDao {
 
 		String TABLE_NAME = "ppp_bill";
+		
+		String SELECT_FIELDS = "billId,billNumber,billType,acceptor,amount,maturity,status,releaseDate,releaserId,billPicsId ,transferable,billReferer,failReason,timeStamp";
 		String INSERT_FIELDS = "billId, billNumber, billType,acceptor,amount,maturity,status,releaseDate,releaserId,billPicsId ,transferable,billReferer";
 		
 		
 		@Select({"select * from ppp_bill where  billNumber = #{billNumber}"})
 		@ResultMap(value="billMap")
 		public ArrayList<BillEntity> selectByBillNumber(@Param("billNumber") String billNumber);
+		
+		@Select({"select "+SELECT_FIELDS+",TIMESTAMPDIFF(day,#{current_date},maturity) as remain_days  from ppp_bill where  billNumber = #{billNumber}"})
+		@ResultMap(value="billMapAll")
+		public List<Map<String, Object>>  selectByBillNumberAll(@Param("billNumber") String billNumber,@Param("current_date") String current_date);
 		
 		@Select({"select * from ppp_bill "})
 		@ResultMap(value="billMap")
@@ -104,17 +124,17 @@ public interface BillDao {
 		
 
 		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,"
-				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer "
+				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer "
 				+ "from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} ) a " + 
 				"left join (select * from pengpengpiao.ppp_quote ) b " + 
 				"on a.billNumber = b.billNumber " + 
 				"left join (select * from pengpengpiao.ppp_bill ) c " + 
-				"on a.billNumber = c.billNumber  where b.quoteId is not null ;"})
+				"on a.billNumber = c.billNumber   ;"})
 		@ResultMap(value="QuoteIntention")
 		public List<Map<String, Object>> getALLIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
 		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,"
-				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer "
+				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer "
 				+ "from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} ) a " + 
 				"left join (select * from pengpengpiao.ppp_quote ) b " + 
 				"on a.billNumber = b.billNumber " + 
@@ -124,7 +144,7 @@ public interface BillDao {
 		public List<Map<String, Object>> getConfirmedIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
 		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,"
-				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable,c.billReferer "
+				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable,c.billReferer "
 				+ "from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} ) a " + 
 				"left join (select * from pengpengpiao.ppp_quote ) b " + 
 				"on a.billNumber = b.billNumber " + 
@@ -134,7 +154,7 @@ public interface BillDao {
 		public List<Map<String, Object>> getConfirmingIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
 		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,"
-				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer"
+				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer"
 				+ "from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} ) a " + 
 				"left join (select * from pengpengpiao.ppp_quote ) b " + 
 				"on a.billNumber = b.billNumber " + 
@@ -144,9 +164,10 @@ public interface BillDao {
 		public List<Map<String, Object>> getRefusedIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
 		
-		@Select({"select distinct a.*, b.pic1 as pic1,b.pic2 as pic2 from ppp_bill a " + 
+		/*@Select({"select distinct a.*, b.pic1 as pic1,b.pic2 as pic2 from ppp_bill a " + 
 				"left join ppp_bill_pics b on a.billNumber = b.billNumber" + 
-				" where  a.billNumber = #{billNumber}"})
+				" where  a.billNumber = #{billNumber}"})*/
+		@Select({"select * from ppp_bill_pics where billNumber = #{billNumber}"})
 		@ResultMap(value="getBillInfo")
 		public List<Map<String, Object>> selectBillInfo(@Param("billNumber")String billNumber);
 		

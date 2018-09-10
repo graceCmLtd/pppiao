@@ -129,5 +129,12 @@ public class BillServiceImpl implements BillService {
 		return billDao.getRefusedIntentions(jsonObject);
 	}
 
+
+	@Override
+	public List<Map<String, Object>>  selectByBillNumberWithRemainDays(String billNumber, String current_date) {
+		// TODO Auto-generated method stub
+		return billDao.selectByBillNumberAll(billNumber, current_date);
+	}
+
 	
 }
