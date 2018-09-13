@@ -75,10 +75,9 @@ public class CompanyController {
 		return "success";
 	}
 	
+	//公司审核(分为普通用户和包装户和未审核)
 	@RequestMapping("/auditCompany")
 	public String auditCompany(@RequestBody JSONObject json) {
-		
-		System.out.println("公司id："+json.getString("companyId") + "审核状态："+json.getString("role"));
 		String companyId = json.getString("companyId");
 		String role = json.getString("role");
 		companyService.updateCompanyStatus(companyId,role);
