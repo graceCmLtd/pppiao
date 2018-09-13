@@ -22,6 +22,9 @@ public interface QuoteService {
 	
 	public void updateQuoteStatus(JSONObject jsonObject);
 	
+	public void setInvalidateQuotes(JSONObject jsonObject);
+	
+	public void setValidateQuote(JSONObject jsonObject);
 	
 	public List<Map<String, Object>> getALLQuote(JSONObject jsonObject);
 	

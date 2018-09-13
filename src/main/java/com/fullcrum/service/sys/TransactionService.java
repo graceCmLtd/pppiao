@@ -23,6 +23,8 @@ public interface TransactionService {
 	
 	public void updateTransaction(TransactionEntity transactionEntity);
 	
+	public void updateTransactionIntentionStatus(JSONObject jsonObject);
+	
 	public void updateTransactionStatus(JSONObject jsonObject);
 
 	public List<Map<String, Object>> selectTransInfo(int transactionId);

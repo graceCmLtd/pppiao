@@ -90,6 +90,12 @@ public class TransactionServiceImpl implements TransactionService {
 	public ArrayList<TransactionEntity> selectAllTrans() {
 		return transactionDao.slectAllTrans();
 	}
+
+	@Override
+	public void updateTransactionIntentionStatus(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		transactionDao.updateTransactionIntentionStatus(jsonObject);
+	}
 	
 	
 }

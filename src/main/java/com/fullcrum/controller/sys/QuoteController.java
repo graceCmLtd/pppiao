@@ -1,6 +1,8 @@
 package com.fullcrum.controller.sys;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.QuoteEntity;
 import com.fullcrum.service.sys.QuoteService;
+import com.fullcrum.service.sys.TransactionService;
 
 @RestController
 @CrossOrigin
@@ -24,8 +27,8 @@ public class QuoteController {
 	@Resource(name="quoteServiceImpl")
 	private QuoteService quoteService;
 	
-/*	@Resource(name="transactionServiceImpl")
-	private TransactionService transactionService;*/
+	@Resource(name="transactionServiceImpl")
+	private TransactionService transactionService;
 	
 	
 	/*根据报价id 查询报价详情*/
@@ -75,15 +78,18 @@ public class QuoteController {
 	 * */
 	@RequestMapping("/getMyQuote")
 	public List<Map<String, Object>> getMyQuote(@RequestBody JSONObject jsonObject){
-		
+		jsonObject.put("curr_time", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		switch (jsonObject.get("filter").toString()) {
 		case "1":
+			//全部报价
 			return quoteService.getALLQuote(jsonObject);
 		case "2":
 			return quoteService.getAcceptedQuote(jsonObject);
 		case "3":
+			//报价中
 			return quoteService.getUnderQuote(jsonObject);
 		case "4":
+			//已失效
 			return quoteService.getFailQuote(jsonObject);
 		default:
 			return null;
@@ -98,7 +104,10 @@ public class QuoteController {
 	public JSONObject updateQuoteStatus(@RequestBody JSONObject jsonObject) {
 		
 		JSONObject result = new JSONObject();
-		quoteService.updateQuoteStatus(jsonObject);
+		//quoteService.updateQuoteStatus(jsonObject);
+		//卖家确定某一个买家的报价
+		
+		//更新交易信息
 		
 		result.put("status", "success");
 		
