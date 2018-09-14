@@ -136,5 +136,19 @@ public class BillServiceImpl implements BillService {
 		return billDao.selectByBillNumberAll(billNumber, current_date);
 	}
 
+
+	@Override
+	public List<Map<String, Object>> getBuyerConfirmingIntentions(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		return billDao.getBuyerConfirmingIntentions(jsonObject);
+	}
+
+
+	@Override
+	public List<Map<String, Object>> getBuyerConfirmedIntentions(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		return billDao.getBuyerConfirmedIntentions(jsonObject);
+	}
+
 	
 }

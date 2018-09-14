@@ -41,6 +41,12 @@ public interface BillService {
 	
 	public List<Map<String, Object>> getConfirmingIntentions(JSONObject jsonObject);
 	
+	public List<Map<String, Object>> getBuyerConfirmingIntentions(JSONObject jsonObject);
+	
+	public List<Map<String, Object>> getBuyerConfirmedIntentions(JSONObject jsonObject);
+	
+	
+	
 	public List<Map<String, Object>> getRefusedIntentions(JSONObject jsonObject);
 	
 }

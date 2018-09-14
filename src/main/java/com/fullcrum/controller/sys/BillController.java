@@ -263,7 +263,7 @@ public class BillController {
 			//买家已接单
 			return billService.getConfirmedIntentions(jsonObject);
 		case "3":
-			//待买家确认
+			//待确认
 			return billService.getConfirmingIntentions(jsonObject);
 		case "4":
 			//买家已拒绝、失效
@@ -271,6 +271,12 @@ public class BillController {
 		case "5":
 			//审核中
 			return billService.getBillsAuditing(jsonObject);
+			//待买家接单
+		case "6":
+			return billService.getBuyerConfirmingIntentions(jsonObject);
+			//买家已经接单列表
+		case "7":
+			return billService.getBuyerConfirmedIntentions(jsonObject);
 		default:
 			System.out.println("nothing match the condition intentionType");
 			return null;
