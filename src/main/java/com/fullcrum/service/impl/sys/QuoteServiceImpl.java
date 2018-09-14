@@ -83,4 +83,16 @@ public class QuoteServiceImpl implements QuoteService {
 		quoteDao.updateQuoteStatus(jsonObject);
 	}
 
+	@Override
+	public void setInvalidateQuotes(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		quoteDao.setInvalidateQuotes(jsonObject);
+	}
+
+	@Override
+	public void setValidateQuote(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		quoteDao.setValidateQuote(jsonObject);
+	}
+
 }

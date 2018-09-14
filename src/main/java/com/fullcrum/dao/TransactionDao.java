@@ -52,6 +52,9 @@ public interface TransactionDao {
 	@Update({"update ",TABLE_NAME," set transacStatus = #{jsonObject.transacStatus} where billNumber = #{jsonObject.billNumber}"})
 	public void updateTransactionStatus(@Param("jsonObject") JSONObject jsonObject);
 	
+	@Update({"update ",TABLE_NAME," set intentionStatus = #{jsonObject.intentionStatus} ,buyerId = #{jsonObject.quoterId} where billNumber = #{jsonObject.billNumber}"})
+	public void updateTransactionIntentionStatus(@Param("jsonObject") JSONObject jsonObject);
+	
 	@Select({"select DISTINCT a.transacId,a.billNumber,a.amount,a.transacStatus,a.transacDate," + 
 			"b.pic1,b.pic2,c1.user_phone as buyer_phone,c2.user_phone as seller_phone " + 
 			"from ppp_transaction a " + 

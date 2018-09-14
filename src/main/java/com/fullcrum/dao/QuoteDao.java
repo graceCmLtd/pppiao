@@ -43,9 +43,15 @@ public interface QuoteDao {
 	@Update({"update ppp_quote set status = #{jsonObject.quoteStatus} where billNumber = #{jsonObject.billNumber} "})
 	public void updateQuoteStatus(@Param("jsonObject") JSONObject jsonObject);
 	
+	@Update({"update ppp_quote set status = #{jsonObject.quoteStatus} where billNumber = #{jsonObject.billNumber} and quoterId != #{jsonObject.quoterId}"})
+	public void setInvalidateQuotes(@Param("jsonObject") JSONObject jsonObject);
+	
+	@Update({"update ppp_quote set status = #{jsonObject.quoteStatus} where billNumber = #{jsonObject.billNumber} and quoterId = #{jsonObject.quoterId}"})
+	public void setValidateQuote(@Param("jsonObject") JSONObject jsonObject);
+	
 	
 	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus," + 
-			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,c.status,c.releaseDate,c.releaserId,c.billPicsId, c.transferable, " + 
+			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId, c.transferable, " + 
 			" a.companyName,a.contactsPhone,a.contactsQQ,a.bankAccountName,a.bankName,a.picId,a.contactsId from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} ) b " + 
 			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber"
 			+ " left JOIN ( select * from pengpengpiao.ppp_company ) a on b.quoterId = a.contactsId;"})
@@ -53,7 +59,7 @@ public interface QuoteDao {
 	public List<Map<String, Object>> getALLQuote(@Param("jsonObject") JSONObject jsonObject);
 	
 	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus," + 
-			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,c.status,c.releaseDate,c.releaserId,c.billPicsId," + 
+			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId," + 
 			"c.transferable" + 
 			" from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} ) b " + 
 			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber ;"})
@@ -61,20 +67,23 @@ public interface QuoteDao {
 	public List<Map<String, Object>> getAcceptedQuote(@Param("jsonObject") JSONObject jsonObject);
 	
 	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus," + 
-			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,c.status,c.releaseDate,c.releaserId,c.billPicsId," + 
+			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId," + 
 			"c.transferable" + 
-			" from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} ) b " + 
+			" from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} and status='报价中' ) b " + 
 			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber ;"})
 	@ResultMap(value="myQuote")
 	public List<Map<String, Object>> getUnderQuote(@Param("jsonObject") JSONObject jsonObject);
 	
 	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus," + 
-			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,c.status,c.releaseDate,c.releaserId,c.billPicsId," + 
+			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId," + 
 			"c.transferable" + 
-			" from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} ) b " + 
+			" from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} and status='报价失效' ) b " + 
 			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber ;"})
 	@ResultMap(value="myQuote")
 	public List<Map<String, Object>> getFailQuote(@Param("jsonObject") JSONObject jsonObject);
+	
+	@Update({"update ",TABLE_NAME," set status='报价失效'   where billNumber =#{jsonObject.billNumber} and quoterId != #{jsonObject.quoterId}"})
+	public void confirmBuyer(@Param("jsonObject") JSONObject jsonObject);
 	
 	
 	

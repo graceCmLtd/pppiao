@@ -62,6 +62,7 @@
 		<result column="acceptor" property="acceptor"/>
 		<result column="amount" property="amount"/>
 		<result column="maturity" property="maturity"/>
+		<result column="remain_days" property="remain_days"/>
 		<result column="status" property="status"/>
 		<result column="releaseDate" property="releaseDate"/>
 		<result column="releaserId" property="releaserId"/>
@@ -70,6 +71,7 @@
 		<result column="billReferer" property="billReferer"/>
 		<result column="failReason" property="failReason"/>
 		<result column="countNumber" property="countNumber" />
+		<result column="quoteStatus" property="quoteStatus"/>
 	</resultMap>
 	
 	<resultMap type="java.util.Map" id="billAboutQuote">
@@ -78,12 +80,14 @@
 		<result column="acceptor" property="acceptor"/>
 		<result column="amount" property="amount"/>
 		<result column="maturity" property="maturity"/>
-		<result column="status" property="status"/>
+		<result column="billstatus" property="billstatus"/>
 		<result column="releaseDate" property="releaseDate"/>
 		<result column="releaserId" property="releaserId"/>
 		<result column="billPicsId" property="billPicsId"/>
 		<result column="transferable" property="transferable"/>
 		<result column="billReferer" property="billReferer"/>
+		<result column="remain_days" property="remain_days"/>
+		<result column="quotesattus" property="quotesattus"/>
 		<result column="quoteId" property="quoteId" />
 		<result column="quoteAmount" property="quoteAmount"/>
 		<result column="quoterId" property="quoterId"/>
@@ -119,6 +123,7 @@
 		<result column="billPicsId" property="billPicsId"/>
 		<result column="transferable" property="transferable"/>	
 		<result column="billReferer" property="billReferer"/>
+		<result column="intentionStatus" property="intentionStatus"/>
 	</resultMap>
 	
 	<resultMap type="java.util.Map" id="getBillInfo">
@@ -140,8 +145,8 @@
 	</resultMap>
 	
 	<select id="selectByFilter" resultMap="billFilter" >
-	<![CDATA[select a.billId,a.billNumber,a.billType,a.acceptor,a.amount,a.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},a.maturity)as remain_days,a.status,a.releaseDate,a.releaserId,a.billPicsId,a.transferable,a.billReferer,case when b.countNumber is null then 0 else b.countNumber end as count from ]]>
-		<![CDATA[(select * from pengpengpiao.ppp_bill as a ]]>
+	<![CDATA[select a.billId,a.billNumber,a.billType,a.acceptor,a.amount,a.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},a.maturity)as remain_days,a.status,a.releaseDate,a.releaserId,a.billPicsId,a.transferable,a.billReferer,case when b.countNumber is null then 0 else b.countNumber end as count,b.status as quoteStatus from ]]>
+		<![CDATA[(select * from pengpengpiao.ppp_bill  ]]>
 		<where>
 			<![CDATA[1=1 ]]>
 			<if test="jsonObject != null">
@@ -161,7 +166,7 @@
 					<![CDATA[ and maturity < #{jsonObject.maxDate}]]>
 				</if>
 			</if>
-			<![CDATA[and 1=1) a  left join  (select billNumber, count(*) as countNumber  from pengpengpiao.ppp_quote  group by billNumber)  b on a.billNumber=b.billNumber  ]]>
+			<![CDATA[and 1=1 and status="审核完成")  a  left join  (select billNumber,status, count(*) as countNumber  from pengpengpiao.ppp_quote where status="报价中"    group by billNumber,status)  b on a.billNumber=b.billNumber where b.status is not null ]]>
 			<![CDATA[order by a.releaseDate desc limit ${jsonObject.starter},${jsonObject.number}]]>
 		</where>
 		

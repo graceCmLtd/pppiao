@@ -231,6 +231,7 @@ public class BillController {
 	
 	@RequestMapping("/getMyBillsQuoted")
 	public List<Map<String, Object>> getMyBills(@RequestBody JSONObject jsonObject){
+		jsonObject.put("curr_time", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		switch (jsonObject.get("filter").toString()) {
 		case "1":
 			//获取全部票据的报价信息
@@ -239,8 +240,10 @@ public class BillController {
 			//获取已经报价的票据
 			return billService.getBillsReceivedQuote(jsonObject);
 		case "3":
+			//获取未报价的票据
 			return billService.getBillsWaitingQuote(jsonObject);
 		case "4":
+			//获取正在审核中的票据
 			return billService.getBillsAuditing(jsonObject);
 		default:
 			return null;

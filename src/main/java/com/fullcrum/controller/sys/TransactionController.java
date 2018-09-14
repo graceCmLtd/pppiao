@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.TransactionEntity;
+import com.fullcrum.service.sys.QuoteService;
 import com.fullcrum.service.sys.TransactionService;
 
 @RestController
@@ -23,6 +26,12 @@ public class TransactionController {
 
 	@Resource(name="transactionServiceImpl")
 	private TransactionService transactionService;
+	
+	@Resource(name="quoteServiceImpl")
+	private QuoteService quoteService;
+	
+	
+	
 	
 	@RequestMapping("/getAllTrans")
 	public ArrayList<TransactionEntity> getAllTrans(){
@@ -109,6 +118,50 @@ public class TransactionController {
 	@RequestMapping("/getTransInfo")
 	public List<Map<String,Object>> selecttransInfo(@RequestParam(value="transactionId") int transactionId) {
 		return transactionService.selectTransInfo(transactionId);
+	}
+	
+	//更新交易意向状态
+	@RequestMapping("/updateIntentionStatus")
+	@Transactional
+	public JSONObject updateIntentionStatus(@RequestBody JSONObject jsonObject) {
+		
+		/*必要参数 ：
+		 * invalidateQuoteParam ： billNumber , quoterId , quoteStatus (报价失效)
+		 * validateQuoteParam : billNumber ,quoterId , quoteStatus  (ok，转入意向)
+		 * transactionParam :  billNumber ,transacStatus  (101 : 买家待接单   102 :买家已接单  103:买家拒绝  104:失效   202:卖家已确认)
+		 * 
+		 * */
+		
+		
+		JSONObject result =  new JSONObject();
+		JSONObject invalidateQuoteParam = jsonObject.getJSONObject("InvalidateBody");
+		JSONObject validateQuoteParam = jsonObject.getJSONObject("validateBody");
+		JSONObject transactionParam = jsonObject.getJSONObject("transactionBody");
+		
+		 String operate = jsonObject.getString("operate");
+		 
+		 switch (operate) {
+		 // seller operator 1 sign up intention
+		case "sop1":
+			try {
+				quoteService.setInvalidateQuotes(invalidateQuoteParam);
+				quoteService.setValidateQuote(validateQuoteParam);
+				transactionService.updateTransactionIntentionStatus(transactionParam);
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+				result.put("errormsg", e);
+			}
+			
+			break;
+
+		default:
+			break;
+		}
+		
+		
+		return result;
 	}
 	
 	//更改交易处理状态
