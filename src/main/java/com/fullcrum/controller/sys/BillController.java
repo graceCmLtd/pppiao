@@ -1,6 +1,5 @@
 package com.fullcrum.controller.sys;
 
-import java.io.Console;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +23,7 @@ import com.fullcrum.model.sys.TransactionEntity;
 import com.fullcrum.service.sys.BillPicsService;
 import com.fullcrum.service.sys.BillService;
 import com.fullcrum.service.sys.TransactionService;
+import com.fullcrum.utils.AipOcrImage;
 
 @RestController
 @CrossOrigin
@@ -98,6 +98,15 @@ public class BillController {
 		return result;
 	}
 	
+	@RequestMapping("/ocrImage")
+	public String ocrImage(@RequestBody JSONObject json) {
+		String image = json.getString("image");
+		String [] str = image.split(",");
+		AipOcrImage results = new AipOcrImage();
+		org.json.JSONObject orcImage = results.orcImage(str[1]);
+		return orcImage.toString();
+	}
+	
 	@RequestMapping("/updatebill")
 	public String updateBill(@RequestBody JSONObject jsonObject) {
 		
@@ -117,7 +126,11 @@ public class BillController {
 	@RequestMapping("/getBillPics")
 	public ArrayList<BillPicsEntity> getBillPics(@RequestParam(value="billNumber")  String billNumber){
 		
-		return billPicsService.selectByBillNumber(billNumber);
+		ArrayList<BillPicsEntity> list = billPicsService.selectByBillNumber(billNumber);
+		for (BillPicsEntity be : list) {
+			System.out.println(be.getPic1().toString());
+		}
+		return list;
 	}
 	
 	@RequestMapping("/getAllBills")
