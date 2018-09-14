@@ -1,5 +1,6 @@
 package com.fullcrum.controller.sys;
 
+import java.lang.annotation.Documented;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +120,34 @@ public class TransactionController {
 	public List<Map<String,Object>> selecttransInfo(@RequestParam(value="transactionId") int transactionId) {
 		return transactionService.selectTransInfo(transactionId);
 	}
+	
+	/*
+	 * @description 单独修改transaction 表中的intentionStatus 状态值
+	 * 
+	 * 
+	 * */
+	@RequestMapping("/updateTransacIntentionStatus")
+	@Transactional
+	public JSONObject updateTransacIntentionStatus(@RequestBody JSONObject jsonObject) {
+		JSONObject result = new JSONObject();
+		
+		try {
+			transactionService.updateTransactionIntentionStatus(jsonObject);
+			result.put("errorMsg", null);
+			result.put("status", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			result.put("errorMsg", e);
+			result.put("status", "fail");
+		}
+		
+		return result;
+	}
+	
+	
+	
+	
 	
 	//更新交易意向状态
 	@RequestMapping("/updateIntentionStatus")
