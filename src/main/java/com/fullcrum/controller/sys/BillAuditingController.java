@@ -1,5 +1,7 @@
 package com.fullcrum.controller.sys;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +29,17 @@ public class BillAuditingController {
 	
 	@RequestMapping("/getBills")
 	public List<Map<String,Object>> getBills(){
-		return billAuditingService.getBills();
+		List<Map<String,Object>> list = billAuditingService.getBills();
+		//将时间戳转为正常的日期格式
+		for(int i = 0;i<list.size();i++) {
+			Object timeStamp = list.get(i).get("timeStamp");
+			String str = "";
+			DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			str = sdf.format(timeStamp);
+			list.get(i).put("timeStamp", str);
+		}
+		
+		return list;
 	}
 	
 	@RequestMapping("/getBillInfo")

@@ -125,12 +125,7 @@ public class BillController {
 	
 	@RequestMapping("/getBillPics")
 	public ArrayList<BillPicsEntity> getBillPics(@RequestParam(value="billNumber")  String billNumber){
-		
-		ArrayList<BillPicsEntity> list = billPicsService.selectByBillNumber(billNumber);
-		for (BillPicsEntity be : list) {
-			System.out.println(be.getPic1().toString());
-		}
-		return list;
+		return billPicsService.selectByBillNumber(billNumber);
 	}
 	
 	@RequestMapping("/getAllBills")
