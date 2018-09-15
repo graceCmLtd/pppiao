@@ -124,8 +124,13 @@
 		<result column="transferable" property="transferable"/>	
 		<result column="billReferer" property="billReferer"/>
 		<result column="intentionStatus" property="intentionStatus"/>
+		<result column="contactsId" property="contactsId"/>
+		<result column="companyName" property="companyName"/>
+		<result column="contactsName" property="contactsName"/>
+		<result column="contactsPhone" property="contactsPhone"/>
+		<result column="contactsQQ" property="contactsQQ"/>
 	</resultMap>
-	
+
 	<resultMap type="java.util.Map" id="getBillInfo">
 		<id column="billId" property="billId"/>
 		<result column="billNumber" property="billNumber" />
