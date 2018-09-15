@@ -132,7 +132,7 @@ public class TransactionController {
 		JSONObject result = new JSONObject();
 		
 		try {
-			transactionService.updateTransactionIntentionStatus(jsonObject);
+			transactionService.setTransactionIntentionStatus(jsonObject);
 			result.put("errorMsg", null);
 			result.put("status", "success");
 		} catch (Exception e) {
@@ -168,24 +168,45 @@ public class TransactionController {
 		JSONObject transactionParam = jsonObject.getJSONObject("transactionBody");
 		
 		 String operate = jsonObject.getString("operate");
-		 
+		 System.out.println("print the operator :   ");
+		 System.out.println(operate);
 		 switch (operate) {
 		 // seller operator 1 sign up intention
 		case "sop1":
 			try {
+				System.out.println("seller oprator 1 : ");
 				quoteService.setInvalidateQuotes(invalidateQuoteParam);
 				quoteService.setValidateQuote(validateQuoteParam);
 				transactionService.updateTransactionIntentionStatus(transactionParam);
 				
+				result.put("status", "success");
+				result.put("errorMsg", null);
+				System.out.println("finish sop1 ");
 			} catch (Exception e) {
 				// TODO: handle exception
 				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-				result.put("errormsg", e);
+				result.put("errorMsg", e);
+				result.put("status", "fail");
 			}
 			
 			break;
-
+		case "sop2":
+			try {
+				transactionService.setTransactionIntentionStatus(transactionParam);
+				
+				result.put("status", "success");
+				result.put("errorMsg", null);
+			} catch (Exception e) {
+				// TODO: handle exception
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+				result.put("errorMsg", e);
+				result.put("status", "fail");
+			}
+			
+			break;
 		default:
+			result.put("errorMsg", "nothing done");
+			result.put("status", "fail");
 			break;
 		}
 		

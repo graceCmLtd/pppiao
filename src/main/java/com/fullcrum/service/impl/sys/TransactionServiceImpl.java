@@ -91,10 +91,17 @@ public class TransactionServiceImpl implements TransactionService {
 		return transactionDao.slectAllTrans();
 	}
 
+	//更新transaction表中的intentionStatus字段
 	@Override
 	public void updateTransactionIntentionStatus(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
 		transactionDao.updateTransactionIntentionStatus(jsonObject);
+	}
+
+	@Override
+	public void setTransactionIntentionStatus(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		transactionDao.setTransactionIntentionStatus(jsonObject);
 	}
 	
 	

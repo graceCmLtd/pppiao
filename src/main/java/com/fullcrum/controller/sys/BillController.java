@@ -252,27 +252,19 @@ public class BillController {
 		
 		switch (jsonObject.get("IntentionType").toString()) {
 		case "1":
-			//获取所有意向
-			return billService.getALLIntentions(jsonObject);
+			//获取卖家所有意向
+			return billService.getSellerALLIntentions(jsonObject);
 		case "2":
-			//买家已接单
-			return billService.getConfirmedIntentions(jsonObject);
+			//获取买家所有意向
+			return billService.getBuyerALLIntentions(jsonObject);
 		case "3":
-			//待确认
-			return billService.getConfirmingIntentions(jsonObject);
+			//获取卖家某类意向
+			return billService.getSellerIntentions(jsonObject);
 		case "4":
-			//买家已拒绝、失效
-			return billService.getRefusedIntentions(jsonObject);
-		case "5":
-			//审核中
-			return billService.getBillsAuditing(jsonObject);
-			//待买家接单
-		case "6":
-			return billService.getBuyerConfirmingIntentions(jsonObject);
-			//买家已经接单列表
-		case "7":
-			return billService.getBuyerConfirmedIntentions(jsonObject);
+			//获取买家某类意向
+			return billService.getBuyerIntentions(jsonObject);
 		default:
+			System.out.println(jsonObject.get("IntentionType").toString());
 			System.out.println("nothing match the condition intentionType");
 			return null;
 		}

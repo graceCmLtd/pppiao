@@ -115,7 +115,7 @@ public interface BillDao {
 		
 		
 		
-		//获取所有的意向
+		//卖家  获取所有的意向
 		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,"
 				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer "
 				+ "from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} ) a " + 
@@ -124,9 +124,21 @@ public interface BillDao {
 				"left join (select * from pengpengpiao.ppp_bill ) c " + 
 				"on a.billNumber = c.billNumber   ;"})
 		@ResultMap(value="QuoteIntention")
-		public List<Map<String, Object>> getALLIntentions(@Param("jsonObject") JSONObject jsonObject);
+		public List<Map<String, Object>> getSellerALLIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
-		//卖
+		//买家调用 获取所有的意向
+				@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,"
+						+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer "
+						+ "from (select * from pengpengpiao.ppp_transaction where buyerId = #{jsonObject.uuid} ) a " + 
+						"left join (select * from pengpengpiao.ppp_quote ) b " + 
+						"on a.billNumber = b.billNumber " + 
+						"left join (select * from pengpengpiao.ppp_bill ) c " + 
+						"on a.billNumber = c.billNumber   ;"})
+				@ResultMap(value="QuoteIntention")
+				public List<Map<String, Object>> getBuyerALLIntentions(@Param("jsonObject") JSONObject jsonObject);
+				
+		
+		//卖家调用，获取意向信息列表
 		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,"
 				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer "
 				+ "from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} and intentionStatus= #{jsonObject.filter_str} ) a " + 
@@ -135,9 +147,9 @@ public interface BillDao {
 				"left join (select * from pengpengpiao.ppp_bill ) c " + 
 				"on a.billNumber = c.billNumber    ;"})
 		@ResultMap(value="QuoteIntention")
-		public List<Map<String, Object>> getConfirmedIntentions(@Param("jsonObject") JSONObject jsonObject);
+		public List<Map<String, Object>> getSellerIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
-		//买家已经接单列表
+		//买家调用，获取意向信息列表
 		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,"
 				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer "
 				+ "from (select * from pengpengpiao.ppp_transaction where buyerId = #{jsonObject.uuid} and intentionStatus= #{jsonObject.filter_str} ) a " + 
@@ -146,45 +158,8 @@ public interface BillDao {
 				"left join (select * from pengpengpiao.ppp_bill ) c " + 
 				"on a.billNumber = c.billNumber    ;"})
 		@ResultMap(value="QuoteIntention")
-		public List<Map<String, Object>> getBuyerConfirmedIntentions(@Param("jsonObject") JSONObject jsonObject);
+		public List<Map<String, Object>> getBuyerIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
-		
-		
-		
-		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,"
-				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable,c.billReferer "
-				+ "from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} and intentionStatus= #{jsonObject.filter_str} ) a " + 
-				"left join (select * from pengpengpiao.ppp_quote ) b " + 
-				"on a.billNumber = b.billNumber " + 
-				"left join (select * from pengpengpiao.ppp_bill ) c " + 
-				"on a.billNumber = c.billNumber  ;"})
-		@ResultMap(value="QuoteIntention")
-		public List<Map<String, Object>> getConfirmingIntentions(@Param("jsonObject") JSONObject jsonObject);
-		
-		
-		//获取买家待接单列表
-		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,"
-				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable,c.billReferer "
-				+ "from (select * from pengpengpiao.ppp_transaction where buyerId = #{jsonObject.uuid} and intentionStatus= #{jsonObject.filter_str} ) a " + 
-				"left join (select * from pengpengpiao.ppp_quote ) b " + 
-				"on a.billNumber = b.billNumber " + 
-				"left join (select * from pengpengpiao.ppp_bill ) c " + 
-				"on a.billNumber = c.billNumber  ;"})
-		@ResultMap(value="QuoteIntention")
-		public List<Map<String, Object>> getBuyerConfirmingIntentions(@Param("jsonObject") JSONObject jsonObject);
-		
-		
-		
-		
-		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,"
-				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable,c.billReferer "
-				+ "from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} and intentionStatus= #{jsonObject.filter_str} ) a " + 
-				"left join (select * from pengpengpiao.ppp_quote ) b " + 
-				"on a.billNumber = b.billNumber " + 
-				"left join (select * from pengpengpiao.ppp_bill ) c " + 
-				"on a.billNumber = c.billNumber   ;"})
-		@ResultMap(value="QuoteIntention")
-		public List<Map<String, Object>> getRefusedIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
 		
 		/*@Select({"select distinct a.*, b.pic1 as pic1,b.pic2 as pic2 from ppp_bill a " + 

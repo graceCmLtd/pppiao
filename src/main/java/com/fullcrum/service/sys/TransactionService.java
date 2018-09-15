@@ -30,6 +30,8 @@ public interface TransactionService {
 	public List<Map<String, Object>> selectTransInfo(int transactionId);
 
 	public void updateTransStatus(int transactionId, String transStatus);
+	
+	public void setTransactionIntentionStatus(JSONObject jsonObject);
 
 	public ArrayList<TransactionEntity> selectAllTrans();
 }

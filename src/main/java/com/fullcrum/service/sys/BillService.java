@@ -35,18 +35,16 @@ public interface BillService {
 
 	public List<Map<String, Object>> getBillsAuditing(JSONObject jsonObject);
 	
-	public List<Map<String, Object>> getALLIntentions(JSONObject jsonObject);
+	//获取意向列表
+	
+	public List<Map<String, Object>> getSellerALLIntentions(JSONObject jsonObject);
 
-	public List<Map<String, Object>> getConfirmedIntentions(JSONObject jsonObject);
+	public List<Map<String, Object>> getBuyerALLIntentions(JSONObject jsonObject);
 	
-	public List<Map<String, Object>> getConfirmingIntentions(JSONObject jsonObject);
+	public List<Map<String, Object>> getSellerIntentions(JSONObject jsonObject);
 	
-	public List<Map<String, Object>> getBuyerConfirmingIntentions(JSONObject jsonObject);
-	
-	public List<Map<String, Object>> getBuyerConfirmedIntentions(JSONObject jsonObject);
+	public List<Map<String, Object>> getBuyerIntentions(JSONObject jsonObject);
 	
 	
-	
-	public List<Map<String, Object>> getRefusedIntentions(JSONObject jsonObject);
 	
 }

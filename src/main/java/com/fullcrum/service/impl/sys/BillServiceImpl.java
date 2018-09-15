@@ -102,33 +102,6 @@ public class BillServiceImpl implements BillService {
 	}
 
 
-	@Override
-	public List<Map<String, Object>> getALLIntentions(JSONObject jsonObject) {
-		// TODO Auto-generated method stub
-		return billDao.getALLIntentions(jsonObject);
-	}
-
-
-	@Override
-	public List<Map<String, Object>> getConfirmedIntentions(JSONObject jsonObject) {
-		// TODO Auto-generated method stub
-		return billDao.getConfirmedIntentions(jsonObject);
-	}
-
-
-	@Override
-	public List<Map<String, Object>> getConfirmingIntentions(JSONObject jsonObject) {
-		// TODO Auto-generated method stub
-		return billDao.getConfirmingIntentions(jsonObject);
-	}
-
-
-	@Override
-	public List<Map<String, Object>> getRefusedIntentions(JSONObject jsonObject) {
-		// TODO Auto-generated method stub
-		return billDao.getRefusedIntentions(jsonObject);
-	}
-
 
 	@Override
 	public List<Map<String, Object>>  selectByBillNumberWithRemainDays(String billNumber, String current_date) {
@@ -137,18 +110,36 @@ public class BillServiceImpl implements BillService {
 	}
 
 
+	//获取意向列表 
 	@Override
-	public List<Map<String, Object>> getBuyerConfirmingIntentions(JSONObject jsonObject) {
+	public List<Map<String, Object>> getSellerALLIntentions(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
-		return billDao.getBuyerConfirmingIntentions(jsonObject);
+		return billDao.getSellerALLIntentions(jsonObject);
 	}
 
 
 	@Override
-	public List<Map<String, Object>> getBuyerConfirmedIntentions(JSONObject jsonObject) {
+	public List<Map<String, Object>> getBuyerALLIntentions(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
-		return billDao.getBuyerConfirmedIntentions(jsonObject);
+		return billDao.getBuyerALLIntentions(jsonObject);
 	}
+
+
+	@Override
+	public List<Map<String, Object>> getSellerIntentions(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		return billDao.getSellerIntentions(jsonObject);
+	}
+
+
+	@Override
+	public List<Map<String, Object>> getBuyerIntentions(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		return billDao.getBuyerIntentions(jsonObject);
+	}
+
+
+	
 
 	
 }

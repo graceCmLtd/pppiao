@@ -45,13 +45,22 @@ public interface TransactionDao {
 	@Delete({"delete from ",TABLE_NAME,"where transacId = #{transactionId}"})
 	public void deleteTransaction(@Param("transactionId") int transactionId);
 	
+	/*@param 更新
+	 * */
 	@Update({"update ",TABLE_NAME,"set transacType = #{transactionEntity.transactionType},billNumber = #{transactionEntity.billNumber},buyerId = #{transactionEntity.buyerId},"
 			+ "sellerId = #{transactionEntity.sellerId},amount = #{transactionEntity.amount},transacStatus = #{transactionEntity.transactionStatus},transacDate = #{transactionEntity.transacDate} where transacId = #{transactionEntity.transactionId}"})
 	public void updateTransaction(@Param("transactionEntity") TransactionEntity transactionEntity);
 	
+	//只更新设置transaction表中的transacStatus状态，线下交易状态
 	@Update({"update ",TABLE_NAME," set transacStatus = #{jsonObject.transacStatus} where billNumber = #{jsonObject.billNumber}"})
 	public void updateTransactionStatus(@Param("jsonObject") JSONObject jsonObject);
 	
+	//只设置transaction表中的intentionStatus 状态
+	@Update({"update ",TABLE_NAME," set intentionStatus = #{jsonObject.intentionStatus} where billNumber = #{jsonObject.billNumber}"})
+	public void setTransactionIntentionStatus(@Param("jsonObject") JSONObject jsonObject);
+	
+	
+	//更新设置transaction表中intentionStatus 和 买家Id
 	@Update({"update ",TABLE_NAME," set intentionStatus = #{jsonObject.intentionStatus} ,buyerId = #{jsonObject.quoterId} where billNumber = #{jsonObject.billNumber}"})
 	public void updateTransactionIntentionStatus(@Param("jsonObject") JSONObject jsonObject);
 	
