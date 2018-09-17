@@ -95,4 +95,9 @@ public class QuoteServiceImpl implements QuoteService {
 		quoteDao.setValidateQuote(jsonObject);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectBillByBillNum(String billNumber) {
+		return quoteDao.selectBillByBillNum(billNumber);
+	}
+
 }

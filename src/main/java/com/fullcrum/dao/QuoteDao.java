@@ -85,6 +85,10 @@ public interface QuoteDao {
 	@Update({"update ",TABLE_NAME," set status='报价失效'   where billNumber =#{jsonObject.billNumber} and quoterId != #{jsonObject.quoterId}"})
 	public void confirmBuyer(@Param("jsonObject") JSONObject jsonObject);
 	
+	@Select({"SELECT a.*,b.interest,b.xPerLakh,c.pic1 FROM ppp_bill a LEFT JOIN ppp_quote b ON a.billNumber = b.billNumber WHERE a.billNumber = #{billNumber}"})
+	@ResultMap(value="billInfo")
+	public List<Map<String, Object>> selectBillByBillNum(@Param("billNumber")String billNumber);
+	
 	
 	
 }
