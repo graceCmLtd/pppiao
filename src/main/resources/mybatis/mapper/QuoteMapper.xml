@@ -11,6 +11,7 @@
 		<result column="xPerLakh" property="xPerLakh"/>
 		<result column="status" property="status"/>
 		<result column="quoteDate" property="quoteDate"/>
+		<result column="real_money" property="real_money"/>
 	</resultMap>
 	
 	<resultMap type="java.util.Map" id="myQuote">
