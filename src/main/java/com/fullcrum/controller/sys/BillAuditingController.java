@@ -28,8 +28,9 @@ public class BillAuditingController {
 	private BillAuditingService billAuditingService;
 	
 	@RequestMapping("/getBills")
-	public List<Map<String,Object>> getBills(){
-		List<Map<String,Object>> list = billAuditingService.getBills();
+	public List<Map<String,Object>> getBills(@RequestParam("pageSize") Integer pageSize,@RequestParam("currentPage") Integer currentPage){
+		System.out.println(pageSize+"========"+currentPage);
+		List<Map<String,Object>> list = billAuditingService.getBills(pageSize,currentPage-1);
 		//将时间戳转为正常的日期格式
 		for(int i = 0;i<list.size();i++) {
 			Object timeStamp = list.get(i).get("timeStamp");
@@ -40,6 +41,13 @@ public class BillAuditingController {
 		}
 		
 		return list;
+	}
+	@RequestMapping("/getCount")
+	public JSONObject getCount() {
+		Integer count = billAuditingService.selectCount();
+		JSONObject json = new JSONObject();
+		json.put("count", count);
+		return json;
 	}
 	
 	@RequestMapping("/getBillInfo")
