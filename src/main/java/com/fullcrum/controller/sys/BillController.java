@@ -224,6 +224,7 @@ public class BillController {
 		return billService.selectByFilter(conditions);
 	}
 	
+	//获取我的票据的报价情况   卖家
 	@RequestMapping("/getMyBillsQuoted")
 	public List<Map<String, Object>> getMyBills(@RequestBody JSONObject jsonObject){
 		jsonObject.put("curr_time", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
