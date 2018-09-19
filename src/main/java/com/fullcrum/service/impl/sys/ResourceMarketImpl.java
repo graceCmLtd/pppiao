@@ -67,4 +67,9 @@ public class ResourceMarketImpl implements ResourceMarketService {
 		return resourceMarket.selectByBuyerIDForResourcePool(jsonObject);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectAllInfo() {
+		return resourceMarket.selectAllInfo();
+	}
+
 }

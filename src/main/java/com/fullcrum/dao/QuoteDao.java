@@ -19,7 +19,7 @@ import com.fullcrum.model.sys.QuoteEntity;
 public interface QuoteDao {
 
 	String TABLE_NAME = "ppp_quote";
-	String INSERT_FIELDS = " billNumber,quoterId,quoteAmount,interest,xPerLakh,status,quoteDate";
+	String INSERT_FIELDS = " billNumber,quoterId,quoteAmount,interest,xPerLakh,status,quoteDate,real_money";
 	
 	@Select({"select  * from ",TABLE_NAME," where quoteId = #{quoteId}"})
 	@ResultMap(value="quoteMap")
@@ -34,7 +34,7 @@ public interface QuoteDao {
 	public ArrayList<QuoteEntity> selectByBillNumber(@Param("billNumber") String billNumber);
 	
 	@Insert({"insert " ,TABLE_NAME,"(",INSERT_FIELDS," ) values(#{quoteEntity.billNumber} ,#{quoteEntity.quoterId},#{quoteEntity.quoteAmount},#{quoteEntity.interest},#{quoteEntity.xPerLakh},"
-			+ "#{quoteEntity.status},#{quoteEntity.quoteDate} )"})
+			+ "#{quoteEntity.status},#{quoteEntity.quoteDate},#{quoteEntity.real_money} )"})
 	public void insertQuote(@Param("quoteEntity") QuoteEntity quoteEntity);
 	
 	@Delete({"delete from ",TABLE_NAME,"where quoteId = #{quoteId}"})
@@ -49,8 +49,10 @@ public interface QuoteDao {
 	@Update({"update ppp_quote set status = #{jsonObject.quoteStatus} where billNumber = #{jsonObject.billNumber} and quoterId = #{jsonObject.quoterId}"})
 	public void setValidateQuote(@Param("jsonObject") JSONObject jsonObject);
 	
+
 	//买获取所有的报价根据报价者的id  获取票据发布者的联系方式   买家 
-	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus," + 
+
+	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus,b.real_money," + 
 			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId, c.transferable, " + 
 			" a.companyName,a.contactsPhone,a.contactsQQ,a.bankAccountName,a.bankName,a.picId,a.contactsId from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} ) b " + 
 			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber"
@@ -67,7 +69,7 @@ public interface QuoteDao {
 	@ResultMap(value="myQuote")
 	public List<Map<String, Object>> getAcceptedQuote(@Param("jsonObject") JSONObject jsonObject);
 	
-	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus," + 
+	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus,b.real_money," + 
 			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId," + 
 			"c.transferable" + 
 			" from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} and status='报价中' ) b " + 
@@ -75,7 +77,7 @@ public interface QuoteDao {
 	@ResultMap(value="myQuote")
 	public List<Map<String, Object>> getUnderQuote(@Param("jsonObject") JSONObject jsonObject);
 	
-	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus," + 
+	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus,b.real_money," + 
 			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId," + 
 			"c.transferable" + 
 			" from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} and status='报价失效' ) b " + 
@@ -85,6 +87,10 @@ public interface QuoteDao {
 	
 	@Update({"update ",TABLE_NAME," set status='报价失效'   where billNumber =#{jsonObject.billNumber} and quoterId != #{jsonObject.quoterId}"})
 	public void confirmBuyer(@Param("jsonObject") JSONObject jsonObject);
+	
+	@Select({"SELECT a.*,b.interest,b.xPerLakh,c.pic1 FROM ppp_bill a LEFT JOIN ppp_quote b ON a.billNumber = b.billNumber WHERE a.billNumber = #{billNumber}"})
+	@ResultMap(value="billInfo")
+	public List<Map<String, Object>> selectBillByBillNum(@Param("billNumber")String billNumber);
 	
 	
 	

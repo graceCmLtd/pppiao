@@ -11,6 +11,7 @@
 		<result column="xPerLakh" property="xPerLakh"/>
 		<result column="status" property="status"/>
 		<result column="quoteDate" property="quoteDate"/>
+		<result column="real_money" property="real_money"/>
 	</resultMap>
 	
 	<resultMap type="java.util.Map" id="myQuote">
@@ -40,6 +41,25 @@
 		<result column="bankName" property="bankName"/>
 		<result column="picId" property="picId"/>	
 		<result column="contactsId" property="contactsId"/>
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="billInfo">
+		<result column="billId" property="billId" />
+		<result column="billNumber" property="billNumber"/>
+		<result column="billType" property="billType"/>
+		<result column="acceptor" property="acceptor"/>
+		<result column="amount" property="amount"/>
+		<result column="maturity" property="maturity"/>
+		<result column="status" property="status"/>
+		<result column="releaseDate" property="releaseDate"/>
+		<result column="releaserId" property="releaserId"/>
+		<result column="billPicsId" property="billPicsId"/>
+		<result column="transferable" property="transferable"/>
+		<result column="billReferer" property="billReferer"/>
+		<result column="failReason" property="failReason"/>
+		<result column="timeStamp" property="timeStamp"/>
+		<result column="interest" property="interest"/>
+		<result column="xPerLakh" property="xPerLakh"/>
 	</resultMap>
 	
 </mapper>

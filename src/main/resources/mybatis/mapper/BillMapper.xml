@@ -129,6 +129,7 @@
 		<result column="contactsName" property="contactsName"/>
 		<result column="contactsPhone" property="contactsPhone"/>
 		<result column="contactsQQ" property="contactsQQ"/>
+		<result column="real_money" property="real_money"/>
 	</resultMap>
 
 	<resultMap type="java.util.Map" id="getBillInfo">

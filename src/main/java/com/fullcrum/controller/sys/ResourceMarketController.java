@@ -29,6 +29,11 @@ public class ResourceMarketController {
 		
 		return resourceMarketService.selectAll();
 	}
+	//获取资源市场页面的所有信息
+	@RequestMapping("/getAllInfo")
+	public List<Map<String,Object>> getAllInfo(){
+		return resourceMarketService.selectAllInfo();
+	}
 	
 	@RequestMapping("/getByOrderId")
 	public ArrayList<ResourceMarketEntity> getByOrderId(@RequestParam(value="orderId") String orderId){

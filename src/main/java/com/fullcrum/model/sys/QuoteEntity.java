@@ -39,7 +39,15 @@ public class QuoteEntity {
 	
 	private  Date  quoteDate;
 
-	
+	private String real_money;
+
+	public String getReal_money() {
+		return real_money;
+	}
+
+	public void setReal_money(String real_money) {
+		this.real_money = real_money;
+	}
 
 	public int getQuoteId() {
 		return quoteId;
