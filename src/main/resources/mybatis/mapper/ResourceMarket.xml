@@ -28,6 +28,21 @@
 	
 	
 	</resultMap>
+	
+	
+	<resultMap type="java.util.Map" id="AllInfo">
+		<result column="orderId" property="orderId"/>
+		<result column="buyerId" property="buyerId"/>
+		<result column="amountRange" property="amountRange"/>
+		<result column="timeLimit" property="timeLimit"/>
+		<result column="interest" property="interest"/>
+		<result column="acceptor" property="acceptor"/>
+		<result column="billType" property="billType"/>
+		<result column="updateDate" property="updateDate"/>
+		<result column="note" property="note"/>
+		<result column="contactsName" property="contactsName"/>
+	</resultMap>
+	
 	<update id="updateByOrderId">
 		<if test="jsonObject != null">
 			<![CDATA[ update  ppp_resource_market  ]]>
