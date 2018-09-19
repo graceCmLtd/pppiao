@@ -9,6 +9,8 @@ public interface BillAuditingService {
 
 	public void updateBillStatus(String billNumber, String status, String failReason);
 
-	public List<Map<String, Object>> getBills();
+	public List<Map<String, Object>> getBills(Integer pageSize, Integer currentPage);
+
+	public Integer selectCount();
 
 }

@@ -28,9 +28,15 @@ public class BillAuditingServiceImpl implements BillAuditingService{
 	}
 
 	@Override
-	public List<Map<String, Object>> getBills() {
+	public List<Map<String, Object>> getBills(Integer pageSize,Integer currentPage) {
 		// TODO Auto-generated method stub
-		return billAuditingDao.selectBills();
+		return billAuditingDao.selectBills(pageSize,currentPage);
+	}
+
+	@Override
+	public Integer selectCount() {
+		// TODO Auto-generated method stub
+		return billAuditingDao.selectCount();
 	}
 
 }

@@ -178,9 +178,12 @@ public interface BillDao {
 		@Select({"update ppp_bill set status = #{status},failReason = #{failReason}  where billNumber = #{billNumber}"})
 		public void updateBillStatus(@Param("billNumber")String billNumber, @Param("status")String status, @Param("failReason")String failReason);
 		
-		@Select("select * from ppp_bill order by timeStamp desc")
+		@Select("select * from ppp_bill order by timeStamp desc limit #{currentPage}, #{pageSize}")
 		@ResultMap(value="allBills")
-		public List<Map<String, Object>> selectBills();
+		public List<Map<String, Object>> selectBills(@Param("pageSize")Integer pageSize, @Param("currentPage")Integer currentPage);
+		
+		
+		public Integer selectCount();
 		
 		
 }

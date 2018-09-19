@@ -150,6 +150,10 @@
 		<result column="pic2" property="pic2"/>
 	</resultMap>
 	
+	<select id="selectCount" resultType="Integer">
+       select count(*) from pengpengpiao.ppp_bill
+    </select>
+	
 	<select id="selectByFilter" resultMap="billFilter" >
 	<![CDATA[select a.billId,a.billNumber,a.billType,a.acceptor,a.amount,a.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},a.maturity)as remain_days,a.status,a.releaseDate,a.releaserId,a.billPicsId,a.transferable,a.billReferer,case when b.countNumber is null then 0 else b.countNumber end as count,b.status as quoteStatus from ]]>
 		<![CDATA[(select * from pengpengpiao.ppp_bill  ]]>
