@@ -19,7 +19,7 @@ import com.fullcrum.model.sys.ResourceMarketEntity;
 public interface ResourceMarket {
 
 	String TABLE_NAME = "ppp_resource_market";
-	String INSERT_FEILDS = "orderId,buyerId,amountRange,timeLimit,type1,type2,type3,type4,billType,priority,updateDate,note";
+	String INSERT_FEILDS = "buyerId,amountRange,timeLimit,type1,type2,type3,type4,billType,priority,updateDate,note";
 	
 	@Select({"select * from ",TABLE_NAME," order by updateDate desc"})
 	@ResultMap(value="resourceMarket")
@@ -55,7 +55,7 @@ public interface ResourceMarket {
 	@ResultMap(value="resourcePool")
 	public List<Map<String, Object>> selectByBuyerIDForResourcePool(@Param("jsonObject") JSONObject jsonObject);
 	
-	@Insert({"insert ",TABLE_NAME,"( ",INSERT_FEILDS," ) values ( #{resourceMarketEntity.orderId},#{resourceMarketEntity.buyerId},#{resourceMarketEntity.amountRange},#{resourceMarketEntity.timeLimit},"
+	@Insert({"insert ",TABLE_NAME,"( ",INSERT_FEILDS," ) values ( #{resourceMarketEntity.buyerId},#{resourceMarketEntity.amountRange},#{resourceMarketEntity.timeLimit},"
 			+ "#{resourceMarketEntity.type1},#{resourceMarketEntity.type2},#{resourceMarketEntity.type3},#{resourceMarketEntity.type4},#{resourceMarketEntity.billType},#{resourceMarketEntity.priority},#{resourceMarketEntity.updateDate},#{resourceMarketEntity.note} )"})
 	public void insert(@Param("resourceMarketEntity") ResourceMarketEntity resourceMarketEntity);
 	

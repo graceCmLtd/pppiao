@@ -49,12 +49,10 @@ public interface QuoteDao {
 	@Update({"update ppp_quote set status = #{jsonObject.quoteStatus} where billNumber = #{jsonObject.billNumber} and quoterId = #{jsonObject.quoterId}"})
 	public void setValidateQuote(@Param("jsonObject") JSONObject jsonObject);
 	
-
 	//买获取所有的报价根据报价者的id  获取票据发布者的联系方式   买家 
-
 	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus,b.real_money," + 
 			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId, c.transferable, " + 
-			" a.companyName,a.contactsPhone,a.contactsQQ,a.bankAccountName,a.bankName,a.picId,a.contactsId from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} ) b " + 
+			" c.billReferer, a.companyName,a.contactsPhone,a.contactsQQ,a.bankAccountName,a.bankName,a.picId,a.contactsId from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} ) b " + 
 			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber"
 			+ " left JOIN ( select * from pengpengpiao.ppp_company ) a on c.releaserId = a.contactsId;"})
 	@ResultMap(value="myQuote")
@@ -63,7 +61,7 @@ public interface QuoteDao {
 	//
 	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus," + 
 			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId," + 
-			"c.transferable" + 
+			"c.transferable, c.billReferer" + 
 			" from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} ) b " + 
 			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber ;"})
 	@ResultMap(value="myQuote")
@@ -71,7 +69,7 @@ public interface QuoteDao {
 	
 	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus,b.real_money," + 
 			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId," + 
-			"c.transferable" + 
+			"c.transferable, c.billReferer " + 
 			" from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} and status='报价中' ) b " + 
 			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber ;"})
 	@ResultMap(value="myQuote")
@@ -79,7 +77,7 @@ public interface QuoteDao {
 	
 	@Select({"select b.billNumber,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.quoteDate,b.status as quoteStatus,b.real_money," + 
 			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId," + 
-			"c.transferable" + 
+			"c.transferable , c.billReferer" + 
 			" from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} and status='报价失效' ) b " + 
 			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber ;"})
 	@ResultMap(value="myQuote")

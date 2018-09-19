@@ -26,6 +26,8 @@
 		<result column="billType" property="billType"/>
 		<result column="amount" property="amount"/>
 		<result column="billId" property="billId"/>
+		<result column="billReferer" property="billReferer"/>
+		<result column="quoteReferer" property="quoteReferer"/>
 		<result column="acceptor" property="acceptor"/>
 		<result column="maturity" property="maturity"/>
 		<result column="remain_days" property="remain_days"/>
