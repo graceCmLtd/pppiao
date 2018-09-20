@@ -59,6 +59,10 @@ public interface ResourceMarket {
 			+ "#{resourceMarketEntity.type1},#{resourceMarketEntity.type2},#{resourceMarketEntity.type3},#{resourceMarketEntity.type4},#{resourceMarketEntity.billType},#{resourceMarketEntity.priority},#{resourceMarketEntity.updateDate},#{resourceMarketEntity.note} )"})
 	public void insert(@Param("resourceMarketEntity") ResourceMarketEntity resourceMarketEntity);
 	
+	@Insert({"insert ",TABLE_NAME,"( ",INSERT_FEILDS," ) values ( #{jsonObject.buyerId},#{jsonObject.amountRange},#{jsonObject.timeLimit},"
+			+ "#{jsonObject.type1},#{jsonObject.type2},#{jsonObject.type3},#{jsonObject.type4},#{jsonObject.billType},#{jsonObject.priority},#{jsonObject.updateDate},#{jsonObject.note} )"})
+	public void insertObj(@Param("jsonObject") JSONObject jsonObject);
+	
 	
 	@Delete({"delete from ",TABLE_NAME, " where orderId = #{orderId}"})
 	public void deleteByOrderId(@Param("orderId") String orderId);

@@ -24,6 +24,7 @@ public interface ResourceMarketService {
 	
 	public void insert( ResourceMarketEntity resourceMarketEntity);
 	
+	public void insertObj(JSONObject jsonObject);
 	
 	public void deleteByOrderId( String orderId); 
 	

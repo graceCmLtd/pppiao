@@ -31,6 +31,7 @@ public class ResourceMarketImpl implements ResourceMarketService {
 		return resourceMarket.selectByOrderId(orderId);
 	}
 
+	
 	@Override
 	public ArrayList<ResourceMarketEntity> selectByBuyerId(String buyerId) {
 		// TODO Auto-generated method stub
@@ -43,6 +44,8 @@ public class ResourceMarketImpl implements ResourceMarketService {
 		resourceMarket.insert(resourceMarketEntity);
 	}
 
+	
+	
 	@Override
 	public void deleteByOrderId(String orderId) {
 		// TODO Auto-generated method stub
@@ -70,6 +73,12 @@ public class ResourceMarketImpl implements ResourceMarketService {
 	@Override
 	public List<Map<String, Object>> selectAllInfo() {
 		return resourceMarket.selectAllInfo();
+	}
+
+	@Override
+	public void insertObj(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		resourceMarket.insertObj(jsonObject);
 	}
 
 }
