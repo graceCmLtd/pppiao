@@ -31,8 +31,8 @@ public class ResourceMarketController {
 	}
 	//获取资源市场页面的所有信息
 	@RequestMapping("/getAllInfo")
-	public List<Map<String,Object>> getAllInfo(){
-		return resourceMarketService.selectAllInfo();
+	public List<Map<String,Object>> getAllInfo(@RequestParam Integer pageSize,@RequestParam Integer currentPage){
+		return resourceMarketService.selectAllInfo(pageSize,(currentPage-1)*pageSize);
 	}
 	
 	@RequestMapping("/getByOrderId")
@@ -75,6 +75,7 @@ public class ResourceMarketController {
 		return result;
 	}
 	
+	//获取资源市场数据总条数，用于分页
 	@RequestMapping("/getPriorityItem")
 	public List<Map<String, Object>> getPriorityItems(){
 		return resourceMarketService.selectPriorityForResourcePool();
@@ -84,5 +85,10 @@ public class ResourceMarketController {
 	public List<Map<String, Object>> getByBuyerIdOfResourcePool(@RequestBody JSONObject jsonObject){
 		
 		return resourceMarketService.selectByBuyerIDForResourcePool(jsonObject);
+	}
+	
+	@RequestMapping("/getCount")
+	public Integer getCount() {
+		return resourceMarketService.getCount();
 	}
 }

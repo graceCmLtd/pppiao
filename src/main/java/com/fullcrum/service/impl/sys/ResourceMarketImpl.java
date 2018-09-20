@@ -68,8 +68,13 @@ public class ResourceMarketImpl implements ResourceMarketService {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectAllInfo() {
-		return resourceMarket.selectAllInfo();
+	public List<Map<String, Object>> selectAllInfo(Integer pageSize,Integer currentPage) {
+		return resourceMarket.selectAllInfo(pageSize,currentPage);
+	}
+
+	@Override
+	public Integer getCount() {
+		return resourceMarket.getCount();
 	}
 
 }
