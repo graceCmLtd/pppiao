@@ -42,11 +42,16 @@ public class ResourceMarketController {
 	}
 	
 	@RequestMapping("/getByBuyerId")
-	public ArrayList<ResourceMarketEntity> getByBuyerId(@RequestParam(value="buyerId") String buyerId){
+	public ArrayList<ResourceMarketEntity> getByBuyerId(@RequestParam(value="buyerId") String buyerId,
+			@RequestParam(value="pageSize") Integer pageSize,@RequestParam(value="currentPage") Integer currentPage){
 		
-		return resourceMarketService.selectByBuyerId(buyerId);
+		return resourceMarketService.selectByBuyerId(buyerId,pageSize,(currentPage-1)*pageSize);
 	}
 	
+	@RequestMapping("/getCountByBuyerId")
+	public Integer getCountByBuyerId(@RequestParam(value="buyerId") String buyerId) {
+		return resourceMarketService.getCountByBuyerId(buyerId);
+	}
 	
 	@RequestMapping("/add")
 	public JSONObject add(@RequestBody JSONObject jsonObject ) {

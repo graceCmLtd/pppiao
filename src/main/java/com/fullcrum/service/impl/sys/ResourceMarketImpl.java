@@ -33,9 +33,9 @@ public class ResourceMarketImpl implements ResourceMarketService {
 
 	
 	@Override
-	public ArrayList<ResourceMarketEntity> selectByBuyerId(String buyerId) {
+	public ArrayList<ResourceMarketEntity> selectByBuyerId(String buyerId,Integer pageSize,Integer currentPage) {
 		// TODO Auto-generated method stub
-		return resourceMarket.selectByBuyerId(buyerId);
+		return resourceMarket.selectByBuyerId(buyerId,pageSize,currentPage);
 	}
 
 	@Override
@@ -84,6 +84,11 @@ public class ResourceMarketImpl implements ResourceMarketService {
 	public void insertObj(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
 		resourceMarket.insertObj(jsonObject);
+	}
+
+	@Override
+	public Integer getCountByBuyerId(String buyerId) {
+		return resourceMarket.getCountByBuyerId(buyerId);
 	}
 
 }

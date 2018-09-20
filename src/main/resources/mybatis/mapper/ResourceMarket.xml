@@ -97,6 +97,11 @@
  		left join ppp_company b on a.buyerId=b.contactsId  order by a.updateDate desc) d
 	</select>
 	
+	<!-- 查询该用户的所有数据 -->
+	<select id="getCountByBuyerId" parameterType="java.lang.String" resultType="Integer">        
+		select count(*) from ppp_resource_market a where a.buyerId=#{buyerId}
+ 	</select>
+	
 </mapper>
 
 
