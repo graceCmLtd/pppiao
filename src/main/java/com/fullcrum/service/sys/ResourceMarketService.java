@@ -31,5 +31,8 @@ public interface ResourceMarketService {
 	public void updateByOrderId( JSONObject jsonObject);
 
 
-	public List<Map<String, Object>> selectAllInfo();
+	public List<Map<String, Object>> selectAllInfo(Integer pageSize, Integer i);
+
+
+	public Integer getCount();
 }
