@@ -30,7 +30,7 @@ public class BillAuditingController {
 	@RequestMapping("/getBills")
 	public List<Map<String,Object>> getBills(@RequestParam("pageSize") Integer pageSize,@RequestParam("currentPage") Integer currentPage){
 		System.out.println(pageSize+"========"+currentPage);
-		List<Map<String,Object>> list = billAuditingService.getBills(pageSize,currentPage-1);
+		List<Map<String,Object>> list = billAuditingService.getBills(pageSize,(currentPage-1)*pageSize);
 		//将时间戳转为正常的日期格式
 		for(int i = 0;i<list.size();i++) {
 			Object timeStamp = list.get(i).get("timeStamp");
