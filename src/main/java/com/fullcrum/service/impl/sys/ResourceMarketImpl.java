@@ -86,4 +86,10 @@ public class ResourceMarketImpl implements ResourceMarketService {
 		resourceMarket.insertObj(jsonObject);
 	}
 
+	@Override
+	public void updateNoteByUserId(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		resourceMarket.updateNoteByUserId(jsonObject);
+	}
+
 }

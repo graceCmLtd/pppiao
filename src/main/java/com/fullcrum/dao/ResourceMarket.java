@@ -12,6 +12,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.ResourceMarketEntity;
 
@@ -66,6 +68,12 @@ public interface ResourceMarket {
 	
 	@Delete({"delete from ",TABLE_NAME, " where orderId = #{orderId}"})
 	public void deleteByOrderId(@Param("orderId") String orderId);
+	
+	
+	@Update({"update ",TABLE_NAME," set note = #{jsonObject.note} where buyerId=#{jsonObject.buyerId} "})
+	public void updateNoteByUserId(@Param("jsonObject") JSONObject jsonObject);
+	
+	
 	
 	public void updateByOrderId(@Param("jsonObject") JSONObject jsonObject);
 	

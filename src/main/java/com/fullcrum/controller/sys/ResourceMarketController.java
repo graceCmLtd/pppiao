@@ -75,6 +75,23 @@ public class ResourceMarketController {
 		return result;
 	}
 	
+	//根据用户id更新资源市场备注信息
+	@RequestMapping("/updateNoteByUserId")
+	public JSONObject updateNoteByUserId(@RequestBody JSONObject jsonObject) {
+		JSONObject result = new JSONObject();
+		try {
+			resourceMarketService.updateNoteByUserId(jsonObject);
+			result.put("status", "success");
+			result.put("errorMsg", null);
+		} catch (Exception e) {
+			// TODO: handle exception
+			result.put("status", "fail");
+			result.put("errorMsg", e);
+		}
+		
+		
+		return result;
+	}
 	//获取资源市场数据总条数，用于分页
 	@RequestMapping("/getPriorityItem")
 	public List<Map<String, Object>> getPriorityItems(){

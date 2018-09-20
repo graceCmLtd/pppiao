@@ -29,7 +29,8 @@ public interface ResourceMarketService {
 	public void deleteByOrderId( String orderId); 
 	
 	public void updateByOrderId( JSONObject jsonObject);
-
+	
+	public void updateNoteByUserId(JSONObject jsonObject);
 
 	public List<Map<String, Object>> selectAllInfo(Integer pageSize, Integer i);
 
