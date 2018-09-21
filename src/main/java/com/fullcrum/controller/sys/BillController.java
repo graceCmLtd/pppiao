@@ -3,6 +3,7 @@ package com.fullcrum.controller.sys;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -139,7 +140,7 @@ public class BillController {
 	 * 
 	 * */
 	@RequestMapping("/filterbill")
-	public List<Map<String, Object>>  filterbill(@RequestBody JSONObject jsonObject){
+	public Map<String, Object>  filterbill(@RequestBody JSONObject jsonObject){
 		
 		long today = new Date().getTime();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -221,7 +222,13 @@ public class BillController {
 		String date = sf.format(new Date());
 		conditions.put("curr_time", date);
 		
-		return billService.selectByFilter(conditions);
+		Map<String,Object> map = new HashMap<String,Object>();
+		List<Map<String, Object>> list = billService.selectByFilter(conditions);
+		Integer count = billService.getCount(conditions);
+		map.put("list", list);
+		map.put("count", count);
+		return map;
+		
 	}
 	
 	//获取我的票据的报价情况   卖家

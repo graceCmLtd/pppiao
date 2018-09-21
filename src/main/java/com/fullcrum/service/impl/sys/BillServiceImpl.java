@@ -139,6 +139,12 @@ public class BillServiceImpl implements BillService {
 	}
 
 
+	@Override
+	public Integer getCount(JSONObject conditions) {
+		return billDao.getCount(conditions);
+	}
+
+
 	
 
 	

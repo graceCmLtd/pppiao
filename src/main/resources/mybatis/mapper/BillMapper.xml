@@ -177,7 +177,34 @@
 				</if>
 			</if>
 			<![CDATA[and 1=1 and status="审核完成")  a  left join  (select billNumber,status, count(*) as countNumber  from pengpengpiao.ppp_quote where status="报价中"    group by billNumber,status)  b on a.billNumber=b.billNumber  ]]>
-			<![CDATA[order by a.releaseDate desc limit ${jsonObject.starter},${jsonObject.number}]]>
+			<![CDATA[order by a.releaseDate desc limit ${jsonObject.starter},${jsonObject.number }]]>
+		</where>
+		
+	</select>
+	
+	<select id="getCount" resultType="Integer" >
+	<![CDATA[select count(*) from ]]>
+		<![CDATA[(select * from pengpengpiao.ppp_bill  ]]>
+		<where>
+			<![CDATA[1=1 ]]>
+			<if test="jsonObject != null">
+				<if test="jsonObject.billType !=null">
+					<![CDATA[and billType = #{jsonObject.billType} ]]>
+				</if>
+				<if test="jsonObject.minAmount !=null">
+					<![CDATA[and amount >= ${jsonObject.minAmount}]]>
+				</if>
+				<if test="jsonObject.maxAmount != null">
+					<![CDATA[ and amount < ${jsonObject.maxAmount}]]>
+				</if>
+				<if test="jsonObject.minDate !=null">
+					<![CDATA[ and maturity >= #{jsonObject.minDate}]]>
+				</if>
+				<if test="jsonObject.maxDate != null">
+					<![CDATA[ and maturity < #{jsonObject.maxDate}]]>
+				</if>
+			</if>
+			<![CDATA[and 1=1 and status="审核完成")  a  left join  (select billNumber,status, count(*) as countNumber  from pengpengpiao.ppp_quote where status="报价中"    group by billNumber,status)  b on a.billNumber=b.billNumber  ]]>
 		</where>
 		
 	</select>
