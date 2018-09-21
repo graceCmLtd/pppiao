@@ -44,6 +44,8 @@ public interface BillService {
 	public List<Map<String, Object>> getSellerIntentions(JSONObject jsonObject);
 	
 	public List<Map<String, Object>> getBuyerIntentions(JSONObject jsonObject);
+
+	public Integer getCount(JSONObject conditions);
 	
 	
 	

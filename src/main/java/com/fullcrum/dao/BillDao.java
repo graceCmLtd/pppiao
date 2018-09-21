@@ -188,6 +188,8 @@ public interface BillDao {
 		
 		
 		public Integer selectCount();
+
+		public Integer getCount(@Param("jsonObject")JSONObject conditions);
 		
 		
 }
