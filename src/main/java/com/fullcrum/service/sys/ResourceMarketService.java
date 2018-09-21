@@ -15,7 +15,7 @@ public interface ResourceMarketService {
 	public ArrayList<ResourceMarketEntity> selectByOrderId( String orderId);
 	
 
-	public ArrayList<ResourceMarketEntity> selectByBuyerId( String buyerId);
+	public ArrayList<ResourceMarketEntity> selectByBuyerId( String buyerId, Integer pageSize, Integer currentPage);
 	
 	public List<Map<String, Object>> selectPriorityForResourcePool();
 	
@@ -36,4 +36,7 @@ public interface ResourceMarketService {
 
 
 	public Integer getCount();
+
+
+	public Integer getCountByBuyerId(String buyerId);
 }

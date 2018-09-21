@@ -31,9 +31,9 @@ public interface ResourceMarket {
 	@ResultMap(value="resourceMarket")
 	public ArrayList<ResourceMarketEntity> selectByOrderId(@Param("orderId") String orderId);
 	
-	@Select({"select * from ",TABLE_NAME," where buyerId = #{buyerId} order by updateDate desc"})
+	@Select({"select * from ",TABLE_NAME," where buyerId = #{buyerId} order by updateDate desc limit #{currentPage},#{pageSize}"})
 	@ResultMap(value="resourceMarket")
-	public ArrayList<ResourceMarketEntity> selectByBuyerId(@Param("buyerId") String buyerId);
+	public ArrayList<ResourceMarketEntity> selectByBuyerId(@Param("buyerId") String buyerId, Integer pageSize, Integer currentPage);
 	
 	
 	@Select({"select * from (select orderId,buyerId,amountRange,timeLimit,type1 as interest,  '国票+国股' as acceptor , billType, '1' as priority,updateDate,note from pengpengpiao.ppp_resource_market where type1 is not null and priority > 1  " + 
@@ -87,6 +87,9 @@ public interface ResourceMarket {
 	public List<Map<String, Object>> selectAllInfo(@Param("pageSize")Integer pageSize, @Param("currentPage")Integer currentPage);
 
 	public Integer getCount();
+	
+	//获取资源池中某个用户的数据
+	public Integer getCountByBuyerId(@Param("buyerId")String buyerId);
 	
 	
 }
