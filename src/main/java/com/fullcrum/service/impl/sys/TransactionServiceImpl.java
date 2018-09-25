@@ -103,6 +103,12 @@ public class TransactionServiceImpl implements TransactionService {
 		// TODO Auto-generated method stub
 		transactionDao.setTransactionIntentionStatus(jsonObject);
 	}
+
+	@Override
+	public void updateTransStatus(String billNumber) {
+		transactionDao.updateIntentionStatus(billNumber);
+		
+	}
 	
 	
 }

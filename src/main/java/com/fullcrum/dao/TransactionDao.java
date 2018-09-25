@@ -80,4 +80,7 @@ public interface TransactionDao {
 	@Select({"select * from ppp_transaction"})
 	@ResultMap(value="transactionMap")
 	public ArrayList<TransactionEntity> slectAllTrans();
+	
+	@Select({"update ppp_transaction set intentionStatus = '待接单'  where billNumber = #{billNumber}"})
+	public void updateIntentionStatus(String billNumber);
 }
