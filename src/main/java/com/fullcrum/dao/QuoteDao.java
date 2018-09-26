@@ -92,4 +92,5 @@ public interface QuoteDao {
 	
 	
 	
+	
 }
