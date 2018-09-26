@@ -6,5 +6,26 @@
 		<result column="picsContent" property="picsContent"/>
 		<result column="updateDate" property="updateDate"/>
 		<result column="contactsId" property="contactsId"/>
-	</resultMap>	
+	</resultMap>
+	
+	<update id="updatePic">
+		<if test="companyPicsEntity != null ">
+			<![CDATA[update ppp_company_pics set ]]>
+			<if test="companyPicsEntity.picContent != null ">
+				picContent = #{companyPicsEntity.picContent} ,
+			</if>
+			
+			<if test="companyPicsEntity.updateDate != null">
+				updateDate = #{companyPicsEntity.updateDate}
+			</if>
+			
+			<where>
+				<if test="companyPicsEntity.contactsId != null">
+					contactsId = #{companyPicsEntity.contactsId}
+				</if>
+			</where>
+		</if>
+	</update>
+		
 </mapper>
+

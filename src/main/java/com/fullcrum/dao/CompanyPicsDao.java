@@ -35,6 +35,8 @@ public interface CompanyPicsDao {
 	
 	@Select({"select * from ",TABLE_NAME_1,"where picId = #{picId}"})
 	public CompanyPicsEntity selectPic(String picId);
+
+	public void updatePic(@Param("companyPicsEntity")CompanyPicsEntity companyPicsEntity);
 	
 
 }

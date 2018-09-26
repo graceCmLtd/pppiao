@@ -45,4 +45,9 @@ public class CompanyPicsServiceImpl implements CompanyPicsService {
 		// TODO Auto-generated method stub
 		return companyPicsDao.selectPic(picId);
 	}
+
+	@Override
+	public void updateCompanyPics(CompanyPicsEntity companyPicsEntity) {
+		companyPicsDao.updatePic(companyPicsEntity);
+	}
 }

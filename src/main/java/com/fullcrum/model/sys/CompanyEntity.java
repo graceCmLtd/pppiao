@@ -33,6 +33,8 @@ public class CompanyEntity {
 	
 	private String contactsId;
 	
+	private String contactsName;
+	
 	private String contactsPhone;
 	
 	private String  contactsEmail;
@@ -47,12 +49,21 @@ public class CompanyEntity {
 	
 	private int picId;
 	
-	private String  signUpAddr;  //注册时间
+	private String  signUpAddr;  //开户地址
 	
 	private Date updateDate;   //更新时间
 
 	private String role; //公司审核状态
 	
+	
+	public String getContactsName() {
+		return contactsName;
+	}
+
+	public void setContactsName(String contactsName) {
+		this.contactsName = contactsName;
+	}
+
 	public String getRole() {
 		return role;
 	}

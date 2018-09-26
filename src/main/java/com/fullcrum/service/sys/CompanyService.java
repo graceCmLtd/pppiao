@@ -2,6 +2,7 @@ package com.fullcrum.service.sys;
 
 import java.util.ArrayList;
 
+import com.fullcrum.model.sys.BillEntity;
 import com.fullcrum.model.sys.CompanyEntity;
 
 public interface CompanyService {
@@ -17,6 +18,9 @@ public interface CompanyService {
 		public ArrayList<CompanyEntity> selectByCompanyId(String companyId);
 
 		public void updateCompanyStatus(String companyId, String role);
+
+		public void update(CompanyEntity companyEntity);
+
 
 		
 		

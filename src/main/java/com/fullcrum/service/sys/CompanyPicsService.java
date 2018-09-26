@@ -16,4 +16,6 @@ public interface CompanyPicsService {
 	public void deleteCompanyPics(CompanyPicsEntity companyPicsEntity);
 
 	public CompanyPicsEntity selectPic(String picId);
+
+	public void updateCompanyPics(CompanyPicsEntity companyPicsEntity);
 }
