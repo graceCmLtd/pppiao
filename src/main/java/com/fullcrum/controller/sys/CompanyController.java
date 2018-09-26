@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.CompanyEntity;
-//import com.fullcrum.model.sys.CompanyPicsEntity;
+import com.fullcrum.model.sys.CompanyPicsEntity;
 import com.fullcrum.service.sys.CompanyPicsService;
 import com.fullcrum.service.sys.CompanyService;
 
@@ -51,7 +51,7 @@ public class CompanyController {
 		CompanyEntity companyEntity = JSONObject.toJavaObject(jsonObject.getJSONObject("companyInfo"), CompanyEntity.class);
 		companyEntity.setUpdateDate(new Date(new java.util.Date().getTime()));
 		System.out.println("print   add company jsonobject .xxxxxxxxxxxxxxxxxxx");
-		System.out.println(companyEntity);
+		System.out.println(companyEntity.getContactsName());
 		companyService.insertCompany(companyEntity);
 		companyPicsService.insertCompanyPicsByJson(jsonObject.getJSONObject("companyPics"));
 		
@@ -84,5 +84,16 @@ public class CompanyController {
 		return "success";
 	}
 	
+	@RequestMapping("/updateCompany")
+	public String updateBill(@RequestBody JSONObject jsonObject) {
+		CompanyEntity companyEntity = JSONObject.toJavaObject(jsonObject.getJSONObject("companyInfo"), CompanyEntity.class);
+		companyEntity.setUpdateDate(new Date(new java.util.Date().getTime()));
+		CompanyPicsEntity companyPicsEntity = JSONObject.toJavaObject(jsonObject.getJSONObject("companyPics"), CompanyPicsEntity.class);
+		companyPicsEntity.setUpdateDate(new Date(new java.util.Date().getTime()));
+		
+		companyService.update(companyEntity);
+		companyPicsService.updateCompanyPics(companyPicsEntity);
+		return "success";
+	}
 	
 }

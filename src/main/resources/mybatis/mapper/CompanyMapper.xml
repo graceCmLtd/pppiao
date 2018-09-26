@@ -16,4 +16,46 @@
 		<result column="updateDate" property="updateDate"/>
 		<result column="role" property="role"/>
 	</resultMap>
+	
+	<update id="update">
+		<if test="companyEntity != null ">
+			<![CDATA[update ppp_company set ]]>
+			<if test="companyEntity.companyName != null ">
+				companyName = #{companyEntity.companyName} ,
+			</if>
+			<if test="companyEntity.contactsName != null">
+				contactsName = #{companyEntity.contactsName},
+			</if>
+			<if test="companyEntity.contactsPhone != null">
+				contactsPhone = #{companyEntity.contactsPhone},
+			</if>
+			<if test="companyEntity.contactsEmail != null">
+				contactsEmail = #{companyEntity.contactsEmail},
+			</if>
+			<if test="companyEntity.contactsQQ != null">
+				contactsQQ = #{companyEntity.contactsQQ},
+			</if>
+			<if test="companyEntity.bankAccountName != null">
+				bankAccountName  = #{companyEntity.bankAccountName},
+			</if>
+			<if test="companyEntity.bankAccount != null">
+				bankAccount = #{companyEntity.bankAccount},
+			</if>
+			<if test="companyEntity.bankName != null" >
+				bankName =#{companyEntity.bankName},
+			</if>
+			<if test="companyEntity.signUpAddr != null" >
+				signUpAddr =#{companyEntity.signUpAddr},
+			</if>
+			<if test="companyEntity.updateDate != null" >
+				updateDate =#{companyEntity.updateDate}
+			</if>
+			<where>
+				<if test="companyEntity.contactsId != null">
+					contactsId = #{companyEntity.contactsId}
+				</if>
+			</where>
+		</if>
+	</update>
+	
 </mapper>

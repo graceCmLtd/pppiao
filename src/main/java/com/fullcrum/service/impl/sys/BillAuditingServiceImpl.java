@@ -39,4 +39,5 @@ public class BillAuditingServiceImpl implements BillAuditingService{
 		return billAuditingDao.selectCount();
 	}
 
+
 }

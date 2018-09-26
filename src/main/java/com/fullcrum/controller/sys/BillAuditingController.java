@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.service.sys.BillAuditingService;
+import com.fullcrum.service.sys.TransactionService;
 
 
 
@@ -26,6 +27,8 @@ public class BillAuditingController {
 	
 	@Resource(name="billAuditingServiceImpl")
 	private BillAuditingService billAuditingService;
+	@Resource(name="transactionServiceImpl")
+	private TransactionService transactionService;
 	
 	@RequestMapping("/getBills")
 	public List<Map<String,Object>> getBills(@RequestParam("pageSize") Integer pageSize,@RequestParam("currentPage") Integer currentPage){
@@ -61,7 +64,14 @@ public class BillAuditingController {
 		String billNumber = json.getString("billNumber");
 		String status = json.getString("status");
 		String failReason = json.getString("failReason");
-		billAuditingService.updateBillStatus(billNumber,status,failReason);
+		String billReferer = json.getString("billReferer");
+		if(billReferer.equals("资源池")) {//这里判断票据的来源，如果是资源池的票据就更改交易状态为：待接单
+			System.out.println(billReferer);
+			billAuditingService.updateBillStatus(billNumber,status,failReason);
+			transactionService.updateTransStatus(billNumber);
+		}else {
+			billAuditingService.updateBillStatus(billNumber,status,failReason);
+		}
 		return "success";
 	}
 }

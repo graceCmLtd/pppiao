@@ -34,4 +34,6 @@ public interface TransactionService {
 	public void setTransactionIntentionStatus(JSONObject jsonObject);
 
 	public ArrayList<TransactionEntity> selectAllTrans();
+
+	public void updateTransStatus(String billNumber);
 }
