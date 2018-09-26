@@ -101,4 +101,11 @@ public class QuoteServiceImpl implements QuoteService {
 	}
 
 
+	//params : billNumber,quoterId,new_money
+	@Override
+	public void updateRealMoney(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		quoteDao.updateRealMoney(jsonObject);
+	}
+
 }

@@ -22,6 +22,8 @@ public interface QuoteService {
 	
 	public void updateQuoteStatus(JSONObject jsonObject);
 	
+	public void updateRealMoney(JSONObject jsonObject);
+	
 	public void setInvalidateQuotes(JSONObject jsonObject);
 	
 	public void setValidateQuote(JSONObject jsonObject);
