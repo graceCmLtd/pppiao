@@ -108,4 +108,9 @@ public class QuoteServiceImpl implements QuoteService {
 		quoteDao.updateRealMoney(jsonObject);
 	}
 
+	@Override
+	public Integer getALLQuoteCount(JSONObject jsonObject) {
+		return quoteDao.getAllQuoteCount(jsonObject);
+	}
+
 }

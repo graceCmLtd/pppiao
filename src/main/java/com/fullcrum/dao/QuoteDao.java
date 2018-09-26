@@ -58,7 +58,7 @@ public interface QuoteDao {
 			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId, c.transferable, " + 
 			" c.billReferer, a.companyName,a.contactsPhone,a.contactsQQ,a.bankAccountName,a.bankName,a.picId,a.contactsId,a.contactsName from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} ) b " + 
 			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber"
-			+ " left JOIN ( select * from pengpengpiao.ppp_company ) a on c.releaserId = a.contactsId;"})
+			+ " left JOIN ( select * from pengpengpiao.ppp_company ) a on c.releaserId = a.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
 	@ResultMap(value="myQuote")
 	public List<Map<String, Object>> getALLQuote(@Param("jsonObject") JSONObject jsonObject);
 	
@@ -94,6 +94,8 @@ public interface QuoteDao {
 	@Select({"SELECT a.*,b.interest,b.xPerLakh,c.pic1 FROM ppp_bill a LEFT JOIN ppp_quote b ON a.billNumber = b.billNumber left join ppp_bill_pics c on a.billNumber = c.billNumber  WHERE a.billNumber = #{billNumber}"})
 	@ResultMap(value="billInfo")
 	public List<Map<String, Object>> selectBillByBillNum(@Param("billNumber")String billNumber);
+
+	public Integer getAllQuoteCount(@Param("jsonObject")JSONObject jsonObject);
 	
 
 }
