@@ -100,6 +100,13 @@
 		<result column="sellerId" property="sellerId"/>
 		<result column="transacStatus" property="transacStatus"/>
 		<result column="transacDate" property="transacDate"/>
+		<result column="contactsName" property="contactsName"/>
+		<result column="contactsId" property="contactsId"/>
+		<result column="contactsPhone" property="contactsPhone"/>
+		<result column="contactsQQ" property="contactsQQ"/>
+		<result column="companyPicId" property="companyPicId"/>
+		<result column="companyName" property="companyName"/>
+		<result column="real_money" property="real_money"/>
 	</resultMap>
 	
 		<resultMap type="java.util.Map" id="QuoteIntention">

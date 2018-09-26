@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fullcrum.model.sys.CompanyEntity;
 import com.fullcrum.model.sys.UserEntity;
 import com.fullcrum.service.sys.CompanyService;
 import com.fullcrum.service.sys.UserService;
@@ -98,10 +99,15 @@ public class UserController {
             if (StringUtils.isEmptyOrWhitespaceOnly(next)){
                 return result;
             }*/
-            if (companyService.selectByContactsId(map.get("uuid")).isEmpty()) {
+            ArrayList<CompanyEntity> companyData = companyService.selectByContactsId(map.get("uuid"));
+            System.out.println("login companydata :");
+            System.out.println(companyData);
+            if (companyData.isEmpty()) {
 				result.put("CompanyAuthentication", false);
+				result.put("role", "未审核");
 			}else {
 				result.put("CompanyAuthentication", true);
+				result.put("role", companyData.get(0).getRole());
 			}
             return result;
         }else {
@@ -110,6 +116,7 @@ public class UserController {
             result.put("status", "fail");
             result.put("ticket", null);
             result.put("errorMsg", map.get("msg"));
+            result.put("role", "未审核");
             /*System.out.println("on fail..............................");
             System.out.println(result);*/
             return  result;

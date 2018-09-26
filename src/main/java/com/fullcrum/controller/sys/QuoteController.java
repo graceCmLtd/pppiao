@@ -127,4 +127,27 @@ public class QuoteController {
 		return list;
 	}
 	
+	/*修改quote表中real_money字段，即实际价格
+	 * jsonobject 字段：
+	 * billNumber
+	 * quoterId
+	 * new_money
+	 * 
+	 * */
+	@RequestMapping("/updateRealMoney")
+	public JSONObject updateRealMoney(@RequestBody JSONObject jsonObject) {
+		
+		JSONObject result = new JSONObject();
+		try {
+			quoteService.updateRealMoney(jsonObject);
+			result.put("status", "success");
+			result.put("errorMsg", null);
+		} catch (Exception e) {
+			// TODO: handle exception
+			result.put("status", "fail");
+			result.put("errorMsg", e);
+		}
+		
+		return result;
+	}
 }
