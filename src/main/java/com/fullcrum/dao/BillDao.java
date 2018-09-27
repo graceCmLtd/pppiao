@@ -127,7 +127,7 @@ public interface BillDao {
 				"left join (select * from pengpengpiao.ppp_quote ) b " + 
 				"on a.billNumber = b.billNumber " + 
 				"left join (select * from pengpengpiao.ppp_bill ) c " + 
-				"on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId ;"})
+				"on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
 		@ResultMap(value="QuoteIntention")
 		public List<Map<String, Object>> getSellerALLIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
@@ -139,7 +139,7 @@ public interface BillDao {
 						"left join (select * from pengpengpiao.ppp_quote ) b " + 
 						"on a.billNumber = b.billNumber " + 
 						"left join (select * from pengpengpiao.ppp_bill ) c " + 
-						"on a.billNumber = c.billNumber LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.sellerId =  d.contactsId  ;"})
+						"on a.billNumber = c.billNumber LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.sellerId =  d.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
 				@ResultMap(value="QuoteIntention")
 				public List<Map<String, Object>> getBuyerALLIntentions(@Param("jsonObject") JSONObject jsonObject);
 				
@@ -152,7 +152,7 @@ public interface BillDao {
 				"left join (select * from pengpengpiao.ppp_quote ) b " + 
 				"on a.billNumber = b.billNumber " + 
 				"left join (select * from pengpengpiao.ppp_bill ) c " + 
-				"on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId  ;"})
+				"on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
 		@ResultMap(value="QuoteIntention")
 		public List<Map<String, Object>> getSellerIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
@@ -165,8 +165,8 @@ public interface BillDao {
 				"on a.billNumber = b.billNumber " + 
 				"left join (select * from pengpengpiao.ppp_bill ) c " + 
 				"on a.billNumber = c.billNumber  "
-				+ "LEFT JOIN(select * from pengpengpiao.ppp_company ) d\r\n" + 
-				"ON a.sellerId =  d.contactsId  ;"})
+				+ "LEFT JOIN(select * from pengpengpiao.ppp_company ) d " + 
+				"ON a.sellerId =  d.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize} ;"})
 		@ResultMap(value="QuoteIntention")
 		public List<Map<String, Object>> getBuyerIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
@@ -190,6 +190,14 @@ public interface BillDao {
 		public Integer selectCount();
 
 		public Integer getCount(@Param("jsonObject")JSONObject conditions);
+		//求贴意向   获取是所有意向条数
+		public Integer getSellerALLIntentionsCount(@Param("jsonObject")JSONObject jsonObject);
+		//求贴意向   根据条件获取条数
+		public Integer getSellerIntentionsCount(@Param("jsonObject")JSONObject jsonObject);
+		//我的接单   获取所有条数
+		public Integer getBuyerALLIntentionsCount(@Param("jsonObject")JSONObject jsonObject);
+		//我的接单   根据条件获取条数
+		public Integer getBuyerIntentionsCount(@Param("jsonObject")JSONObject jsonObject);
 		
 		
 }

@@ -257,7 +257,10 @@ public class BillController {
 	public List<Map<String, Object>> getBillsIntentions(@RequestBody JSONObject jsonObject){
 		
 		jsonObject.put("curr_time", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-		
+		Integer currentPage = jsonObject.getInteger("currentPage");
+		Integer pageSize = jsonObject.getInteger("pageSize");
+		System.out.println(currentPage +"-==-"+ pageSize);
+		jsonObject.put("currentPage", (currentPage-1)*pageSize);
 		switch (jsonObject.get("IntentionType").toString()) {
 		case "1":
 			//获取卖家所有意向
@@ -274,6 +277,29 @@ public class BillController {
 		default:
 			System.out.println(jsonObject.get("IntentionType").toString());
 			System.out.println("nothing match the condition intentionType");
+			return null;
+		}
+	}
+	
+	//获取不同条件下的意向条数
+	@RequestMapping("/getIntentionsCount")
+	public Integer getIntentionsCount(@RequestBody JSONObject jsonObject){
+		
+		jsonObject.put("curr_time", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		switch (jsonObject.get("IntentionType").toString()) {
+		case "1":
+			//获取卖家所有意向条数
+			return billService.getSellerALLIntentionsCount(jsonObject);
+		case "2":
+			//获取买家所有意向条数
+			return billService.getBuyerALLIntentionsCount(jsonObject);
+		case "3":
+			//获取卖家某类意向条数
+			return billService.getSellerIntentionsCount(jsonObject);
+		case "4":
+			//获取买家某类意向条数
+			return billService.getBuyerIntentionsCount(jsonObject);
+		default:
 			return null;
 		}
 	}

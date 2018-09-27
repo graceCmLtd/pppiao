@@ -46,6 +46,14 @@ public interface BillService {
 	public List<Map<String, Object>> getBuyerIntentions(JSONObject jsonObject);
 
 	public Integer getCount(JSONObject conditions);
+
+	public Integer getSellerALLIntentionsCount(JSONObject jsonObject);
+
+	public Integer getSellerIntentionsCount(JSONObject jsonObject);
+
+	public Integer getBuyerALLIntentionsCount(JSONObject jsonObject);
+
+	public Integer getBuyerIntentionsCount(JSONObject jsonObject);
 	
 	
 	
