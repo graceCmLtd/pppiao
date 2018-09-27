@@ -278,7 +278,6 @@ public class BillController {
 		jsonObject.put("curr_time", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		Integer currentPage = jsonObject.getInteger("currentPage");
 		Integer pageSize = jsonObject.getInteger("pageSize");
-		System.out.println(currentPage +"-==-"+ pageSize);
 		jsonObject.put("currentPage", (currentPage-1)*pageSize);
 		switch (jsonObject.get("IntentionType").toString()) {
 		case "1":
