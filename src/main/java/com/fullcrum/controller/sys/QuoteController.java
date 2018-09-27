@@ -79,6 +79,9 @@ public class QuoteController {
 	@RequestMapping("/getMyQuote")
 	public List<Map<String, Object>> getMyQuote(@RequestBody JSONObject jsonObject){
 		jsonObject.put("curr_time", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		Integer currentPage = jsonObject.getInteger("currentPage");
+		Integer pageSize = jsonObject.getInteger("pageSize");
+		jsonObject.put("currentPage", (currentPage-1)*pageSize);
 		switch (jsonObject.get("filter").toString()) {
 		case "1":
 			//全部报价
@@ -91,6 +94,26 @@ public class QuoteController {
 		case "4":
 			//已失效
 			return quoteService.getFailQuote(jsonObject);
+		default:
+			return null;
+		}
+	}
+	//获取条数
+	@RequestMapping("/getQuoteCount")
+	public Integer getQuoteCount(@RequestBody JSONObject jsonObject){
+		jsonObject.put("curr_time", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		switch (jsonObject.get("filter").toString()) {
+		case "1":
+			//全部报价
+			return quoteService.getALLQuoteCount(jsonObject);
+		case "2":
+			//return quoteService.getAcceptedQuote(jsonObject);
+		case "3":
+			//报价中
+			return quoteService.getUnderQuoteCount(jsonObject);
+		case "4":
+			//已失效
+			return quoteService.getFailQuoteCount(jsonObject);
 		default:
 			return null;
 		}
