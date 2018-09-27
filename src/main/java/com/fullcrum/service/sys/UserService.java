@@ -30,5 +30,7 @@ public interface UserService {
 	
 	public Map<String, String> login(String user_phone,String passwd);
 	
+	public Map<String, String> loginBySms(String user_phone,String Sms);
+	
 
 }
