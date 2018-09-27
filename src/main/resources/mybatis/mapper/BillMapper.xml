@@ -289,6 +289,22 @@
 		left join (select * from pengpengpiao.ppp_bill ) c on a.billNumber = c.billNumber  
 		left join (select * from pengpengpiao.ppp_company ) d on a.sellerId =  d.contactsId
 	</select>
+	
+	<select id="getBillsReceivedQuoteCount" resultType="Integer">
+		select count(*) from 
+		(SELECT billNumber,billType,acceptor,amount,maturity,`status`,releaseDate,releaserId,billReferer,failReason 
+				from ppp_bill WHERE releaserId = #{jsonObject.uuid} AND  billNumber = #{jsonObject.billNumber}) a  
+		LEFT JOIN(SELECT billNumber,quoterId,interest,xPerLakh,`status`,quoteDate,quoteReferer,real_money from ppp_quote ) b on a.billNumber = b.billNumber  
+		left JOIN ( select * from pengpengpiao.ppp_company ) c on b.quoterId = c.contactsId
+	</select>
+	
+	<select id="getBillsWaitingQuoteCount" resultType="Integer">
+		select count(*) from 
+		(SELECT billNumber,billType,acceptor,amount,maturity,`status`,releaseDate,releaserId,billReferer,failReason 
+				from ppp_bill WHERE releaserId = #{jsonObject.uuid} AND  billNumber = #{jsonObject.billNumber}) a 
+		LEFT JOIN(SELECT billNumber,quoterId,interest,xPerLakh,`status`,quoteDate,quoteReferer,real_money from ppp_quote ) b on a.billNumber = b.billNumber
+		left JOIN ( select * from pengpengpiao.ppp_company ) c on b.quoterId = c.contactsId
+	</select>
 </mapper>
 
 <!-- billNumber varchar(45) PK 

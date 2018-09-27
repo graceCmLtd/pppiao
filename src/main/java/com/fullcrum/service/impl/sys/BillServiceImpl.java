@@ -169,6 +169,18 @@ public class BillServiceImpl implements BillService {
 	}
 
 
+	@Override
+	public Integer getBillsReceivedQuoteCount(JSONObject jsonObject) {
+		return billDao.getBillsReceivedQuoteCount(jsonObject);
+	}
+
+
+	@Override
+	public Integer getBillsWaitingQuoteCount(JSONObject jsonObject) {
+		return billDao.getBillsWaitingQuoteCount(jsonObject);
+	}
+
+
 	
 
 	

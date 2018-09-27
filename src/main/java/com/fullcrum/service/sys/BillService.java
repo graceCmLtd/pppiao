@@ -54,6 +54,10 @@ public interface BillService {
 	public Integer getBuyerALLIntentionsCount(JSONObject jsonObject);
 
 	public Integer getBuyerIntentionsCount(JSONObject jsonObject);
+
+	public Integer getBillsReceivedQuoteCount(JSONObject jsonObject);
+
+	public Integer getBillsWaitingQuoteCount(JSONObject jsonObject);
 	
 	
 	

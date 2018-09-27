@@ -235,19 +235,38 @@ public class BillController {
 	@RequestMapping("/getMyBillsQuoted")
 	public List<Map<String, Object>> getMyBills(@RequestBody JSONObject jsonObject){
 		jsonObject.put("curr_time", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		Integer currentPage = jsonObject.getInteger("currentPage");
+		Integer pageSize = jsonObject.getInteger("pageSize");
 		switch (jsonObject.get("filter").toString()) {
 		case "1":
 			//获取全部票据的报价信息
 			return billService.getBillsInquoting(jsonObject);
 		case "2":
 			//获取已经报价的票据
+			jsonObject.put("currentPage", (currentPage-1)*pageSize);
 			return billService.getBillsReceivedQuote(jsonObject);
 		case "3":
 			//获取未报价的票据
+			jsonObject.put("currentPage", (currentPage-1)*pageSize);
 			return billService.getBillsWaitingQuote(jsonObject);
 		case "4":
 			//获取正在审核中的票据
 			return billService.getBillsAuditing(jsonObject);
+		default:
+			return null;
+		}
+	}
+	//我的报价  总条数-->用于分页
+	@RequestMapping("/getMyQuotedCount")
+	public Integer getMyQuotedCount(@RequestBody JSONObject jsonObject){
+		jsonObject.put("curr_time", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		switch (jsonObject.get("filter").toString()) {
+		case "2":
+			//获取已经报价的票据条数
+			return billService.getBillsReceivedQuoteCount(jsonObject);
+		case "3":
+			//获取未报价的票据条数
+			return billService.getBillsWaitingQuoteCount(jsonObject);
 		default:
 			return null;
 		}

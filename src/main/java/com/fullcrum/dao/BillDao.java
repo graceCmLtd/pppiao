@@ -95,7 +95,7 @@ public interface BillDao {
 				+ "from (SELECT billNumber,billType,acceptor,amount,maturity,`status`,releaseDate,releaserId,billReferer,failReason "
 				+ "from ppp_bill WHERE releaserId = #{jsonObject.uuid} AND  billNumber = #{jsonObject.billNumber}) a  "
 				+ "LEFT JOIN(SELECT billNumber,quoterId,interest,xPerLakh,`status`,quoteDate,quoteReferer,real_money from ppp_quote ) b  on a.billNumber = b.billNumber  "
-				+ "left JOIN ( select * from pengpengpiao.ppp_company ) c on b.quoterId = c.contactsId ;"})
+				+ "left JOIN ( select * from pengpengpiao.ppp_company ) c on b.quoterId = c.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
 		@ResultMap(value="billAboutQuote")
 		public List<Map<String, Object>> getBillsReceivedQuote(@Param("jsonObject") JSONObject jsonObject);
 		
@@ -106,7 +106,7 @@ public interface BillDao {
 				+ "from (SELECT billNumber,billType,acceptor,amount,maturity,`status`,releaseDate,releaserId,billReferer,failReason "
 				+ "from ppp_bill WHERE releaserId = #{jsonObject.uuid} AND  billNumber = #{jsonObject.billNumber}) a  "
 				+ "LEFT JOIN(SELECT billNumber,quoterId,interest,xPerLakh,`status`,quoteDate,quoteReferer,real_money from ppp_quote ) b  on a.billNumber = b.billNumber "
-				+ "left JOIN ( select * from pengpengpiao.ppp_company ) c on b.quoterId = c.contactsId ;"})
+				+ "left JOIN ( select * from pengpengpiao.ppp_company ) c on b.quoterId = c.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
 		@ResultMap(value="billAboutQuote")
 		public List<Map<String, Object>> getBillsWaitingQuote(@Param("jsonObject") JSONObject jsonObject);
 		
@@ -198,6 +198,10 @@ public interface BillDao {
 		public Integer getBuyerALLIntentionsCount(@Param("jsonObject")JSONObject jsonObject);
 		//我的接单   根据条件获取条数
 		public Integer getBuyerIntentionsCount(@Param("jsonObject")JSONObject jsonObject);
+		//我的报价  已报价总条数
+		public Integer getBillsReceivedQuoteCount(@Param("jsonObject")JSONObject jsonObject);
+		//我的报价  未报价总条数
+		public Integer getBillsWaitingQuoteCount(@Param("jsonObject")JSONObject jsonObject);
 		
 		
 }
