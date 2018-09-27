@@ -113,4 +113,14 @@ public class QuoteServiceImpl implements QuoteService {
 		return quoteDao.getAllQuoteCount(jsonObject);
 	}
 
+	@Override
+	public Integer getUnderQuoteCount(JSONObject jsonObject) {
+		return quoteDao.getUnderQuoteCount(jsonObject);
+	}
+
+	@Override
+	public Integer getFailQuoteCount(JSONObject jsonObject) {
+		return quoteDao.getFailQuoteCount(jsonObject);
+	}
+
 }

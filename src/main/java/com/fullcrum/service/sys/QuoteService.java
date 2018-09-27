@@ -39,6 +39,10 @@ public interface QuoteService {
 	public List<Map<String, Object>> selectBillByBillNum(String billNumber);
 
 	public Integer getALLQuoteCount(JSONObject jsonObject);
+
+	public Integer getUnderQuoteCount(JSONObject jsonObject);
+
+	public Integer getFailQuoteCount(JSONObject jsonObject);
 	
 
 }

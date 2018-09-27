@@ -76,7 +76,7 @@ public interface QuoteDao {
 			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId," + 
 			"c.transferable, c.billReferer " + 
 			" from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} and status='报价中' ) b " + 
-			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber ;"})
+			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
 	@ResultMap(value="myQuote")
 	public List<Map<String, Object>> getUnderQuote(@Param("jsonObject") JSONObject jsonObject);
 	
@@ -84,7 +84,7 @@ public interface QuoteDao {
 			"c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId," + 
 			"c.transferable , c.billReferer" + 
 			" from   (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} and status='报价失效' ) b " + 
-			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber ;"})
+			"left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber limit #{jsonObject.currentPage},#{jsonObject.pageSize} ;"})
 	@ResultMap(value="myQuote")
 	public List<Map<String, Object>> getFailQuote(@Param("jsonObject") JSONObject jsonObject);
 	
@@ -94,8 +94,13 @@ public interface QuoteDao {
 	@Select({"SELECT a.*,b.interest,b.xPerLakh,c.pic1 FROM ppp_bill a LEFT JOIN ppp_quote b ON a.billNumber = b.billNumber left join ppp_bill_pics c on a.billNumber = c.billNumber  WHERE a.billNumber = #{billNumber}"})
 	@ResultMap(value="billInfo")
 	public List<Map<String, Object>> selectBillByBillNum(@Param("billNumber")String billNumber);
-
+	
+	//获取全部报价的总条数
 	public Integer getAllQuoteCount(@Param("jsonObject")JSONObject jsonObject);
+	//获取报价中的总条数
+	public Integer getUnderQuoteCount(@Param("jsonObject")JSONObject jsonObject);
+	//获取已失效报价总条数
+	public Integer getFailQuoteCount(@Param("jsonObject")JSONObject jsonObject);
 	
 
 }

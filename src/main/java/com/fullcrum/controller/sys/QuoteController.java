@@ -110,10 +110,10 @@ public class QuoteController {
 			//return quoteService.getAcceptedQuote(jsonObject);
 		case "3":
 			//报价中
-			//return quoteService.getUnderQuote(jsonObject);
+			return quoteService.getUnderQuoteCount(jsonObject);
 		case "4":
 			//已失效
-			//return quoteService.getFailQuote(jsonObject);
+			return quoteService.getFailQuoteCount(jsonObject);
 		default:
 			return null;
 		}
