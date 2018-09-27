@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.fullcrum.dao.LoginTicketDao;
@@ -25,6 +26,10 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private LoginTicketDao loginTicketDao;
+	
+	@Autowired
+	private StringRedisTemplate stringRedisTemplate;
+	
 	
 	@Override
 	public void insert(UserEntity userEntity) {
@@ -154,6 +159,45 @@ public class UserServiceImpl implements UserService{
 	public UserEntity getUserEntityByPhone(String user_phone) {
 		// TODO Auto-generated method stub
 		return userDao.getUserEntityByPhone(user_phone);
+	}
+
+	@Override
+	public Map<String, String> loginBySms(String user_phone, String Sms) {
+		// TODO Auto-generated method stub
+		Map<String,String> map = new HashMap<>();
+        Random random = new Random();
+        if (StringUtils.isEmptyOrWhitespaceOnly(user_phone)){
+            map.put("msg","手机号码不能为空");
+            return map;
+        }
+
+        if (StringUtils.isEmptyOrWhitespaceOnly(Sms)){
+            map.put("msg","验证码不能为空");
+            return map;
+        }
+
+        UserEntity u = userDao.getUserEntityByPhone(user_phone);
+        if (u==null){
+            map.put("msg","手机号码不存在");
+            return map;
+        }
+        if (!Sms.equals(stringRedisTemplate.opsForValue().get(user_phone))) {
+			map.put("msg", "验证码错误");
+			return map;
+		}
+        /*if (!JblogUtil.MD5(password+u.getSalt()).equals(u.getPassword())){
+            map.put("msg","密码错误");
+            return map;
+        }*/
+
+        String ticket = addLoginTicket(u.getUser_id());
+        System.out.println("ticket");
+        System.out.println(ticket);
+        map.put("ticket",ticket);
+        map.put("uuid", u.getUser_id());
+
+        return map;
+		
 	}
 	
 

@@ -123,6 +123,52 @@ public class UserController {
         }
     }
 	
+	//验证码登录
+	//param  user_phone   Sms 
+	@RequestMapping("/loginBySms")
+	public JSONObject loginBySms(Model model, HttpServletResponse httpResponse, @RequestBody JSONObject jsonObject) {
+		
+		System.out.println("login_name");
+		//String next = "xx";
+		JSONObject result  = new JSONObject();
+		Map<String,String> map = userService.loginBySms(jsonObject.getString("user_phone"), jsonObject.getString("Sms"));
+        if (map.containsKey("ticket")) {
+            Cookie cookie = new Cookie("ticket",map.get("ticket"));
+            cookie.setPath("/");
+            httpResponse.addCookie(cookie);
+            result.put("uuid", map.get("uuid"));
+            result.put("status", "success");
+            result.put("ticket", map.get("ticket"));
+            result.put("errorMsg", null);
+            result.put("user_phone",jsonObject.getString("user_phone"));
+            /*System.out.println("on success////////////////");
+            System.out.println(result);
+            if (StringUtils.isEmptyOrWhitespaceOnly(next)){
+                return result;
+            }*/
+            ArrayList<CompanyEntity> companyData = companyService.selectByContactsId(map.get("uuid"));
+            System.out.println("login companydata :");
+            System.out.println(companyData);
+            if (companyData.isEmpty()) {
+				result.put("CompanyAuthentication", false);
+				result.put("role", "未审核");
+			}else {
+				result.put("CompanyAuthentication", true);
+				result.put("role", companyData.get(0).getRole());
+			}
+            return result;
+        }else {
+            model.addAttribute("msg", map.get("msg"));
+            result.put("uuid", map.get("uuid"));
+            result.put("status", "fail");
+            result.put("ticket", null);
+            result.put("errorMsg", map.get("msg"));
+            result.put("role", "未审核");
+            /*System.out.println("on fail..............................");
+            System.out.println(result);*/
+            return  result;
+        }
+	}
 	//注册成功后将凭证放入cookie，保存到客户端浏览器
 	//@RequestMapping("/register")
 /*    public String register(Model model, HttpServletResponse httpResponse,
