@@ -292,6 +292,9 @@ public class BillController {
 		case "4":
 			//获取买家某类意向
 			return billService.getBuyerIntentions(jsonObject);
+		case "5":
+			//获取资源市场发布的未审核票据的意向
+			return billService.getNotAuditIntentions(jsonObject);
 		default:
 			System.out.println(jsonObject.get("IntentionType").toString());
 			System.out.println("nothing match the condition intentionType");
@@ -317,6 +320,9 @@ public class BillController {
 		case "4":
 			//获取买家某类意向条数
 			return billService.getBuyerIntentionsCount(jsonObject);
+		case "5":
+			//获取资源市场发布的未审核票据的意向条数
+			return billService.getNotAuditIntentionsCount(jsonObject);
 		default:
 			return null;
 		}

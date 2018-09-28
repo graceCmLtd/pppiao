@@ -305,6 +305,14 @@
 		LEFT JOIN(SELECT billNumber,quoterId,interest,xPerLakh,`status`,quoteDate,quoteReferer,real_money from ppp_quote ) b on a.billNumber = b.billNumber
 		left JOIN ( select * from pengpengpiao.ppp_company ) c on b.quoterId = c.contactsId
 	</select>
+	
+	<select id="getNotAuditIntentionsCount" resultType="Integer">
+		select count(*) from 
+			(select * from ppp_bill where `status`='审核中' and billReferer='资源池') a
+			left join (select * from ppp_quote where status='ok') b on a.billNumber = b.billNumber
+			left join (select * from ppp_company where contactsId=#{jsonObject.uuid}) c on a.releaserId = c.contactsId
+	</select>
+	
 </mapper>
 
 <!-- billNumber varchar(45) PK 

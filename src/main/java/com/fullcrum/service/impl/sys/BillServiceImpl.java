@@ -181,6 +181,18 @@ public class BillServiceImpl implements BillService {
 	}
 
 
+	@Override
+	public List<Map<String, Object>> getNotAuditIntentions(JSONObject jsonObject) {
+		return billDao.getNotAuditIntentions(jsonObject);
+	}
+
+
+	@Override
+	public Integer getNotAuditIntentionsCount(JSONObject jsonObject) {
+		return billDao.getNotAuditIntentionsCount(jsonObject);
+	}
+
+
 	
 
 	
