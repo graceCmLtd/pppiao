@@ -37,6 +37,10 @@ public interface QuoteDao {
 			+ "#{quoteEntity.status},#{quoteEntity.quoteDate},#{quoteEntity.real_money} )"})
 	public void insertQuote(@Param("quoteEntity") QuoteEntity quoteEntity);
 	
+	@Insert({"insert " ,TABLE_NAME,"(",INSERT_FIELDS," ) values(#{quoteEntity.billNumber} ,#{quoteEntity.quoterId},#{quoteEntity.quoteAmount},#{quoteEntity.interest},#{quoteEntity.xPerLakh},"
+			+ "#{quoteEntity.status},#{quoteEntity.quoteDate},#{quoteEntity.real_money} )"})
+	public void insertQuoteJson(@Param("quoteEntity") JSONObject quoteEntity);
+	
 	@Delete({"delete from ",TABLE_NAME,"where quoteId = #{quoteId}"})
 	public void deleteQuoteByQuoteId(@Param("quoteId") int quoteId);
 	

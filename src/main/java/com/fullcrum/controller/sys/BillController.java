@@ -6,9 +6,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.springframework.aop.interceptor.SimpleTraceInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,9 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.BillEntity;
 import com.fullcrum.model.sys.BillPicsEntity;
+import com.fullcrum.model.sys.QuoteEntity;
 import com.fullcrum.model.sys.TransactionEntity;
 import com.fullcrum.service.sys.BillPicsService;
 import com.fullcrum.service.sys.BillService;
+import com.fullcrum.service.sys.QuoteService;
 import com.fullcrum.service.sys.TransactionService;
 import com.fullcrum.utils.AipOcrImage;
 
@@ -42,6 +47,10 @@ public class BillController {
 	
 	@Resource(name="transactionServiceImpl")
 	private TransactionService transactionervice;
+	
+	@Resource(name="quoteServiceImpl")
+	private QuoteService quoteService;
+	
 	
 	@RequestMapping("/getbill")
 	public ArrayList<BillEntity> getBills( @RequestParam(value="billNumber")  String billNumber){
@@ -252,6 +261,9 @@ public class BillController {
 		case "4":
 			//获取正在审核中的票据
 			return billService.getBillsAuditing(jsonObject);
+		case "5":
+			//获取正在审核中的通过资源池发布的票据
+			return billService.getBillsAuditingPool(jsonObject);
 		default:
 			return null;
 		}
@@ -293,6 +305,9 @@ public class BillController {
 		case "4":
 			//获取买家某类意向
 			return billService.getBuyerIntentions(jsonObject);
+			//获取卖家资源池审核中的票据
+		case "6":
+			return billService.getSellerIntentionsAuditing(jsonObject);
 		default:
 			System.out.println(jsonObject.get("IntentionType").toString());
 			System.out.println("nothing match the condition intentionType");
@@ -321,5 +336,47 @@ public class BillController {
 		default:
 			return null;
 		}
+	}
+	
+	
+	@RequestMapping("/addFromResourceMarket")
+	@Transactional
+	public JSONObject addFromResourceMarket(@RequestBody JSONObject jsonObject) {
+		JSONObject result = new JSONObject();
+		
+		JSONObject paramBill = jsonObject.getJSONObject("paramBill");
+		JSONObject paramQuote = jsonObject.getJSONObject("paramQuote");
+		JSONObject paramTransaction = jsonObject.getJSONObject("paramTransaction");
+		
+		Integer temp = UUID.randomUUID().hashCode();
+		while (temp <= 0) {
+			temp = UUID.randomUUID().hashCode();
+		}
+		paramTransaction.put("transactionId", temp.toString());
+		
+		paramTransaction.put("transacDate", new Date(new java.util.Date().getTime()));
+		
+		try {
+			
+			
+			billService.insertBill(JSONObject.toJavaObject(paramBill.getJSONObject("billInfo"), BillEntity.class));
+			
+			billPicsService.insertBillPics(JSONObject.toJavaObject(paramBill.getJSONObject("billPics"), BillPicsEntity.class));
+			
+			quoteService.insertQuote(paramQuote);
+			
+			transactionervice.insertTransaction(paramTransaction);
+			
+			result.put("status", "success");
+			result.put("errorMsg", null);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			result.put("status", "fail");
+			result.put("errorMsg", e);
+		}
+		
+		return result;
 	}
 }

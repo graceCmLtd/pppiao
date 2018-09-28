@@ -28,12 +28,14 @@ public interface BillService {
 	
 	public List<Map<String, Object>> getBillsInquoting(JSONObject jsonObject);
 	
-
+	
 	public List<Map<String, Object>> getBillsReceivedQuote(JSONObject jsonObject);
 
 	public List<Map<String, Object>> getBillsWaitingQuote(JSONObject jsonObject);
 
 	public List<Map<String, Object>> getBillsAuditing(JSONObject jsonObject);
+	
+	public List<Map<String, Object>> getBillsAuditingPool(JSONObject jsonObject);
 	
 	//获取意向列表
 	
@@ -45,6 +47,8 @@ public interface BillService {
 	
 	public List<Map<String, Object>> getBuyerIntentions(JSONObject jsonObject);
 
+	public List<Map<String, Object>> getSellerIntentionsAuditing(JSONObject jsonObject);
+	
 	public Integer getCount(JSONObject conditions);
 
 	public Integer getSellerALLIntentionsCount(JSONObject jsonObject);

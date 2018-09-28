@@ -100,4 +100,22 @@ public class ResourceMarketImpl implements ResourceMarketService {
 
 	}
 
+	@Override
+	public ArrayList<ResourceMarketEntity> selectByConditions(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		return resourceMarket.selectByConditions(jsonObject);
+	}
+
+	/*有值时返回条数，返回行为空时为false*/
+	@Override
+	public Integer checkRepetition(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		ArrayList<ResourceMarketEntity> result = resourceMarket.selectByConditions(jsonObject);
+		if (result.isEmpty()) {
+			return 0;
+		}else {
+			return result.size();
+		}
+	}
+
 }

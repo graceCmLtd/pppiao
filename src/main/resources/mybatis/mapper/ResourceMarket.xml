@@ -84,6 +84,42 @@
 		</if>
 	</update>
 	
+	<select id="selectByConditions" resultMap="resourceMarket">
+		<![CDATA[ select * from ppp_resource_market]]>
+		<where>
+			1=1 and 
+			<if test="jsonObject.buyerId != null">
+				<![CDATA[buyerId = #{jsonObject.buyerId} and ]]>
+			</if>
+			<if test="jsonObject.amountRange != null">
+				<![CDATA[amountRange = #{jsonObject.amountRange} and ]]>
+			</if>
+			<if test="jsonObject.timeLimit != null">
+				<![CDATA[timeLimit = #{jsonObject.timeLimit} and ]]>
+			</if>
+			<if test="jsonObject.type1 != null">
+				<![CDATA[type1 = #{jsonObject.type1} and ]]>
+			</if>
+			<if test="jsonObject.type2 != null">
+				<![CDATA[type2 = #{jsonObject.type2} and ]]>
+			</if>
+			<if test="jsonObject.type3 != null">
+				<![CDATA[type3 = #{jsonObject.type3} and ]]>
+			</if>
+			<if test="jsonObject.type4 != null">
+				<![CDATA[type4 = #{jsonObject.type4} and ]]>
+			</if>
+			<if test="jsonObject.billType != null">
+				<![CDATA[billType = #{jsonObject.billType} and ]]>
+			</if>
+			<if test="jsonObject.updateDate != null">
+				<![CDATA[updateDate = #{jsonObject.updateDate} and ]]>
+			</if>
+			 1=1
+		</where>
+	
+	
+	</select>
 	
 	<select id="getCount" resultType="Integer">
 		select count(*) from (select DISTINCT a.*,b.contactsName from (

@@ -21,6 +21,7 @@ public interface ResourceMarketService {
 	
 	public List<Map<String, Object>> selectByBuyerIDForResourcePool( JSONObject jsonObject);
 	
+	public ArrayList<ResourceMarketEntity> selectByConditions(JSONObject jsonObject);
 	
 	public void insert( ResourceMarketEntity resourceMarketEntity);
 	
@@ -37,6 +38,7 @@ public interface ResourceMarketService {
 
 	public Integer getCount();
 
+	public Integer checkRepetition(JSONObject jsonObject );
 
 	public Integer getCountByBuyerId(String buyerId);
 }

@@ -42,6 +42,11 @@ public interface TransactionDao {
 			+ "#{transactionEntity.sellerId},#{transactionEntity.amount},#{transactionEntity.transactionStatus},#{transactionEntity.transacDate})"})
 	public void insertTransaction(@Param("transactionEntity") TransactionEntity transactionEntity);
 	
+	@Insert({"insert " ,TABLE_NAME,"(",INSER_FIELDS,") values (#{transactionEntity.transactionId},#{transactionEntity.transactionType},#{transactionEntity.billNumber},#{transactionEntity.buyerId},"
+			+ "#{transactionEntity.sellerId},#{transactionEntity.amount},#{transactionEntity.transactionStatus},#{transactionEntity.transacDate})"})
+	public void insertTransactionJson(@Param("transactionEntity") JSONObject transactionEntity);
+	
+	
 	@Delete({"delete from ",TABLE_NAME,"where transacId = #{transactionId}"})
 	public void deleteTransaction(@Param("transactionId") int transactionId);
 	

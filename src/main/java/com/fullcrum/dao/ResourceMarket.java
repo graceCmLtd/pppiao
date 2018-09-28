@@ -35,6 +35,8 @@ public interface ResourceMarket {
 	@ResultMap(value="resourceMarket")
 	public ArrayList<ResourceMarketEntity> selectByBuyerId(@Param("buyerId") String buyerId, Integer pageSize, Integer currentPage);
 	
+	/*根据单个或者多个字段查询，返回同时符合条件的行，只支持  “=”  不支持大于小于 等条件筛选*/
+	public ArrayList<ResourceMarketEntity> selectByConditions(@Param("jsonObject") JSONObject jsonObject);
 	
 	@Select({"select * from (select orderId,buyerId,amountRange,timeLimit,type1 as interest,  '国票+国股' as acceptor , billType, '1' as priority,updateDate,note from pengpengpiao.ppp_resource_market where type1 is not null and priority > 1  " + 
 			" union all " + 

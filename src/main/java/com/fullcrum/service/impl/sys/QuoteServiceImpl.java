@@ -123,4 +123,10 @@ public class QuoteServiceImpl implements QuoteService {
 		return quoteDao.getFailQuoteCount(jsonObject);
 	}
 
+	@Override
+	public void insertQuote(JSONObject quoteEntity) {
+		// TODO Auto-generated method stub
+		quoteDao.insertQuoteJson(quoteEntity);
+	}
+
 }

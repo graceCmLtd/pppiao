@@ -17,6 +17,7 @@ public interface QuoteService {
 	
 	public void insertQuote(QuoteEntity quoteEntity);
 	
+	public void insertQuote(JSONObject quoteEntity);
 	
 	public void deleteQuoteByQuoteId( int quoteId);
 	

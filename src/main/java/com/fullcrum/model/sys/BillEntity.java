@@ -30,7 +30,7 @@ public class BillEntity {
 	
 	private String acceptor;
 	
-	private int amount;
+	private String amount;
 	
 	private  Date maturity;
 	
@@ -81,11 +81,11 @@ public class BillEntity {
 		this.acceptor = acceptor;
 	}
 
-	public int getAmount() {
+	public String getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(String amount) {
 		this.amount = amount;
 	}
 

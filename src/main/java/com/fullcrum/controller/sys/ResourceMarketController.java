@@ -57,9 +57,25 @@ public class ResourceMarketController {
 	public JSONObject add(@RequestBody JSONObject jsonObject ) {
 		
 		JSONObject result = new JSONObject();
-		resourceMarketService.insert(JSONObject.toJavaObject(jsonObject.getJSONObject("resourceMarketInfo"), ResourceMarketEntity.class));
-		System.out.println(jsonObject.getJSONObject("resourceMarketInfo"));
-		result.put("status", "success");
+		JSONObject temp = jsonObject.getJSONObject("resourceMarketInfo");
+		JSONObject param = new JSONObject();
+		
+		param.put("amountRange", temp.getString("amountRange"));
+		param.put("timeLimit", temp.getString("timeLimit"));
+		param.put("buyerId", temp.getString("buyerId"));
+		int n = resourceMarketService.checkRepetition(param);
+		
+		if (n > 0 ) {
+			result.put("status", "fail");
+			result.put("errorMsg", "line repetition");
+		}else {
+			resourceMarketService.insert(JSONObject.toJavaObject(jsonObject.getJSONObject("resourceMarketInfo"), ResourceMarketEntity.class));
+			System.out.println(jsonObject.getJSONObject("resourceMarketInfo"));
+			result.put("status", "success");
+		}
+		
+		
+		
 		return result;
 	}
 	
@@ -75,8 +91,21 @@ public class ResourceMarketController {
 	@RequestMapping("/updateByOrderId")
 	public JSONObject updateByOrderId(@RequestBody JSONObject jsonObject ) {
 		JSONObject result = new JSONObject();
-		resourceMarketService.updateByOrderId(jsonObject);
-		result.put("status", "success");
+		JSONObject param = new JSONObject();
+		param.put("amountRange", jsonObject.getString("amountRange"));
+		param.put("timeLimit", jsonObject.getString("timeLimit"));
+		param.put("buyerId", jsonObject.getString("buyerId"));
+		int n = resourceMarketService.checkRepetition(param);
+		System.out.println("count lines in resourcemarket");
+		System.out.println(n);
+		if ( n >= 1 ) {
+			result.put("status", "fail");
+			result.put("errorMsg", "line repetition");
+		}else {
+			resourceMarketService.updateByOrderId(jsonObject);
+			result.put("status", "success");
+			result.put("errorMsg", null);
+		}
 		return result;
 	}
 	
@@ -112,5 +141,11 @@ public class ResourceMarketController {
 	@RequestMapping("/getCount")
 	public Integer getCount() {
 		return resourceMarketService.getCount();
+	}
+	
+	/*根据条件查询，返回符合条件的行*/
+	@RequestMapping("/getByConditions")
+	public ArrayList<ResourceMarketEntity> selectByConditions(@RequestBody JSONObject jsonObject){
+		return  resourceMarketService.selectByConditions(jsonObject);
 	}
 }

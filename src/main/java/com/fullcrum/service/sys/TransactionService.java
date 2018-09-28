@@ -19,6 +19,8 @@ public interface TransactionService {
 	
 	public void insertTransaction(TransactionEntity transactionEntity) throws Exception;
 	
+	public void insertTransaction( JSONObject transactionEntity);
+	
 	public void deleteTransaction(int transactionId);
 	
 	public void updateTransaction(TransactionEntity transactionEntity);
