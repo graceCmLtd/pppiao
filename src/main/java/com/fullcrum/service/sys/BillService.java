@@ -62,6 +62,10 @@ public interface BillService {
 	public Integer getBillsReceivedQuoteCount(JSONObject jsonObject);
 
 	public Integer getBillsWaitingQuoteCount(JSONObject jsonObject);
+
+	public List<Map<String, Object>> getNotAuditIntentions(JSONObject jsonObject);
+
+	public Integer getNotAuditIntentionsCount(JSONObject jsonObject);
 	
 	
 	

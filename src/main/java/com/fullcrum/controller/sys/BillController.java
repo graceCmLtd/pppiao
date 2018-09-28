@@ -10,8 +10,6 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
-import org.springframework.aop.interceptor.SimpleTraceInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.BillEntity;
 import com.fullcrum.model.sys.BillPicsEntity;
-import com.fullcrum.model.sys.QuoteEntity;
 import com.fullcrum.model.sys.TransactionEntity;
 import com.fullcrum.service.sys.BillPicsService;
 import com.fullcrum.service.sys.BillService;
@@ -290,7 +287,6 @@ public class BillController {
 		jsonObject.put("curr_time", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		Integer currentPage = jsonObject.getInteger("currentPage");
 		Integer pageSize = jsonObject.getInteger("pageSize");
-		System.out.println(currentPage +"-==-"+ pageSize);
 		jsonObject.put("currentPage", (currentPage-1)*pageSize);
 		switch (jsonObject.get("IntentionType").toString()) {
 		case "1":
@@ -305,9 +301,15 @@ public class BillController {
 		case "4":
 			//获取买家某类意向
 			return billService.getBuyerIntentions(jsonObject);
+
 			//获取卖家资源池审核中的票据
 		case "6":
 			return billService.getSellerIntentionsAuditing(jsonObject);
+
+		case "5":
+			//获取资源市场发布的未审核票据的意向
+			return billService.getNotAuditIntentions(jsonObject);
+
 		default:
 			System.out.println(jsonObject.get("IntentionType").toString());
 			System.out.println("nothing match the condition intentionType");
@@ -333,6 +335,9 @@ public class BillController {
 		case "4":
 			//获取买家某类意向条数
 			return billService.getBuyerIntentionsCount(jsonObject);
+		case "5":
+			//获取资源市场发布的未审核票据的意向条数
+			return billService.getNotAuditIntentionsCount(jsonObject);
 		default:
 			return null;
 		}

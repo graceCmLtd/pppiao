@@ -182,9 +182,16 @@ public class BillServiceImpl implements BillService {
 
 
 	@Override
+
 	public List<Map<String, Object>> getBillsAuditingPool(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
 		return billDao.getBillsAuditingPool(jsonObject);
+	}
+	
+	@Override
+	public List<Map<String, Object>> getNotAuditIntentions(JSONObject jsonObject) {
+		return billDao.getNotAuditIntentions(jsonObject);
+
 	}
 
 
@@ -192,6 +199,11 @@ public class BillServiceImpl implements BillService {
 	public List<Map<String, Object>> getSellerIntentionsAuditing(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
 		return billDao.getSellerIntentionsAuditing(jsonObject);
+	}
+	@Override
+	public Integer getNotAuditIntentionsCount(JSONObject jsonObject) {
+		return billDao.getNotAuditIntentionsCount(jsonObject);
+
 	}
 
 

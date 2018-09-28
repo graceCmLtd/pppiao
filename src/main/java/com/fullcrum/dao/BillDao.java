@@ -203,6 +203,14 @@ public interface BillDao {
 		@ResultMap(value="allBills")
 		public List<Map<String, Object>> selectBills(@Param("pageSize")Integer pageSize, @Param("currentPage")Integer currentPage);
 		
+		//获取资源市场发布票据但未审核的意向
+		@Select({"select a.billNumber,a.billType,a.acceptor,a.amount,a.`status`,a.billReferer,TIMESTAMPDIFF(day,#{jsonObject.curr_time},a.maturity)as remain_days,a.maturity,b.interest,b.xPerLakh,c.companyName,c.contactsName,c.contactsPhone from "+
+				"(select * from ppp_bill where `status`='审核中' and billReferer='资源池') a "+
+			"left join (select * from ppp_quote where status='ok') b on a.billNumber = b.billNumber " +
+			"left join (select * from ppp_company where contactsId=#{jsonObject.uuid}) c on a.releaserId = c.contactsId " +
+			"limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
+		@ResultMap(value="QuoteIntention")
+		public List<Map<String, Object>> getNotAuditIntentions(@Param("jsonObject")JSONObject jsonObject);
 		
 		public Integer selectCount();
 
@@ -219,6 +227,9 @@ public interface BillDao {
 		public Integer getBillsReceivedQuoteCount(@Param("jsonObject")JSONObject jsonObject);
 		//我的报价  未报价总条数
 		public Integer getBillsWaitingQuoteCount(@Param("jsonObject")JSONObject jsonObject);
+		//求贴意向  未审核总数
+		public Integer getNotAuditIntentionsCount(@Param("jsonObject")JSONObject jsonObject);
+		
 		
 		
 }
