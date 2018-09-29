@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.cache.CacheProperties.Redis;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,9 +31,6 @@ import com.fullcrum.service.sys.CompanyService;
 import com.fullcrum.service.sys.UserService;
 import com.fullcrum.utils.PicValidateUtil;
 import com.fullcrum.utils.SendSms;
-
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.support.RedisClientFactoryBean;
 
 @RestController
 @CrossOrigin

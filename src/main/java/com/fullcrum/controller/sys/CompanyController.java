@@ -51,7 +51,6 @@ public class CompanyController {
 		CompanyEntity companyEntity = JSONObject.toJavaObject(jsonObject.getJSONObject("companyInfo"), CompanyEntity.class);
 		companyEntity.setUpdateDate(new Date(new java.util.Date().getTime()));
 		System.out.println("print   add company jsonobject .xxxxxxxxxxxxxxxxxxx");
-		System.out.println(companyEntity.getContactsName());
 		companyService.insertCompany(companyEntity);
 		companyPicsService.insertCompanyPicsByJson(jsonObject.getJSONObject("companyPics"));
 		
@@ -90,7 +89,7 @@ public class CompanyController {
 		companyEntity.setUpdateDate(new Date(new java.util.Date().getTime()));
 		CompanyPicsEntity companyPicsEntity = JSONObject.toJavaObject(jsonObject.getJSONObject("companyPics"), CompanyPicsEntity.class);
 		companyPicsEntity.setUpdateDate(new Date(new java.util.Date().getTime()));
-		
+        companyEntity.setRole("未审核");
 		companyService.update(companyEntity);
 		companyPicsService.updateCompanyPics(companyPicsEntity);
 		return "success";
