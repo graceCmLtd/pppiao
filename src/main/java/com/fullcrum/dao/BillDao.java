@@ -55,15 +55,15 @@ public interface BillDao {
 		
 
 		
-		@Select({"select * from ppp_bill where  billNumber = #{billNumber}"})
+		@Select({"select * from ppp_bill where  billNumber = #{billNumber} orderby ORDER BY updateTimeStamp DESC " })
 		@ResultMap(value="billMap")
 		public ArrayList<BillEntity> selectByBillNumber(@Param("billNumber") String billNumber);
 		
-		@Select({"select "+SELECT_FIELDS+",TIMESTAMPDIFF(day,#{current_date},maturity) as remain_days  from ppp_bill where  billNumber = #{billNumber}"})
+		@Select({"select "+SELECT_FIELDS+",TIMESTAMPDIFF(day,#{current_date},maturity) as remain_days  from ppp_bill where  billNumber = #{billNumber} ORDER BY updateTimeStamp DESC"})
 		@ResultMap(value="billMapAll")
 		public List<Map<String, Object>>  selectByBillNumberAll(@Param("billNumber") String billNumber,@Param("current_date") String current_date);
 		
-		@Select({"select * from ppp_bill "})
+		@Select({"select * from ppp_bill ORDER BY updateTimeStamp DESC "})
 		@ResultMap(value="billMap")
 		public ArrayList<BillEntity> selectAllBill();
 		
@@ -83,8 +83,8 @@ public interface BillDao {
 		
 		
 		//获取当前用户发布票据的报价情况
-		@Select({"SELECT * from (SELECT billNumber,billType,acceptor,amount,maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},maturity) as remain_days,`status`,releaseDate,releaserId,billReferer,failReason from ppp_bill WHERE releaserId = #{jsonObject.uuid} and status='审核完成'  ) a "
-				+ " LEFT JOIN(SELECT billNumber,COUNT(*) AS countNum from ppp_quote GROUP BY billNumber) b on a.billNumber = b.billNumber  " })
+		@Select({"SELECT * from (SELECT billNumber,billType,acceptor,amount,maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},maturity) as remain_days,`status`,releaseDate,releaserId,billReferer,failReason,updateTimeStamp from ppp_bill WHERE releaserId = #{jsonObject.uuid} and status='审核完成'  ) a "
+					+ " LEFT JOIN(SELECT billNumber,COUNT(*) AS countNum from ppp_quote GROUP BY billNumber) b on a.billNumber = b.billNumber  ORDER BY a.updateTimeStamp DESC" })
 		@ResultMap(value="billAboutQuote")
 		public List<Map<String, Object>> getBillsInquoting(@Param("jsonObject") JSONObject jsonObject );
 		
@@ -94,8 +94,8 @@ public interface BillDao {
 				+ "c.companyName,c.contactsPhone,c.contactsQQ,c.bankAccountName,c.bankName,c.picId as companyPicId,c.contactsId ,contactsName "
 				+ "from (SELECT billNumber,billType,acceptor,amount,maturity,`status`,releaseDate,releaserId,billReferer,failReason "
 				+ "from ppp_bill WHERE releaserId = #{jsonObject.uuid} AND  billNumber = #{jsonObject.billNumber}) a  "
-				+ "LEFT JOIN(SELECT billNumber,quoterId,interest,xPerLakh,`status`,quoteDate,quoteReferer,real_money from ppp_quote ) b  on a.billNumber = b.billNumber  "
-				+ "left JOIN ( select * from pengpengpiao.ppp_company ) c on b.quoterId = c.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
+				+ "LEFT JOIN(SELECT billNumber,quoterId,interest,xPerLakh,`status`,quoteDate,quoteReferer,real_money,updateTimeStamp from ppp_quote ) b  on a.billNumber = b.billNumber  "
+				+ "left JOIN ( select * from pengpengpiao.ppp_company ) c on b.quoterId = c.contactsId ORDER BY b.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize} ;"})
 		@ResultMap(value="billAboutQuote")
 		public List<Map<String, Object>> getBillsReceivedQuote(@Param("jsonObject") JSONObject jsonObject);
 		
@@ -105,23 +105,23 @@ public interface BillDao {
 				+ "c.companyName,c.contactsPhone,c.contactsQQ,c.bankAccountName,c.bankName,c.picId as companyPicId,c.contactsId  "
 				+ "from (SELECT billNumber,billType,acceptor,amount,maturity,`status`,releaseDate,releaserId,billReferer,failReason "
 				+ "from ppp_bill WHERE releaserId = #{jsonObject.uuid} AND  billNumber = #{jsonObject.billNumber}) a  "
-				+ "LEFT JOIN(SELECT billNumber,quoterId,interest,xPerLakh,`status`,quoteDate,quoteReferer,real_money from ppp_quote ) b  on a.billNumber = b.billNumber "
-				+ "left JOIN ( select * from pengpengpiao.ppp_company ) c on b.quoterId = c.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
+				+ "LEFT JOIN(SELECT billNumber,quoterId,interest,xPerLakh,`status`,quoteDate,quoteReferer,real_money,updateTimeStamp from ppp_quote ) b  on a.billNumber = b.billNumber "
+				+ "left JOIN ( select * from pengpengpiao.ppp_company ) c on b.quoterId = c.contactsId ORDER BY b.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize} ;"})
 		@ResultMap(value="billAboutQuote")
 		public List<Map<String, Object>> getBillsWaitingQuote(@Param("jsonObject") JSONObject jsonObject);
 		
 		
 		//获取用户发布的正在审核中的票据
-		@Select({"SELECT * from (SELECT billNumber,billType,acceptor,amount,maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},maturity) as remain_days,`status`,releaseDate,releaserId,billReferer,failReason from ppp_bill "
+		@Select({"SELECT * from (SELECT billNumber,billType,acceptor,amount,maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},maturity) as remain_days,`status`,releaseDate,releaserId,billReferer,failReason,updateTimeStamp from ppp_bill "
 				+ " WHERE releaserId = #{jsonObject.uuid} and status='审核中'  and billReferer = '传统渠道'   ) a "
-				+ " LEFT JOIN(SELECT billNumber,COUNT(*) AS countNum from ppp_quote GROUP BY billNumber) b on a.billNumber = b.billNumber  " })
+				+ " LEFT JOIN(SELECT billNumber,COUNT(*) AS countNum from ppp_quote GROUP BY billNumber) b on a.billNumber = b.billNumber ORDER BY a.updateTimeStamp DESC " })
 		@ResultMap(value="billAboutQuote")
 		public List<Map<String, Object>> getBillsAuditing(@Param("jsonObject") JSONObject jsonObject);
 		
 		//获取用户发布的正在审核中的票据
-		@Select({"SELECT * from (SELECT billNumber,billType,acceptor,amount,maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},maturity) as remain_days,`status`,releaseDate,releaserId,billReferer,failReason from ppp_bill "
+		@Select({"SELECT * from (SELECT billNumber,billType,acceptor,amount,maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},maturity) as remain_days,`status`,releaseDate,releaserId,billReferer,failReason,updateTimeStamp from ppp_bill "
 				+ " WHERE releaserId = #{jsonObject.uuid} and status='审核中'  and billReferer = '资源池渠道' ) a "
-				+ " LEFT JOIN(SELECT billNumber,COUNT(*) AS countNum from ppp_quote GROUP BY billNumber) b on a.billNumber = b.billNumber  " })
+				+ " LEFT JOIN(SELECT billNumber,COUNT(*) AS countNum from ppp_quote GROUP BY billNumber) b on a.billNumber = b.billNumber ORDER BY a.updateTimeStamp DESC " })
 		@ResultMap(value="billAboutQuote")
 		public List<Map<String, Object>> getBillsAuditingPool(@Param("jsonObject") JSONObject jsonObject);
 		
@@ -134,7 +134,7 @@ public interface BillDao {
 				"left join (select * from pengpengpiao.ppp_quote ) b " + 
 				"on a.billNumber = b.billNumber " + 
 				"left join (select * from pengpengpiao.ppp_bill ) c " + 
-				"on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
+				"on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId ORDER BY a.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
 		@ResultMap(value="QuoteIntention")
 		public List<Map<String, Object>> getSellerALLIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
@@ -146,7 +146,7 @@ public interface BillDao {
 						"left join (select * from pengpengpiao.ppp_quote ) b " + 
 						"on a.billNumber = b.billNumber " + 
 						"left join (select * from pengpengpiao.ppp_bill ) c " + 
-						"on a.billNumber = c.billNumber LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.sellerId =  d.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
+						"on a.billNumber = c.billNumber LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.sellerId =  d.contactsId ORDER BY a.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
 				@ResultMap(value="QuoteIntention")
 				public List<Map<String, Object>> getBuyerALLIntentions(@Param("jsonObject") JSONObject jsonObject);
 				
@@ -159,7 +159,7 @@ public interface BillDao {
 				"left join (select * from pengpengpiao.ppp_quote ) b " + 
 				"on a.billNumber = b.billNumber " + 
 				"left join (select * from pengpengpiao.ppp_bill ) c " + 
-				"on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
+				"on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId ORDER BY a.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
 		@ResultMap(value="QuoteIntention")
 		public List<Map<String, Object>> getSellerIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
@@ -173,7 +173,7 @@ public interface BillDao {
 				"left join (select * from pengpengpiao.ppp_bill ) c " + 
 				"on a.billNumber = c.billNumber  "
 				+ "LEFT JOIN(select * from pengpengpiao.ppp_company ) d " + 
-				"ON a.sellerId =  d.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize} ;"})
+				"ON a.sellerId =  d.contactsId ORDER BY a.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize} ;"})
 		@ResultMap(value="QuoteIntention")
 		public List<Map<String, Object>> getBuyerIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
@@ -185,21 +185,21 @@ public interface BillDao {
 						+ "left join (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid}  ) a on a.billNumber = c.billNumber  " + 
 						"left join (select * from pengpengpiao.ppp_quote ) b " + 
 						"on a.billNumber = b.billNumber " + 
-						" LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
+						" LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId ORDER BY a.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
 				@ResultMap(value="QuoteIntention")
 				public List<Map<String, Object>> getSellerIntentionsAuditing(@Param("jsonObject") JSONObject jsonObject);
 		
 		/*@Select({"select distinct a.*, b.pic1 as pic1,b.pic2 as pic2 from ppp_bill a " + 
 				"left join ppp_bill_pics b on a.billNumber = b.billNumber" + 
 				" where  a.billNumber = #{billNumber}"})*/
-		@Select({"select * from ppp_bill_pics where billNumber = #{billNumber}"})
+		@Select({"select * from ppp_bill_pics where billNumber = #{billNumber} ORDER BY updateTimeStamp DESC "})
 		@ResultMap(value="getBillInfo")
 		public List<Map<String, Object>> selectBillInfo(@Param("billNumber")String billNumber);
 		
-		@Select({"update ppp_bill set status = #{status},failReason = #{failReason}  where billNumber = #{billNumber}"})
+		@Select({"update ppp_bill set status = #{status},failReason = #{failReason}  where billNumber = #{billNumber} "})
 		public void updateBillStatus(@Param("billNumber")String billNumber, @Param("status")String status, @Param("failReason")String failReason);
 		
-		@Select("select * from ppp_bill order by timeStamp desc limit #{currentPage}, #{pageSize}")
+		@Select("select * from ppp_bill ORDER BY updateTimeStamp DESC limit #{currentPage}, #{pageSize}")
 		@ResultMap(value="allBills")
 		public List<Map<String, Object>> selectBills(@Param("pageSize")Integer pageSize, @Param("currentPage")Integer currentPage);
 		
@@ -208,7 +208,7 @@ public interface BillDao {
 				"(select * from ppp_bill where `status`='审核中' and billReferer='资源池') a "+
 			"left join (select * from ppp_quote where status='ok') b on a.billNumber = b.billNumber " +
 			"left join (select * from ppp_company where contactsId=#{jsonObject.uuid}) c on a.releaserId = c.contactsId " +
-			"limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
+			" ORDER BY a.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
 		@ResultMap(value="QuoteIntention")
 		public List<Map<String, Object>> getNotAuditIntentions(@Param("jsonObject")JSONObject jsonObject);
 		
