@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fullcrum.dao.CompanyDao;
-import com.fullcrum.model.sys.BillEntity;
 import com.fullcrum.model.sys.CompanyEntity;
 import com.fullcrum.service.sys.CompanyService;
 

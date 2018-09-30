@@ -1,6 +1,7 @@
 package com.fullcrum.controller.sys;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +45,6 @@ public class ResourceMarketController {
 	@RequestMapping("/getByBuyerId")
 	public ArrayList<ResourceMarketEntity> getByBuyerId(@RequestParam(value="buyerId") String buyerId,
 			@RequestParam(value="pageSize") Integer pageSize,@RequestParam(value="currentPage") Integer currentPage){
-		
 		return resourceMarketService.selectByBuyerId(buyerId,pageSize,(currentPage-1)*pageSize);
 	}
 	
@@ -118,7 +118,6 @@ public class ResourceMarketController {
 			result.put("status", "success");
 			result.put("errorMsg", null);
 		} catch (Exception e) {
-			// TODO: handle exception
 			result.put("status", "fail");
 			result.put("errorMsg", e);
 		}
