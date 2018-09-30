@@ -98,7 +98,7 @@ public class ResourceMarketController {
 		int n = resourceMarketService.checkRepetition(param);
 		System.out.println("count lines in resourcemarket");
 		System.out.println(n);
-		if ( n >= 1 ) {
+		if ( n > 1 ) {
 			result.put("status", "fail");
 			result.put("errorMsg", "line repetition");
 		}else {
