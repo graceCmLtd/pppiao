@@ -48,7 +48,10 @@
 				signUpAddr =#{companyEntity.signUpAddr},
 			</if>
 			<if test="companyEntity.updateDate != null" >
-				updateDate =#{companyEntity.updateDate}
+				updateDate =#{companyEntity.updateDate},
+			</if>
+			<if test="companyEntity.role != null" >
+				role =#{companyEntity.role}
 			</if>
 			<where>
 				<if test="companyEntity.contactsId != null">
