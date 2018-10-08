@@ -33,7 +33,7 @@ public interface ResourceMarket {
 	
 	@Select({"select * from ",TABLE_NAME," where buyerId = #{buyerId} order by updateDate desc limit #{currentPage},#{pageSize}"})
 	@ResultMap(value="resourceMarket")
-	public ArrayList<ResourceMarketEntity> selectByBuyerId(@Param("buyerId") String buyerId, Integer pageSize, Integer currentPage);
+	public ArrayList<ResourceMarketEntity> selectByBuyerId(@Param("buyerId") String buyerId, @Param("pageSize") Integer pageSize,@Param("currentPage") Integer currentPage);
 	
 	/*根据单个或者多个字段查询，返回同时符合条件的行，只支持  “=”  不支持大于小于 等条件筛选*/
 	public ArrayList<ResourceMarketEntity> selectByConditions(@Param("jsonObject") JSONObject jsonObject);

@@ -55,7 +55,10 @@ public interface BillDao {
 		
 
 		
-		@Select({"select * from ppp_bill where  billNumber = #{billNumber}  ORDER BY updateTimeStamp DESC " })
+
+	/*	@Select({"select * from ppp_bill where  billNumber = #{billNumber}  ORDER BY updateTimeStamp DESC " })*/
+
+		@Select({"select * from ppp_bill where  billNumber = #{billNumber} ORDER BY updateTimeStamp DESC " })
 		@ResultMap(value="billMap")
 		public ArrayList<BillEntity> selectByBillNumber(@Param("billNumber") String billNumber);
 		
@@ -199,7 +202,7 @@ public interface BillDao {
 		@Select({"update ppp_bill set status = #{status},failReason = #{failReason}  where billNumber = #{billNumber} "})
 		public void updateBillStatus(@Param("billNumber")String billNumber, @Param("status")String status, @Param("failReason")String failReason);
 		
-		@Select("select * from ppp_bill ORDER BY updateTimeStamp DESC limit #{currentPage}, #{pageSize}")
+		@Select("select * from ppp_bill ORDER BY timeStamp DESC limit #{currentPage}, #{pageSize}")
 		@ResultMap(value="allBills")
 		public List<Map<String, Object>> selectBills(@Param("pageSize")Integer pageSize, @Param("currentPage")Integer currentPage);
 		
