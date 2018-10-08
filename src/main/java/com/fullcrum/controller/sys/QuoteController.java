@@ -138,7 +138,7 @@ public class QuoteController {
 	}
 	
 	//通过票据号码来查询我的报价页面票据详情的信息
-	@RequestMapping("getDetail")
+	@RequestMapping("/getDetail")
 	public List<Map<String,Object>> getDetail(@RequestParam("billNumber")String billNumber){
 		System.out.println(billNumber);
 		List<Map<String,Object>> list = quoteService.selectBillByBillNum(billNumber);
