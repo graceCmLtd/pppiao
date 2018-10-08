@@ -55,7 +55,7 @@ public interface BillDao {
 		
 
 		
-		@Select({"select * from ppp_bill where  billNumber = #{billNumber} orderby ORDER BY updateTimeStamp DESC " })
+		@Select({"select * from ppp_bill where  billNumber = #{billNumber}  ORDER BY updateTimeStamp DESC " })
 		@ResultMap(value="billMap")
 		public ArrayList<BillEntity> selectByBillNumber(@Param("billNumber") String billNumber);
 		

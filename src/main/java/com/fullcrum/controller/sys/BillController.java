@@ -28,6 +28,10 @@ import com.fullcrum.service.sys.QuoteService;
 import com.fullcrum.service.sys.TransactionService;
 import com.fullcrum.utils.AipOcrImage;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/ppp/bills")
@@ -48,8 +52,9 @@ public class BillController {
 	@Resource(name="quoteServiceImpl")
 	private QuoteService quoteService;
 	
-	
+	@ApiOperation(value="获取票据信息",notes="根据票号获取票据信息")
 	@RequestMapping("/getbill")
+	@ApiImplicitParam(name="billNumber", value="票号",required=true,dataType="String" )
 	public ArrayList<BillEntity> getBills( @RequestParam(value="billNumber")  String billNumber){
 		
 		return billService.selectByBillNumber(billNumber);
