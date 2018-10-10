@@ -31,9 +31,9 @@ public class CompanyServiceImpl implements CompanyService {
 
 
 	@Override
-	public ArrayList<CompanyEntity> selectAll() {
+	public ArrayList<CompanyEntity> selectAll(Integer pageSize,Integer currentPage) {
 		// TODO Auto-generated method stub
-		return companyDao.selectAll();
+		return companyDao.selectAll(pageSize,currentPage);
 	}
 
 	@Override
@@ -58,5 +58,7 @@ public class CompanyServiceImpl implements CompanyService {
 		companyDao.update(companyEntity);
 	}
 
+	@Override
+	public Integer getCount() {return companyDao.getCount();}
 	
 }

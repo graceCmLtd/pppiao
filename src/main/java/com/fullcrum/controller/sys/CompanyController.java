@@ -29,10 +29,15 @@ public class CompanyController {
 	private CompanyPicsService companyPicsService;
 	
 	@RequestMapping("/getAllCompanys")
-	public ArrayList<CompanyEntity> getAllCompanys(){
-		return companyService.selectAll();
+	public ArrayList<CompanyEntity> getAllCompanys(@RequestParam Integer currentPage,@RequestParam Integer pageSize){
+		return companyService.selectAll(pageSize,(currentPage-1)*pageSize);
 	}
-	
+
+	@RequestMapping("/getCompanyCount")
+	public Integer getCompanyCount(){
+		return companyService.getCount();
+	}
+
 	@RequestMapping("/getCompanyInfo")
 	public ArrayList<CompanyEntity> getCompanyInfo(@RequestParam(value="companyId") String companyId){
 		return companyService.selectByCompanyId(companyId);

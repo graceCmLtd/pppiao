@@ -54,7 +54,16 @@ public class CompanyEntity {
 	private Date updateDate;   //更新时间
 
 	private String role; //公司审核状态
-	
+
+	private Date updateTimeStamp;
+
+	public Date getUpdateTimeStamp() {
+		return updateTimeStamp;
+	}
+
+	public void setUpdateTimeStamp(Date updateTimeStamp) {
+		this.updateTimeStamp = updateTimeStamp;
+	}
 	
 	public String getContactsName() {
 		return contactsName;

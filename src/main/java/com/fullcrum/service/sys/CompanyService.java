@@ -7,7 +7,7 @@ import com.fullcrum.model.sys.CompanyEntity;
 
 public interface CompanyService {
 
-		public ArrayList<CompanyEntity> selectAll();
+		public ArrayList<CompanyEntity> selectAll(Integer pageSize,Integer currentPage);
 		
 		public ArrayList<CompanyEntity> selectByContactsId(String contactsId);
 		
@@ -20,6 +20,8 @@ public interface CompanyService {
 		public void updateCompanyStatus(String companyId, String role);
 
 		public void update(CompanyEntity companyEntity);
+
+		public Integer getCount();
 
 
 		
