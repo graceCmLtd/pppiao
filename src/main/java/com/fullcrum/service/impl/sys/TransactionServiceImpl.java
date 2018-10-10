@@ -87,8 +87,8 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public ArrayList<TransactionEntity> selectAllTrans() {
-		return transactionDao.slectAllTrans();
+	public List<Map<String,Object>> selectAllTrans(Integer pageSize,Integer currentPage) {
+		return transactionDao.slectAllTrans(pageSize,currentPage);
 	}
 
 	//更新transaction表中的intentionStatus字段
@@ -115,6 +115,12 @@ public class TransactionServiceImpl implements TransactionService {
 		// TODO Auto-generated method stub
 		transactionDao.insertTransactionJson(transactionEntity);
 	}
-	
-	
+
+	@Override
+	public Integer getCount() {
+		// TODO Auto-generated method stub
+		return transactionDao.getCount();
+	}
+
+
 }

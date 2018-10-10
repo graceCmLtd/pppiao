@@ -82,9 +82,14 @@ public interface TransactionDao {
 	@Select({"update ppp_transaction set transacStatus=#{transStatus} where transacId=#{transactionId} and sellerId is not null and buyerId is not null"})
 	public void updateTransStatus(@Param("transactionId")int transactionId,@Param("transStatus") String transStatus);
 	
-	@Select({"select * from ppp_transaction"})
+	@Select({"SELECT a.*,b.buyerName,c.sellerName from (select * from pengpengpiao.ppp_transaction where buyerId is not NULL) a " +
+			"LEFT JOIN (SELECT contactsName as buyerName,contactsId from pengpengpiao.ppp_company ) b ON a.buyerId = b.contactsId  " +
+			"LEFT JOIN (SELECT contactsName as sellerName,contactsId from pengpengpiao.ppp_company ) c ON a.sellerId = c.contactsId " +
+			"limit #{currentPage},#{pageSize}"})
 	@ResultMap(value="transactionMap")
-	public ArrayList<TransactionEntity> slectAllTrans();
+	public List<Map<String,Object>> slectAllTrans(@Param("pageSize") Integer pageSize,@Param("currentPage") Integer currentPage);
+
+	Integer getCount();
 	
 	@Select({"update ppp_transaction set intentionStatus = '待接单'  where billNumber = #{billNumber}"})
 	public void updateIntentionStatus(String billNumber);

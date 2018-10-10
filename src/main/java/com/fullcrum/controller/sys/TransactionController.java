@@ -34,18 +34,13 @@ public class TransactionController {
 	
 	
 	@RequestMapping("/getAllTrans")
-	public ArrayList<TransactionEntity> getAllTrans(){
-		ArrayList<TransactionEntity> list =  transactionService.selectAllTrans();
-		for (TransactionEntity transac : list) {
-			String trans = transac.getTransactionStatus();
-			//System.out.println(trans);
-			if(trans.equals("5")) {
-				transac.setTransactionStatus("交易完成");
-			}else {
-				transac.setTransactionStatus("未完成");
-			}
-		}
-		return list;
+	public List<Map<String,Object>> getAllTrans(@RequestParam Integer currentPage,@RequestParam Integer pageSize){
+		return transactionService.selectAllTrans(pageSize,(currentPage-1)*pageSize);
+	}
+
+	@RequestMapping("/getCount")
+	public Integer getCount(){
+		return transactionService.getCount();
 	}
 	
 	@RequestMapping("/getByTransacId")
