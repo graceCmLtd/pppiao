@@ -85,6 +85,9 @@ public class QuoteController {
 		switch (jsonObject.get("filter").toString()) {
 		case "1":
 			//全部报价
+/*			System.out.println("看看时间是个什么鬼");
+			List<Map<String, Object>> tt = quoteService.getALLQuote(jsonObject);
+			System.out.println(tt.get(0).get("releaseDate"));*/
 			return quoteService.getALLQuote(jsonObject);
 		case "2":
 			return quoteService.getAcceptedQuote(jsonObject);
