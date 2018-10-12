@@ -17,9 +17,9 @@ public interface CompanyDao {
 	String TABLE_NAME = "ppp_company";
 	String INSERT_FIELDS = "companyName,contactsId ,contactsName, contactsPhone ,contactsEmail ,contactsQQ ,bankAccountName ,bankAccount,bankName,picId ,signUpAddr ,updateDate,role ";
 	
-	@Select({"select * from ",TABLE_NAME  })
+	@Select({"select * from ",TABLE_NAME,"order by updateTimeStamp desc limit #{currentPage},#{pageSize}"  })
 	@ResultMap("companyMap")
-	public  ArrayList<CompanyEntity>  selectAll();
+	public  ArrayList<CompanyEntity>  selectAll(@Param("pageSize") Integer pageSzie,@Param("currentPage") Integer currentPage);
 	
 	@Select({"select * from ",TABLE_NAME,"where contactsId = #{contactsId}"})
 	@ResultMap("companyMap")
@@ -42,6 +42,6 @@ public interface CompanyDao {
 	public void updateCompanyStatus(@Param("companyId")String companyId, @Param("role")String role);
 
 	public void update(@Param("companyEntity")CompanyEntity companyEntity);
-	
-	
+
+	public Integer getCount();
 }

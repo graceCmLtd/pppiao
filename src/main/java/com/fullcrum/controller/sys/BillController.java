@@ -58,7 +58,7 @@ public class BillController {
 	public ArrayList<BillEntity> getBills( @RequestParam(value="billNumber")  String billNumber){
 		
 		return billService.selectByBillNumber(billNumber);
-		
+
 	}
 	@RequestMapping("/getbillr")
 	public List<Map<String, Object>> getBillsWithRemainDays(@RequestParam(value="billNumber")  String billNumber){

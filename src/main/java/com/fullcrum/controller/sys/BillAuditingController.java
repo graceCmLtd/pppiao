@@ -46,11 +46,9 @@ public class BillAuditingController {
 		return list;
 	}
 	@RequestMapping("/getCount")
-	public JSONObject getCount() {
+	public Integer getCount() {
 		Integer count = billAuditingService.selectCount();
-		JSONObject json = new JSONObject();
-		json.put("count", count);
-		return json;
+		return count;
 	}
 	
 	@RequestMapping("/getBillInfo")

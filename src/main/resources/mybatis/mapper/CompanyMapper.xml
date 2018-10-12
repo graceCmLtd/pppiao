@@ -60,5 +60,9 @@
 			</where>
 		</if>
 	</update>
+
+	<select id="getCount" resultType="Integer">
+		select count(*) from ppp_company
+	</select>
 	
 </mapper>
