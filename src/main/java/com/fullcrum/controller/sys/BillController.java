@@ -70,7 +70,13 @@ public class BillController {
 	public JSONObject addBills(@RequestBody  JSONObject jsonObject) {
 		JSONObject transobj = new JSONObject();
 		JSONObject theBill = jsonObject.getJSONObject("billInfo");
-		transobj.put("transactionType", "sellbill");
+		Integer temp = UUID.randomUUID().toString().hashCode();
+		while (temp < 0) {
+			temp = UUID.randomUUID().toString().hashCode();
+		}
+		String orderId = 1+String.format("%015d", temp);
+		
+		transobj.put("transactionType", orderId);
 		transobj.put("billNumber", theBill.get("billNumber"));
 		transobj.put("buyerId", null);
 		transobj.put("sellerId", jsonObject.getJSONObject("userData").get("uuid"));
@@ -358,11 +364,13 @@ public class BillController {
 		JSONObject paramQuote = jsonObject.getJSONObject("paramQuote");
 		JSONObject paramTransaction = jsonObject.getJSONObject("paramTransaction");
 		
-		Integer temp = UUID.randomUUID().hashCode();
-		while (temp <= 0) {
-			temp = UUID.randomUUID().hashCode();
+		Integer temp = UUID.randomUUID().toString().hashCode();
+		while (temp < 0) {
+			temp = UUID.randomUUID().toString().hashCode();
 		}
-		paramTransaction.put("transactionId", temp.toString());
+		String orderId = 1+String.format("%015d", temp);
+		//transacType 存放orderid
+		paramTransaction.put("transacType", orderId);
 		
 		paramTransaction.put("transacDate", new Date(new java.util.Date().getTime()));
 		

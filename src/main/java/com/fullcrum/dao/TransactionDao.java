@@ -20,7 +20,7 @@ public interface TransactionDao {
 
 	String TABLE_NAME = "ppp_transaction";
 	
-	String INSER_FIELDS = "transacId,transacType,billNumber,buyerId,sellerId,amount,transacStatus,transacDate";
+	String INSER_FIELDS = "transacType,billNumber,buyerId,sellerId,amount,transacStatus,transacDate";
 	
 	@Select({"select * from ",TABLE_NAME,"where transacId = #{transactionId} order by transacDate desc"})
 	@ResultMap(value="transactionMap")
@@ -38,11 +38,11 @@ public interface TransactionDao {
 	@ResultMap(value="transactionMap")
 	public ArrayList<TransactionEntity> selectTransacBySellerId(@Param("sellerId") String sellerId);
 	
-	@Insert({"insert " ,TABLE_NAME,"(",INSER_FIELDS,") values (#{transactionEntity.transactionId},#{transactionEntity.transactionType},#{transactionEntity.billNumber},#{transactionEntity.buyerId},"
+	@Insert({"insert " ,TABLE_NAME,"(",INSER_FIELDS,") values (#{transactionEntity.transactionType},#{transactionEntity.billNumber},#{transactionEntity.buyerId},"
 			+ "#{transactionEntity.sellerId},#{transactionEntity.amount},#{transactionEntity.transactionStatus},#{transactionEntity.transacDate})"})
 	public void insertTransaction(@Param("transactionEntity") TransactionEntity transactionEntity);
 	
-	@Insert({"insert " ,TABLE_NAME,"(",INSER_FIELDS,") values (#{transactionEntity.transactionId},#{transactionEntity.transactionType},#{transactionEntity.billNumber},#{transactionEntity.buyerId},"
+	@Insert({"insert " ,TABLE_NAME,"(",INSER_FIELDS,") values (#{transactionEntity.transactionType},#{transactionEntity.billNumber},#{transactionEntity.buyerId},"
 			+ "#{transactionEntity.sellerId},#{transactionEntity.amount},#{transactionEntity.transactionStatus},#{transactionEntity.transacDate})"})
 	public void insertTransactionJson(@Param("transactionEntity") JSONObject transactionEntity);
 	
