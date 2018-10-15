@@ -110,7 +110,7 @@
 	</resultMap>
 	
 		<resultMap type="java.util.Map" id="QuoteIntention">
-		<result column="billNumber" property="billNumber"/>
+		<!--<result column="billNumber" property="billNumber"/>
 		<result column="quoteId" property="quoteId"/>
 		<result column="quoteAmount" property="quoteAmount"/>
 		<result column="quoterId" property="quoterId"/>
@@ -136,7 +136,7 @@
 		<result column="contactsName" property="contactsName"/>
 		<result column="contactsPhone" property="contactsPhone"/>
 		<result column="contactsQQ" property="contactsQQ"/>
-		<result column="real_money" property="real_money"/>
+		<result column="real_money" property="real_money"/>-->
 	</resultMap>
 
 	<resultMap type="java.util.Map" id="getBillInfo">
