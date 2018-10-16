@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.TransactionEntity;
+import com.fullcrum.model.sys.TransactionPicsEntity;
 import com.fullcrum.service.sys.QuoteService;
+import com.fullcrum.service.sys.TransactionPicsService;
 import com.fullcrum.service.sys.TransactionService;
 
 @RestController
@@ -30,6 +32,8 @@ public class TransactionController {
 	@Resource(name="quoteServiceImpl")
 	private QuoteService quoteService;
 	
+	@Resource(name="transactionPicsServiceImpl")
+	private TransactionPicsService transactionPicsService;
 	
 	
 	
@@ -254,4 +258,15 @@ public class TransactionController {
 		
 		return msg;       
 	}
+	
+	@RequestMapping("/getPicsByOrderId")
+	public List<TransactionPicsEntity> getPicsByOrderId(@RequestBody JSONObject jsonObject){
+		return transactionPicsService.selectByOrderId(jsonObject);
+		
+	}
+	
+	@RequestMapping("/addBackEndPics")
+	public void insertPics(@RequestBody JSONObject jsonObject) {
+		transactionPicsService.insertPics(jsonObject);
+	} 
 }
