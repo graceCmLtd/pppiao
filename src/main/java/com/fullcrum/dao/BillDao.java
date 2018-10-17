@@ -130,7 +130,7 @@ public interface BillDao {
 		
 		
 		//卖家  获取所有的意向
-		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.real_money,"
+		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,unix_timestamp(a.updateTimeStamp) as updateTimeStamp,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.real_money,"
 				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer,"
 				+ "d.* "
 				+ "from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} ) a " + 
@@ -142,7 +142,7 @@ public interface BillDao {
 		public List<Map<String, Object>> getSellerALLIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
 		//买家调用 获取所有的意向
-				@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.real_money,"
+				@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,unix_timestamp(a.updateTimeStamp) as updateTimeStamp,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.real_money,"
 						+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer,"
 						+ "d.* "
 						+ "from (select * from pengpengpiao.ppp_transaction where buyerId = #{jsonObject.uuid} ) a " + 
@@ -155,7 +155,7 @@ public interface BillDao {
 				
 		
 		//卖家调用，获取意向信息列表
-		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.real_money,"
+		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,unix_timestamp(a.updateTimeStamp) as updateTimeStamp,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.real_money,"
 				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer,"
 				+ "d.* "
 				+ "from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} and intentionStatus= #{jsonObject.filter_str} ) a " + 
@@ -167,7 +167,7 @@ public interface BillDao {
 		public List<Map<String, Object>> getSellerIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
 		//买家调用，获取意向信息列表
-		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.real_money,"
+		@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,unix_timestamp(a.updateTimeStamp) as updateTimeStamp,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.real_money,"
 				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer,"
 				+ "d.* "
 				+ "from (select * from pengpengpiao.ppp_transaction where buyerId = #{jsonObject.uuid} and intentionStatus= #{jsonObject.filter_str} ) a " + 
@@ -181,7 +181,7 @@ public interface BillDao {
 		public List<Map<String, Object>> getBuyerIntentions(@Param("jsonObject") JSONObject jsonObject);
 		
 		//卖家调用，获取资源池审核中意向信息列表
-				@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.real_money,"
+				@Select({"select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,unix_timestamp(a.updateTimeStamp) as updateTimeStamp,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.real_money,"
 						+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer,"
 						+ "d.contactsId,d.companyName,d.contactsName,d.contactsPhone,contactsQQ "
 						+ "from (select * from pengpengpiao.ppp_bill where billReferer=#{jsonObject.billReferer} and status='审核中' ) c "
