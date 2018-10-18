@@ -86,7 +86,8 @@ public interface BillDao {
 		
 		
 		//获取当前用户发布票据的报价情况
-		@Select({"SELECT * from (SELECT billNumber,billType,acceptor,amount,maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},maturity) as remain_days,`status`,releaseDate,releaserId,billReferer,failReason,updateTimeStamp from ppp_bill WHERE releaserId = #{jsonObject.uuid} and status='审核完成'  ) a "
+		@Select({"SELECT * from (SELECT billNumber,billType,acceptor,amount,maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},maturity) as remain_days,`status`,releaseDate,releaserId,billReferer,failReason,updateTimeStamp " +
+				"from ppp_bill WHERE releaserId = #{jsonObject.uuid} and status='审核完成' and billReferer=#{jsonObject.billReferer} ) a "
 					+ " LEFT JOIN(SELECT billNumber,COUNT(*) AS countNum from ppp_quote GROUP BY billNumber) b on a.billNumber = b.billNumber  ORDER BY a.updateTimeStamp DESC" })
 		@ResultMap(value="billAboutQuote")
 		public List<Map<String, Object>> getBillsInquoting(@Param("jsonObject") JSONObject jsonObject );
