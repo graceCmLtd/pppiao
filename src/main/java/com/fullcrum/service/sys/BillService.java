@@ -66,7 +66,9 @@ public interface BillService {
 	public List<Map<String, Object>> getNotAuditIntentions(JSONObject jsonObject);
 
 	public Integer getNotAuditIntentionsCount(JSONObject jsonObject);
+
+	List<Map<String,Object>> getSellerIntentionsList(JSONObject jsonObject);
 	
-	
+	Integer getSellerIntentionsListCount(JSONObject jsonObject);
 	
 }
