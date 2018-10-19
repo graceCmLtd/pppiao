@@ -122,5 +122,11 @@ public class TransactionServiceImpl implements TransactionService {
 		return transactionDao.getCount();
 	}
 
+	@Override
+	public void setTransactionIntentionStatusByOrderId(JSONObject jsonObject) {
+		// TODO Auto-generated method stub
+		transactionDao.setTransactionIntentionStatusByOrderId(jsonObject);
+	}
+
 
 }

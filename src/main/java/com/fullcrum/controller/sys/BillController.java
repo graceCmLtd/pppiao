@@ -370,7 +370,7 @@ public class BillController {
 		}
 		String orderId = 1+String.format("%015d", temp);
 		//transacType 存放orderid
-		paramTransaction.put("transacType", orderId);
+		paramTransaction.put("transactionType", orderId);
 		
 		paramTransaction.put("transacDate", new Date(new java.util.Date().getTime()));
 		

@@ -80,11 +80,11 @@ public interface ResourceMarket {
 	public void updateByOrderId(@Param("jsonObject") JSONObject jsonObject);
 	
 	@Select({"select distinct a.*,b.contactsName from (" + 
-			"select orderId,buyerId,amountRange,timeLimit,type1 as interest,  '国票+国股' as acceptor,billType,updateDate,note from pengpengpiao.ppp_resource_market where type1 is not null " + 
-			"union all select orderId,buyerId,amountRange,timeLimit,type2 as interest,'大商' as acceptor ,billType,updateDate,note from pengpengpiao.ppp_resource_market where type2 is not null " + 
-			"union all select orderId,buyerId,amountRange,timeLimit,type3 as interest,'授信城商' as acceptor ,billType,updateDate,note from pengpengpiao.ppp_resource_market where type3 is not null " + 
-			"union all select orderId,buyerId,amountRange,timeLimit,type4 as interest,'村镇银行' as acceptor ,billType,updateDate,note from pengpengpiao.ppp_resource_market where type4 is not null) a " +
-			"left join ppp_company b on a.buyerId=b.contactsId order by a.updateDate desc limit #{currentPage},#{pageSize}"})
+			"select orderId,buyerId,amountRange,timeLimit,type1 as interest,  '国票+国股' as acceptor,billType,updateDate,note,updateTimeStamp from pengpengpiao.ppp_resource_market where type1 is not null " + 
+			"union all select orderId,buyerId,amountRange,timeLimit,type2 as interest,'大商' as acceptor ,billType,updateDate,note,updateTimeStamp from pengpengpiao.ppp_resource_market where type2 is not null " + 
+			"union all select orderId,buyerId,amountRange,timeLimit,type3 as interest,'授信城商' as acceptor ,billType,updateDate,note,updateTimeStamp from pengpengpiao.ppp_resource_market where type3 is not null " + 
+			"union all select orderId,buyerId,amountRange,timeLimit,type4 as interest,'村镇银行' as acceptor ,billType,updateDate,note,updateTimeStamp from pengpengpiao.ppp_resource_market where type4 is not null) a " +
+			"left join ppp_company b on a.buyerId=b.contactsId order by a.updateTimeStamp desc limit #{currentPage},#{pageSize}"})
 	@ResultMap(value="AllInfo")
 	public List<Map<String, Object>> selectAllInfo(@Param("pageSize")Integer pageSize, @Param("currentPage")Integer currentPage);
 

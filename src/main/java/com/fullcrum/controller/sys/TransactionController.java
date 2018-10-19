@@ -143,7 +143,29 @@ public class TransactionController {
 		return result;
 	}
 	
-	
+	/*
+	 * @description 单独修改transaction 表中的intentionStatus 状态值 by orderId
+	 * 
+	 * 
+	 * */
+	@RequestMapping("/updateTransacIntentionStatusByOrderId")
+	@Transactional
+	public JSONObject updateTransacIntentionStatusByOrderId(@RequestBody JSONObject jsonObject) {
+		JSONObject result = new JSONObject();
+		
+		try {
+			transactionService.setTransactionIntentionStatus(jsonObject);
+			result.put("errorMsg", null);
+			result.put("status", "success");
+		} catch (Exception e) {
+			// TODO: handle exception
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			result.put("errorMsg", e);
+			result.put("status", "fail");
+		}
+		
+		return result;
+	}
 	
 	
 	

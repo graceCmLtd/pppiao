@@ -28,7 +28,9 @@ public interface TransactionService {
 	public void updateTransactionIntentionStatus(JSONObject jsonObject);
 	
 	public void updateTransactionStatus(JSONObject jsonObject);
-
+	
+	public void setTransactionIntentionStatusByOrderId(JSONObject jsonObject);
+	
 	public List<Map<String, Object>> selectTransInfo(int transactionId);
 
 	public void updateTransStatus(int transactionId, String transStatus);
