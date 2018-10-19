@@ -215,6 +215,19 @@ public interface BillDao {
 			" ORDER BY a.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
 		@ResultMap(value="QuoteIntention")
 		public List<Map<String, Object>> getNotAuditIntentions(@Param("jsonObject")JSONObject jsonObject);
+
+		@Select("select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate," +
+				"a.intentionStatus,unix_timestamp(a.updateTimeStamp) as updateTimeStamp,b.quoteId,b.quoteAmount,b.quoterId,b.interest," +
+				"b.xPerLakh,b.real_money,b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time}," +
+				"c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer,d.* " +
+				"from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} and " +
+				"intentionStatus=#{jsonObject.filter_str1} or intentionStatus=#{jsonObject.filter_str2}) a left join " +
+				"(select * from pengpengpiao.ppp_quote) b on a.billNumber = b.billNumber " +
+				"left join (select * from pengpengpiao.ppp_bill ) c on a.billNumber = c.billNumber  " +
+				"LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId ORDER BY a.updateTimeStamp DESC " +
+				"limit #{jsonObject.currentPage},#{jsonObject.pageSize}")
+		@ResultMap(value = "QuoteIntention")
+		List<Map<String,Object>> getSellerIntentionsList(@Param("jsonObject")JSONObject jsonObject);
 		
 		public Integer selectCount();
 
@@ -233,6 +246,8 @@ public interface BillDao {
 		public Integer getBillsWaitingQuoteCount(@Param("jsonObject")JSONObject jsonObject);
 		//求贴意向  未审核总数
 		public Integer getNotAuditIntentionsCount(@Param("jsonObject")JSONObject jsonObject);
+		//求贴意向列表页总条数
+		Integer getSellerIntentionsListCount(@Param("jsonObject")JSONObject jsonObject);
 		
 		
 		

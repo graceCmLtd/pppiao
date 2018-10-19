@@ -206,8 +206,14 @@ public class BillServiceImpl implements BillService {
 
 	}
 
-
+	@Override
+	public List<Map<String,Object>> getSellerIntentionsList(JSONObject jsonObject){
+		return billDao.getSellerIntentionsList(jsonObject);
+	}
 	
-
+	@Override
+	public Integer getSellerIntentionsListCount(JSONObject jsonObject){
+		return billDao.getSellerIntentionsListCount(jsonObject);
+	}
 	
 }

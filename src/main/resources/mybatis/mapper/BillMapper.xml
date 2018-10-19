@@ -312,6 +312,14 @@
 			left join (select * from ppp_quote where status='ok') b on a.billNumber = b.billNumber
 			left join (select * from ppp_company where contactsId=#{jsonObject.uuid}) c on a.releaserId = c.contactsId
 	</select>
+
+	<select id="getSellerIntentionsListCount" resultType="Integer">
+		select count(*) from
+		(select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} and intentionStatus=#{jsonObject.filter_str1} or intentionStatus=#{jsonObject.filter_str2}) a
+		left join (select * from pengpengpiao.ppp_quote) b on a.billNumber = b.billNumber
+		left join (select * from pengpengpiao.ppp_bill ) c on a.billNumber = c.billNumber
+		LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId
+	</select>
 	
 </mapper>
 
