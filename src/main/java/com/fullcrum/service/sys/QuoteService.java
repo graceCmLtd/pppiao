@@ -14,6 +14,8 @@ public interface QuoteService {
 	public ArrayList<QuoteEntity> selectQuoteByQuoterId(String quoterId);
 	
 	public ArrayList<QuoteEntity> selectQuoteByBillNumber(String billNumber);
+
+	ArrayList<QuoteEntity> selectQuoteByBillNumberAndQuoterId(String billNumber,String QuoterId);
 	
 	public void insertQuote(QuoteEntity quoteEntity);
 	
