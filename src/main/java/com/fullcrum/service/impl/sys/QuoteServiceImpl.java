@@ -129,4 +129,9 @@ public class QuoteServiceImpl implements QuoteService {
 		quoteDao.insertQuoteJson(quoteEntity);
 	}
 
+	@Override
+	public void updateQuoteStatusByQuoteId(JSONObject jsonObject) {
+		quoteDao.updateQuoteStatusByQuoteId(jsonObject);
+	}
+
 }

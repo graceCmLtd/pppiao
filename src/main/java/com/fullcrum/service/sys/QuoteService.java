@@ -23,6 +23,8 @@ public interface QuoteService {
 	
 	public void updateQuoteStatus(JSONObject jsonObject);
 	
+	public void updateQuoteStatusByQuoteId(JSONObject jsonObject);
+	
 	public void updateRealMoney(JSONObject jsonObject);
 	
 	public void setInvalidateQuotes(JSONObject jsonObject);

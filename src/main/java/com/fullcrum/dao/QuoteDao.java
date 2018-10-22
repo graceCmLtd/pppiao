@@ -47,6 +47,10 @@ public interface QuoteDao {
 	@Update({"update ppp_quote set status = #{jsonObject.quoteStatus} where billNumber = #{jsonObject.billNumber} "})
 	public void updateQuoteStatus(@Param("jsonObject") JSONObject jsonObject);
 	
+	//通过quoteid 修改quoteStatus
+	@Update({"update ppp_quote set status = #{jsonObject.quoteStatus} where quoteId = #{jsonObject.quoteId} "})
+	public void updateQuoteStatusByQuoteId(@Param("jsonObject") JSONObject jsonObject);
+	
 	@Update({"update ppp_quote set status = #{jsonObject.quoteStatus} where billNumber = #{jsonObject.billNumber} and quoterId != #{jsonObject.quoterId}"})
 	public void setInvalidateQuotes(@Param("jsonObject") JSONObject jsonObject);
 	

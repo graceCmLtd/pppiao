@@ -22,31 +22,30 @@ public class TransactionServiceImpl implements TransactionService {
 
 	@Override
 	public ArrayList<TransactionEntity> selectTransacByTransacId(String transactionId) {
-		// TODO Auto-generated method stub
+		
 		return transactionDao.selectTransacByTransacId(transactionId);
 	}
 
 	@Override
 	public ArrayList<TransactionEntity> selectTransacByBillNumber(String billNumber) {
-		// TODO Auto-generated method stub
+		
 		return transactionDao.selectTransacByBillNumber(billNumber);
 	}
 
 	@Override
 	public ArrayList<TransactionEntity> selectTransacByBuyerId(String buyerId) {
-		// TODO Auto-generated method stub
+		
 		return transactionDao.selectTransacByBuyerId(buyerId);
 	}
 
 	@Override
 	public ArrayList<TransactionEntity> selectTransacBySellerId(String sellerId) {
-		// TODO Auto-generated method stub
+		
 		return transactionDao.selectTransacBySellerId(sellerId);
 	}
 
 	@Override
 	public void insertTransaction(TransactionEntity transactionEntity) throws Exception {
-		// TODO Auto-generated method stub
 		Integer temp = UUID.randomUUID().hashCode();
 		while (temp <= 0) {
 			temp = UUID.randomUUID().hashCode();
@@ -59,19 +58,17 @@ public class TransactionServiceImpl implements TransactionService {
 
 	@Override
 	public void deleteTransaction(int transactionId) {
-		// TODO Auto-generated method stub
 		transactionDao.deleteTransaction(transactionId);
 	}
 
 	@Override
 	public void updateTransaction(TransactionEntity transactionEntity) {
-		// TODO Auto-generated method stub
 		transactionDao.updateTransaction(transactionEntity);
 	}
 
 	@Override
 	public void updateTransactionStatus(JSONObject jsonObject) {
-		// TODO Auto-generated method stub
+		
 		transactionDao.updateTransactionStatus(jsonObject);
 	}
 
@@ -94,13 +91,13 @@ public class TransactionServiceImpl implements TransactionService {
 	//更新transaction表中的intentionStatus字段
 	@Override
 	public void updateTransactionIntentionStatus(JSONObject jsonObject) {
-		// TODO Auto-generated method stub
+		
 		transactionDao.updateTransactionIntentionStatus(jsonObject);
 	}
 
 	@Override
 	public void setTransactionIntentionStatus(JSONObject jsonObject) {
-		// TODO Auto-generated method stub
+		
 		transactionDao.setTransactionIntentionStatus(jsonObject);
 	}
 
@@ -112,19 +109,19 @@ public class TransactionServiceImpl implements TransactionService {
 
 	@Override
 	public void insertTransaction(JSONObject transactionEntity) {
-		// TODO Auto-generated method stub
+		
 		transactionDao.insertTransactionJson(transactionEntity);
 	}
 
 	@Override
 	public Integer getCount() {
-		// TODO Auto-generated method stub
+		
 		return transactionDao.getCount();
 	}
 
 	@Override
 	public void setTransactionIntentionStatusByOrderId(JSONObject jsonObject) {
-		// TODO Auto-generated method stub
+		
 		transactionDao.setTransactionIntentionStatusByOrderId(jsonObject);
 	}
 

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.TransactionEntity;
 import com.fullcrum.model.sys.TransactionPicsEntity;
+import com.fullcrum.service.sys.BillPicsService;
+import com.fullcrum.service.sys.BillService;
 import com.fullcrum.service.sys.QuoteService;
 import com.fullcrum.service.sys.TransactionPicsService;
 import com.fullcrum.service.sys.TransactionService;
@@ -35,7 +37,11 @@ public class TransactionController {
 	@Resource(name="transactionPicsServiceImpl")
 	private TransactionPicsService transactionPicsService;
 	
+	@Resource(name="billServiceImpl")
+	private BillService billService;
 	
+	@Resource(name="billPicsServiceImpl")
+	private BillPicsService billPicsService;
 	
 	@RequestMapping("/getAllTrans")
 	public List<Map<String,Object>> getAllTrans(@RequestParam Integer currentPage,@RequestParam Integer pageSize){
@@ -291,4 +297,38 @@ public class TransactionController {
 	public void insertPics(@RequestBody JSONObject jsonObject) {
 		transactionPicsService.insertPics(jsonObject);
 	} 
+	
+	/*
+	 * billId
+	 * billNumber
+	 * quoteId
+	 * transacType
+	 * 
+	 * */
+	@RequestMapping("/cancleOrder")
+	@Transactional
+	public JSONObject cancleOrder(@RequestBody JSONObject jsonObject) {
+		
+		JSONObject result = new JSONObject();
+		try {
+			billService.deleteBill(jsonObject.getJSONObject("billInfo").getString("billNumber"));
+			billPicsService.deleteBillPics(jsonObject.getJSONObject("billInfo").getString("billNumber"));
+			
+			//quoteId,status
+			quoteService.updateQuoteStatusByQuoteId(jsonObject.getJSONObject("quoteInfo"));
+			
+			//orderId,intentionStatus
+			transactionService.setTransactionIntentionStatusByOrderId(jsonObject.getJSONObject("transactionInfo"));
+			
+			result.put("status", "success");
+			result.put("errorMsg", null);
+		} catch (Exception e) {
+			
+			result.put("status", "fail");
+			result.put("errorMsg", e);
+		}
+		
+		
+		return result;
+	}
 }
