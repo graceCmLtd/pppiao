@@ -49,6 +49,11 @@ public class QuoteController {
 	public ArrayList<QuoteEntity> getQuoteByBillNumber(@RequestParam(value="billNumber") String billNumber ){
 		return quoteService.selectQuoteByBillNumber(billNumber);
 	}
+
+	@RequestMapping("/getByBillNumberAndQuoterId")
+	public ArrayList<QuoteEntity> getQuoteByBillNumberAndQuoterId(@RequestParam(value="billNumber") String billNumber,@RequestParam(value="quoterId") String quoterId ){
+		return quoteService.selectQuoteByBillNumberAndQuoterId(billNumber,quoterId);
+	}
 	
 	/*增加 报价 */
 	@RequestMapping("/addQuote")

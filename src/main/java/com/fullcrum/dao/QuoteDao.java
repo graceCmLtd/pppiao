@@ -21,7 +21,7 @@ public interface QuoteDao {
 	String TABLE_NAME = "ppp_quote";
 	String INSERT_FIELDS = " billNumber,quoterId,quoteAmount,interest,xPerLakh,status,quoteDate,real_money";
 	
-	@Select({"select  * from ",TABLE_NAME," where quoteId = #{quoteId} ORDER BY updateTimeStamp DESC"})
+	@Select({"select  * from ",TABLE_NAME," where quoterId = #{quoteId} ORDER BY updateTimeStamp DESC"})
 	@ResultMap(value="quoteMap")
 	public ArrayList<QuoteEntity> selectByQuoteId( @Param("quoteId") int quoteId);
 	
@@ -32,6 +32,10 @@ public interface QuoteDao {
 	@Select({"select * from ",TABLE_NAME,"where billNumber = #{billNumber} ORDER BY updateTimeStamp DESC " })
 	@ResultMap(value="quoteMap")
 	public ArrayList<QuoteEntity> selectByBillNumber(@Param("billNumber") String billNumber);
+
+	@Select({"select * from ",TABLE_NAME,"where billNumber = #{billNumber} and quoterId = #{quoterId}"})
+	@ResultMap(value = "quoteMap")
+	ArrayList<QuoteEntity> selectQuoteByBillNumberAndQuoterId(@Param("billNumber") String billNumber,@Param("quoterId") String quoterId);
 	
 	@Insert({"insert " ,TABLE_NAME,"(",INSERT_FIELDS," ) values(#{quoteEntity.billNumber} ,#{quoteEntity.quoterId},#{quoteEntity.quoteAmount},#{quoteEntity.interest},#{quoteEntity.xPerLakh},"
 			+ "#{quoteEntity.status},#{quoteEntity.quoteDate},#{quoteEntity.real_money} )"})

@@ -40,6 +40,11 @@ public class QuoteServiceImpl implements QuoteService {
 	}
 
 	@Override
+	public ArrayList<QuoteEntity> selectQuoteByBillNumberAndQuoterId(String billNumber,String quoterId){
+		return quoteDao.selectQuoteByBillNumberAndQuoterId(billNumber,quoterId);
+	}
+
+	@Override
 	public void insertQuote(QuoteEntity quoteEntity) {
 		// TODO Auto-generated method stub
 		
