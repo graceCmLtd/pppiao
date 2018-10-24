@@ -26,6 +26,15 @@
 		<springfox.swagger.version>2.9.2</springfox.swagger.version>
 	</properties>
 
+    <repositories>
+        <repository>
+            <id>goeasy</id>
+            <name>goeasy</name>
+            <url>http://maven.goeasy.io/content/repositories/releases/
+            </url>
+        </repository>
+    </repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -124,7 +133,13 @@
 			<artifactId>java-sdk</artifactId>
 			<version>4.6.0</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>io.goeasy</groupId>
+			<artifactId>goeasy-sdk</artifactId>
+			<version>0.3.8</version>
+		</dependency>
+
 		<!-- Swagger begin -->
 		<dependency>
 		    <groupId>io.springfox</groupId>
