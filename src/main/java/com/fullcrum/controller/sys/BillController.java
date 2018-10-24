@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,6 +28,7 @@ import com.fullcrum.service.sys.BillService;
 import com.fullcrum.service.sys.QuoteService;
 import com.fullcrum.service.sys.TransactionService;
 import com.fullcrum.utils.AipOcrImage;
+import com.fullcrum.utils.GoEasyAPI;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -51,6 +53,9 @@ public class BillController {
 	
 	@Resource(name="quoteServiceImpl")
 	private QuoteService quoteService;
+	
+	@Autowired
+	private GoEasyAPI goEasyAPI;
 	
 	@ApiOperation(value="获取票据信息",notes="根据票号获取票据信息")
 	@RequestMapping("/getbill")
