@@ -32,6 +32,8 @@ import com.fullcrum.service.sys.UserService;
 import com.fullcrum.utils.PicValidateUtil;
 import com.fullcrum.utils.SendSms;
 
+import io.goeasy.GoEasy;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/ppp")
@@ -81,6 +83,8 @@ public class UserController {
 		//String next = "xx";
 		JSONObject result  = new JSONObject();
 		Map<String,String> map = userService.login(userEntity.getUser_phone(),userEntity.getUser_passwd());
+		
+		
         if (map.containsKey("ticket")) {
             Cookie cookie = new Cookie("ticket",map.get("ticket"));
             cookie.setPath("/");
@@ -104,6 +108,7 @@ public class UserController {
 			}else {
 				result.put("CompanyAuthentication", true);
 				result.put("role", companyData.get(0).getRole());
+				
 			}
             return result;
         }else {
