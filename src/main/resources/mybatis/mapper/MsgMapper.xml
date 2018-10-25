@@ -10,5 +10,6 @@
 	<result column="flag" property="flag"/>
 	<result column="timeStamp" property="timeStamp"/>
 	<result column="updateTimeStamp" property="updateTimeStamp"/>
+	<result column="msgTime" property="msgTime"/>
 	</resultMap>
 </mapper>

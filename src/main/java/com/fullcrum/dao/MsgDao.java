@@ -21,7 +21,7 @@ public interface MsgDao {
 	@Insert({"insert ",TABLE_NAME,"(",INSERT_FEILD," ) values(#{jsonObject.msgType},#{jsonObject.senderId},#{jsonObject.receiverId},#{jsonObject.msgContent},#{jsonObject.flag})"})
 	void insertMsg(@Param("jsonObject") JSONObject jsonObject);
 	
-	@Select({"select * from ",TABLE_NAME," where receiverId = #{receiverId} order by updateTimeStamp desc"})
+	@Select({"select a.*,date_format(updateTimeStamp,'%m月%d日  %H:%i') as msgTime from ",TABLE_NAME," a where receiverId = #{receiverId} order by updateTimeStamp desc"})
 	@ResultMap(value="userMsg")
 	List<Map<String, Object>> selectMsgByReceiverId(@Param("receiverId") String receiverId);
 	

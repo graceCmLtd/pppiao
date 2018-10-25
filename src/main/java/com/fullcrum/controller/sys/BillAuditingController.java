@@ -84,14 +84,18 @@ public class BillAuditingController {
 				transactionService.updateTransStatus(billNumber);
 				if(list.size() > 0) {
 					goEasyAPI.sendMessage(list.get(0).get("sellerId").toString(), json.get("message").toString());
-					msgService.insertMsg(json.getJSONObject("message"));
+					JSONObject msg = json.getJSONObject("message");
+					msg.put("receiverId",list.get(0).get("sellerId").toString());
+					msgService.insertMsg(msg);
 				}
 			}else {
 				billAuditingService.updateBillStatus(billNumber,status,failReason);
 				if(list.size() > 0) {
 					System.out.println("sssss111"+list);
 					goEasyAPI.sendMessage(list.get(0).get("sellerId").toString(), json.getJSONObject("message").toString());
-					msgService.insertMsg(json.getJSONObject("message"));
+					JSONObject msg = json.getJSONObject("message");
+					msg.put("receiverId",list.get(0).get("sellerId").toString());
+					msgService.insertMsg(msg);
 				}
 			}
 			return "success";
