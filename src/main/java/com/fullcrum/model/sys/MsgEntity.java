@@ -1,7 +1,5 @@
 package com.fullcrum.model.sys;
 
-import java.sql.Date;
-
 /*
  * 
  * author:gavin.hou
@@ -18,18 +16,40 @@ sendTime    date  发送时间
 
 
 
-public class MsgDao {
+public class MsgEntity {
 
 		private int msgId;
 		
-		private int senderId;
+		private String msgType;
 		
-		private int receiverId;
+		public String getMsgType() {
+			return msgType;
+		}
+
+
+		public void setMsgType(String msgType) {
+			this.msgType = msgType;
+		}
+
+
+		private String senderId;
+		
+		private String receiverId;
 		
 		private String msgContent;
 		
 		
-		private Date sendDate;
+		private Boolean flag;
+
+
+		public Boolean getFlag() {
+			return flag;
+		}
+
+
+		public void setFlag(Boolean flag) {
+			this.flag = flag;
+		}
 
 
 		public int getMsgId() {
@@ -42,22 +62,22 @@ public class MsgDao {
 		}
 
 
-		public int getSenderId() {
+		public String getSenderId() {
 			return senderId;
 		}
 
 
-		public void setSenderId(int senderId) {
+		public void setSenderId(String senderId) {
 			this.senderId = senderId;
 		}
 
 
-		public int getReceiverId() {
+		public String getReceiverId() {
 			return receiverId;
 		}
 
 
-		public void setReceiverId(int receiverId) {
+		public void setReceiverId(String receiverId) {
 			this.receiverId = receiverId;
 		}
 
@@ -72,14 +92,5 @@ public class MsgDao {
 		}
 
 
-		public Date getSendDate() {
-			return sendDate;
-		}
-
-
-		public void setSendDate(Date sendDate) {
-			this.sendDate = sendDate;
-		}
-		
 		
 }
