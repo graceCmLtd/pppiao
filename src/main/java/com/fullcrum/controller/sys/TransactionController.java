@@ -60,7 +60,7 @@ public class TransactionController {
 	}
 	
 	@RequestMapping("/getByBillNumber")
-	public ArrayList<TransactionEntity> getByBillNumber(@RequestParam(value="billNumber") String billNumber){
+	public ArrayList<Map<String,Object>> getByBillNumber(@RequestParam(value="billNumber") String billNumber){
 		return transactionService.selectTransacByBillNumber(billNumber);
 	}
 	

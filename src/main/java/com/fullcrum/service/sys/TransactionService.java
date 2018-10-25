@@ -11,7 +11,7 @@ public interface TransactionService {
 
 	public ArrayList<TransactionEntity> selectTransacByTransacId(String transactionId);
 	
-	public ArrayList<TransactionEntity> selectTransacByBillNumber(String billNumber);
+	public ArrayList<Map<String,Object>> selectTransacByBillNumber(String billNumber);
 	
 	public ArrayList<TransactionEntity> selectTransacByBuyerId(String buyerId);
 	
