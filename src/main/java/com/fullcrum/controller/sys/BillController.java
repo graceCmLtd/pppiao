@@ -95,6 +95,9 @@ public class BillController {
 		transobj.put("transactionStatus", "1");
 		transobj.put("transacDate", jsonObject.getJSONObject("billInfo").get("releaseDate"));
 		
+		String channel = jsonObject.getJSONObject("userData").get("uuid").toString();
+		
+		String message = "您有一条票据发布成功，票号为："+theBill.get("billNumber");
 		
 		JSONObject result = new JSONObject();
 		System.out.println("output add bill transobj data .................");
@@ -107,6 +110,7 @@ public class BillController {
 			
 			billPicsService.insertBillPics(JSONObject.toJavaObject(jsonObject.getJSONObject("billPics"), BillPicsEntity.class));
 			
+			goEasyAPI.sendMessage(channel, message);
 			result.put("statusCode", "success");
 			result.put("errorMsg", null);
 		} catch (Exception e) {
