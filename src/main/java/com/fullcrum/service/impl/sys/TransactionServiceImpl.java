@@ -27,7 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public ArrayList<TransactionEntity> selectTransacByBillNumber(String billNumber) {
+	public ArrayList<Map<String,Object>> selectTransacByBillNumber(String billNumber) {
 		
 		return transactionDao.selectTransacByBillNumber(billNumber);
 	}

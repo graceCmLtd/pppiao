@@ -2,11 +2,18 @@ package com.fullcrum.controller.sys;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.fullcrum.dao.TransactionDao;
+import com.fullcrum.model.sys.TransactionEntity;
+import com.fullcrum.service.sys.MsgService;
+import com.fullcrum.utils.GoEasyAPI;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +36,11 @@ public class BillAuditingController {
 	private BillAuditingService billAuditingService;
 	@Resource(name="transactionServiceImpl")
 	private TransactionService transactionService;
+	@Resource(name="msgServiceImpl")
+	private MsgService msgService;
+
+	@Autowired
+	private GoEasyAPI goEasyAPI;
 	
 	@RequestMapping("/getBills")
 	public List<Map<String,Object>> getBills(@RequestParam("pageSize") Integer pageSize,@RequestParam("currentPage") Integer currentPage){
@@ -63,13 +75,29 @@ public class BillAuditingController {
 		String status = json.getString("status");
 		String failReason = json.getString("failReason");
 		String billReferer = json.getString("billReferer");
-		if(billReferer.equals("资源池")) {//这里判断票据的来源，如果是资源池的票据就更改交易状态为：待接单
-			System.out.println(billReferer);
-			billAuditingService.updateBillStatus(billNumber,status,failReason);
-			transactionService.updateTransStatus(billNumber);
-		}else {
-			billAuditingService.updateBillStatus(billNumber,status,failReason);
+		ArrayList<Map<String,Object>> list = transactionService.selectTransacByBillNumber(billNumber);
+		System.out.println(list.toString());
+		try{
+			if(billReferer.equals("资源池")) {//这里判断票据的来源，如果是资源池的票据就更改交易状态为：待接单
+				System.out.println(billReferer);
+				billAuditingService.updateBillStatus(billNumber,status,failReason);
+				transactionService.updateTransStatus(billNumber);
+				if(list.size() > 0) {
+					goEasyAPI.sendMessage(list.get(0).get("sellerId").toString(), json.get("message").toString());
+					msgService.insertMsg(json.getJSONObject("message"));
+				}
+			}else {
+				billAuditingService.updateBillStatus(billNumber,status,failReason);
+				if(list.size() > 0) {
+					System.out.println("sssss111"+list);
+					goEasyAPI.sendMessage(list.get(0).get("sellerId").toString(), json.getJSONObject("message").toString());
+					msgService.insertMsg(json.getJSONObject("message"));
+				}
+			}
+			return "success";
+		}catch (Exception e){
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return "failed";
 		}
-		return "success";
 	}
 }

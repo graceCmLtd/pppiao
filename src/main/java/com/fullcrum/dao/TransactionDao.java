@@ -28,7 +28,7 @@ public interface TransactionDao {
 	
 	@Select({"select * from ",TABLE_NAME,"where billNumber = #{billNumber} order by transacDate desc "})
 	@ResultMap(value="transactionMap")
-	public ArrayList<TransactionEntity> selectTransacByBillNumber(@Param("billNumber")  String billNumber);
+	public ArrayList<Map<String,Object>> selectTransacByBillNumber(@Param("billNumber")  String billNumber);
 	
 	@Select({"select * from " ,TABLE_NAME,"where buyerId = #{buyerId} order by transacDate desc"})
 	@ResultMap(value="transactionMap")
