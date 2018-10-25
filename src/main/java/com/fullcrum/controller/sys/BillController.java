@@ -16,6 +16,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -58,18 +59,23 @@ public class BillController {
 	private GoEasyAPI goEasyAPI;
 	
 	@ApiOperation(value="获取票据信息",notes="根据票号获取票据信息")
-	@RequestMapping("/getbill")
 	@ApiImplicitParam(name="billNumber", value="票号",required=true,dataType="String" )
+	@RequestMapping(value="/getbill",method=RequestMethod.GET)
 	public ArrayList<BillEntity> getBills( @RequestParam(value="billNumber")  String billNumber){
 		
 		return billService.selectByBillNumber(billNumber);
 
 	}
-	@RequestMapping("/getbillr")
+	
+	@ApiOperation(value="获取带有剩余天数的票据信息",notes="根据票号查询票据信息，查询结果中包含该票据的剩余天数信息")
+	@ApiImplicitParam(name="billNumber",value="票号",required=true,dataType="String")
+	@RequestMapping(value="/getbillr",method=RequestMethod.GET)
 	public List<Map<String, Object>> getBillsWithRemainDays(@RequestParam(value="billNumber")  String billNumber){
 		return billService.selectByBillNumberWithRemainDays(billNumber, new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 	}
 	
+	@ApiOperation(value="添加发布票据",notes="新增一条票据信息")
+	@ApiImplicitParam(name="jsonObject",value="参数体",required=true,dataType="jsonObject")
 	@RequestMapping("/addbill")
 	@Transactional
 	public JSONObject addBills(@RequestBody  JSONObject jsonObject) {
