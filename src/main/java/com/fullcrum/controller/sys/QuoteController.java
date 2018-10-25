@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.QuoteEntity;
+import com.fullcrum.service.sys.MsgService;
 import com.fullcrum.service.sys.QuoteService;
 import com.fullcrum.service.sys.TransactionService;
+import com.fullcrum.utils.GoEasyAPI;
+
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @CrossOrigin
+@Transactional
 @RequestMapping("/ppp/quote")
 public class QuoteController {
 
@@ -30,6 +37,11 @@ public class QuoteController {
 	@Resource(name="transactionServiceImpl")
 	private TransactionService transactionService;
 	
+	@Resource(name="msgServiceImpl")
+	private MsgService msgService;
+	
+	@Autowired
+	private GoEasyAPI goEasyAPI;
 	
 	/*根据报价id 查询报价详情*/
 	@RequestMapping("/getByQuoteId")
@@ -56,11 +68,30 @@ public class QuoteController {
 	}
 	
 	/*增加 报价 */
+	@ApiOperation(value="增加报价",notes="增加报价，并向发票人发送消息")
 	@RequestMapping("/addQuote")
-	public String addQuote(@RequestBody QuoteEntity quoteEntity) {
+	public JSONObject addQuote(@RequestBody JSONObject jsonObject) {
 		
-		quoteService.insertQuote(quoteEntity);
-		return "success";
+		JSONObject result = new JSONObject();
+		JSONObject msgInfo = jsonObject.getJSONObject("message");
+		String channel = msgInfo.getString("receiverId");
+		String message = msgInfo.toJSONString();
+		JSONObject quoteEntity = jsonObject.getJSONObject("quoteEntity");
+		
+
+		try {
+			quoteService.insertQuote(quoteEntity);
+			msgService.insertMsg(msgInfo);
+			goEasyAPI.sendMessage(channel, message);
+			System.out.println(channel);
+			result.put("status", "success");
+			result.put("errorMsg", null);
+		} catch (Exception e) {
+			result.put("status", "fail");
+			result.put("errorMsg",null);
+		}
+		
+		return  result;
 		
 	}
 	
