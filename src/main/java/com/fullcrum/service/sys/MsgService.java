@@ -9,7 +9,11 @@ public interface MsgService {
 
 	void insertMsg(JSONObject jsonObject);
 	
-	List<Map<String, Object>> selectMsgByReceiverId( String receiverId);
+	List<Map<String, Object>> selectMsgByReceiverId( String receiverId,Integer currentPage,Integer pageSize);
 	
 	void updateReceiverFlag( JSONObject jsonObject);
+
+	Integer selectMsgCount(String receiverId);
+
+	void updateAllFlag(JSONObject jsonObject);
 }

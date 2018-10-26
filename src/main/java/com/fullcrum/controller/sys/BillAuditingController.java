@@ -75,28 +75,19 @@ public class BillAuditingController {
 		String status = json.getString("status");
 		String failReason = json.getString("failReason");
 		String billReferer = json.getString("billReferer");
-		ArrayList<Map<String,Object>> list = transactionService.selectTransacByBillNumber(billNumber);
-		System.out.println(list.toString());
 		try{
 			if(billReferer.equals("资源池")) {//这里判断票据的来源，如果是资源池的票据就更改交易状态为：待接单
 				System.out.println(billReferer);
 				billAuditingService.updateBillStatus(billNumber,status,failReason);
 				transactionService.updateTransStatus(billNumber);
-				if(list.size() > 0) {
-					goEasyAPI.sendMessage(list.get(0).get("sellerId").toString(), json.get("message").toString());
-					JSONObject msg = json.getJSONObject("message");
-					msg.put("receiverId",list.get(0).get("sellerId").toString());
-					msgService.insertMsg(msg);
-				}
+				goEasyAPI.sendMessage(json.getJSONObject("message").getString("receiverId"), json.get("message").toString());
+				JSONObject msg = json.getJSONObject("message");
+				msgService.insertMsg(msg);
 			}else {
 				billAuditingService.updateBillStatus(billNumber,status,failReason);
-				if(list.size() > 0) {
-					System.out.println("sssss111"+list);
-					goEasyAPI.sendMessage(list.get(0).get("sellerId").toString(), json.getJSONObject("message").toString());
-					JSONObject msg = json.getJSONObject("message");
-					msg.put("receiverId",list.get(0).get("sellerId").toString());
-					msgService.insertMsg(msg);
-				}
+				goEasyAPI.sendMessage(json.getJSONObject("message").getString("receiverId"), json.getJSONObject("message").toString());
+				JSONObject msg = json.getJSONObject("message");
+				msgService.insertMsg(msg);
 			}
 			return "success";
 		}catch (Exception e){

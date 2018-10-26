@@ -24,15 +24,25 @@ public class MsgServiceImpl implements MsgService {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectMsgByReceiverId(String receiverId) {
+	public List<Map<String, Object>> selectMsgByReceiverId(String receiverId,Integer currentPage,Integer pageSize) {
 		// TODO Auto-generated method stub
-		return  msgDao.selectMsgByReceiverId(receiverId);
+		return  msgDao.selectMsgByReceiverId(receiverId,currentPage,pageSize);
 	}
 
 	@Override
 	public void updateReceiverFlag(JSONObject jsonObject) {
 		// TODO Auto-generated method stub
 		msgDao.updateReceiverFlag(jsonObject);
+	}
+
+	@Override
+	public Integer selectMsgCount(String receiverId) {
+		return msgDao.selectMsgCount(receiverId);
+	}
+
+	@Override
+	public void updateAllFlag(JSONObject jsonObject) {
+		msgDao.updateAllFlag(jsonObject);
 	}
 
 }

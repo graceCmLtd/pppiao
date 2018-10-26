@@ -19,6 +19,7 @@ import com.fullcrum.service.sys.MsgService;
 
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.spring.web.json.Json;
 
 @RestController
 @CrossOrigin
@@ -52,19 +53,44 @@ public class MsgController {
 	
 	@ApiOperation(value="获取用户消息",notes ="获取用户消息，通过用户的id")
 	@RequestMapping(value="/getUserMsg")
-	public List<Map<String, Object>> getMsgByReceiverId(@RequestParam("receiverId") String receiverId){
-		System.out.println(msgService.selectMsgByReceiverId(receiverId));
-		return msgService.selectMsgByReceiverId(receiverId);
+	public List<Map<String, Object>> getMsgByReceiverId(@RequestParam("receiverId") String receiverId,@RequestParam("currentPage")Integer currentPage,
+														@RequestParam("pageSize") Integer pageSize){
+		return msgService.selectMsgByReceiverId(receiverId,(currentPage-1)*pageSize,pageSize);
 	}
-	
+
+	@ApiOperation(value = "获取用户消息总数",notes = "获取用户消息总数，通过用户的id")
+	@RequestMapping("/getMsgCount")
+	public Integer getMsgCount(@RequestParam("receiverId") String receiverId){
+		return msgService.selectMsgCount(receiverId);
+	}
+
+	@ApiOperation(value = "批量将未读消息标记为已读",notes = "批量将未读消息标记为已读,根据选中数据的每条msgId")
+	@RequestMapping("/updateAllFlag")
+	public JSONObject updateAllFlag(@RequestBody JSONObject jsonObject){
+		JSONObject result = new JSONObject();
+		try{
+			msgService.updateAllFlag(jsonObject);
+			result.put("status","success");
+			return result;
+		}catch (Exception e){
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			e.printStackTrace();
+			result.put("status","failed");
+			return result;
+		}
+	}
+
 	@RequestMapping(value="/updateFlag")
 	public JSONObject updateFlag(@RequestBody JSONObject jsonObject) {
 		JSONObject result = new JSONObject();
 		try {
 			
 			msgService.updateReceiverFlag(jsonObject);
+			result.put("status","success");
 		} catch (Exception e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			e.printStackTrace();
+			result.put("status","failed");
 		}
 		
 		

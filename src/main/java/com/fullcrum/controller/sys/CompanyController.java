@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 import javax.annotation.Resource;
 
+import com.fullcrum.service.sys.MsgService;
+import com.fullcrum.utils.GoEasyAPI;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +31,12 @@ public class CompanyController {
 	
 	@Resource(name="companyPicsServiceImpl")
 	private CompanyPicsService companyPicsService;
+
+	@Resource(name="msgServiceImpl")
+	private MsgService msgService;
+
+	@Autowired
+	private GoEasyAPI goEasyAPI;
 	
 	@RequestMapping("/getAllCompanys")
 	public ArrayList<CompanyEntity> getAllCompanys(@RequestParam Integer currentPage,@RequestParam Integer pageSize){
@@ -84,8 +94,16 @@ public class CompanyController {
 	public String auditCompany(@RequestBody JSONObject json) {
 		String companyId = json.getString("companyId");
 		String role = json.getString("role");
-		companyService.updateCompanyStatus(companyId,role);
-		return "success";
+		try{
+			companyService.updateCompanyStatus(companyId,role);
+			goEasyAPI.sendMessage(json.getJSONObject("message").getString("receiverId"),json.getJSONObject("message").toString());
+			msgService.insertMsg(json.getJSONObject("message"));
+			return "success";
+		}catch (Exception e){
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return "failed";
+		}
+
 	}
 	
 	@RequestMapping("/updateCompany")
