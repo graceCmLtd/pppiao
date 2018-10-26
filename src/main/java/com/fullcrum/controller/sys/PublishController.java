@@ -17,7 +17,10 @@ public class PublishController {
     @RequestMapping("/send")
     public String send(@RequestBody JSONObject jsonObject){
         //GoEasyAPI goEasyAPI = new GoEasyAPI();
-        goEasyAPI.sendMessage(jsonObject.getString("uuid"),jsonObject.getString("message"));
+    	JSONObject msgObj = jsonObject.getJSONObject("message");
+    	String channel = msgObj.getString("receiverId");
+    	String message = msgObj.toJSONString();
+        goEasyAPI.sendMessage(channel,message);
         
         //GoEasyAPI.sendMessage(channel, message);
         return "success";

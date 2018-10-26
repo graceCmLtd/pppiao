@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,9 +20,11 @@ import com.fullcrum.model.sys.TransactionEntity;
 import com.fullcrum.model.sys.TransactionPicsEntity;
 import com.fullcrum.service.sys.BillPicsService;
 import com.fullcrum.service.sys.BillService;
+import com.fullcrum.service.sys.MsgService;
 import com.fullcrum.service.sys.QuoteService;
 import com.fullcrum.service.sys.TransactionPicsService;
 import com.fullcrum.service.sys.TransactionService;
+import com.fullcrum.utils.GoEasyAPI;
 
 @RestController
 @CrossOrigin
@@ -42,6 +45,12 @@ public class TransactionController {
 	
 	@Resource(name="billPicsServiceImpl")
 	private BillPicsService billPicsService;
+	
+	@Autowired
+	private GoEasyAPI goEasyAPI;
+	 
+	@Resource(name="msgServiceImpl")
+	private MsgService msgService;
 	
 	@RequestMapping("/getAllTrans")
 	public List<Map<String,Object>> getAllTrans(@RequestParam Integer currentPage,@RequestParam Integer pageSize){
@@ -135,8 +144,17 @@ public class TransactionController {
 	public JSONObject updateTransacIntentionStatus(@RequestBody JSONObject jsonObject) {
 		JSONObject result = new JSONObject();
 		
+		JSONObject intentionObj = jsonObject.getJSONObject("intentionObj");
+		JSONObject msgObj = jsonObject.getJSONObject("message");
+		String channel = msgObj.getString("receiverId");
+		String message = msgObj.toJSONString();
+		
 		try {
-			transactionService.setTransactionIntentionStatus(jsonObject);
+			transactionService.setTransactionIntentionStatus(intentionObj);
+			msgService.insertMsg(msgObj);
+			goEasyAPI.sendMessage(channel, message);
+			System.out.println("updatetransacIntentionStatus");
+			System.out.println(channel);
 			result.put("errorMsg", null);
 			result.put("status", "success");
 		} catch (Exception e) {
@@ -158,9 +176,9 @@ public class TransactionController {
 	@Transactional
 	public JSONObject updateTransacIntentionStatusByOrderId(@RequestBody JSONObject jsonObject) {
 		JSONObject result = new JSONObject();
-		
+		System.out.println(jsonObject);
 		try {
-			transactionService.setTransactionIntentionStatus(jsonObject);
+			transactionService.setTransactionIntentionStatusByOrderId(jsonObject);
 			result.put("errorMsg", null);
 			result.put("status", "success");
 		} catch (Exception e) {
@@ -192,6 +210,9 @@ public class TransactionController {
 		JSONObject invalidateQuoteParam = jsonObject.getJSONObject("InvalidateBody");
 		JSONObject validateQuoteParam = jsonObject.getJSONObject("validateBody");
 		JSONObject transactionParam = jsonObject.getJSONObject("transactionBody");
+		JSONObject msgObj = jsonObject.getJSONObject("message");
+		String channel = msgObj.getString("receiverId");
+		String message = msgObj.toJSONString();
 		
 		 String operate = jsonObject.getString("operate");
 		 System.out.println("print the operator :   ");
@@ -204,6 +225,8 @@ public class TransactionController {
 				quoteService.setInvalidateQuotes(invalidateQuoteParam);
 				quoteService.setValidateQuote(validateQuoteParam);
 				transactionService.updateTransactionIntentionStatus(transactionParam);
+				msgService.insertMsg(msgObj);
+				goEasyAPI.sendMessage(channel, message);
 				
 				result.put("status", "success");
 				result.put("errorMsg", null);
