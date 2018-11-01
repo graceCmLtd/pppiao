@@ -317,8 +317,19 @@ public class TransactionController {
 	}
 	
 	@RequestMapping("/addBackEndPics")
-	public void insertPics(@RequestBody JSONObject jsonObject) {
-		transactionPicsService.insertPics(jsonObject);
+	public JSONObject insertPics(@RequestBody JSONObject jsonObject) {
+		JSONObject result = new JSONObject();
+		try{
+			transactionPicsService.insertPics(jsonObject);
+			result.put("status","success");
+			return result;
+		}catch (Exception e){
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			e.printStackTrace();
+			result.put("status","failed");
+			return result;
+		}
+
 	} 
 	
 	/*
