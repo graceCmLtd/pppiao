@@ -162,7 +162,7 @@
     </select>
 	
 	<select id="selectByFilter" resultMap="billFilter" >
-	<![CDATA[select a.billId,a.billNumber,a.billType,a.acceptor,a.billReferer,a.amount,a.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},a.maturity)as remain_days,a.status,a.releaseDate,a.releaserId,a.billPicsId,a.transferable,a.billReferer,case when b.countNumber is null then 0 else b.countNumber end as count,b.status as quoteStatus from ]]>
+	<![CDATA[select a.billId,a.billNumber,a.billType,a.acceptor,a.billReferer,a.amount,a.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},a.maturity)as remain_days,a.status,a.releaseDate,a.releaserId,a.billPicsId,a.transferable,a.billReferer,case when b.countNumber is null then 0 else b.countNumber end as count,case when b.status is null then "未报价" else b.status end as quoteStatus from ]]>
 		<![CDATA[(select * from pengpengpiao.ppp_bill  ]]>
 		<where>
 			<![CDATA[1=1 ]]>
@@ -183,8 +183,8 @@
 					<![CDATA[ and maturity < #{jsonObject.maxDate}]]>
 				</if>
 			</if>
-			<![CDATA[and 1=1 and status="审核完成" and billReferer='传统渠道')  a  left join  (select billNumber,status, count(*) as countNumber  from pengpengpiao.ppp_quote where status="报价中" group by billNumber,status)  b on a.billNumber=b.billNumber  ]]>
-			<![CDATA[order by a.releaseDate desc limit ${jsonObject.starter},${jsonObject.number }]]>
+			<![CDATA[and 1=1 and status="审核完成" and billReferer='传统渠道')  a  left join  (select billNumber,status, count(*) as countNumber  from pengpengpiao.ppp_quote group by billNumber,status)  b on a.billNumber=b.billNumber  ]]>
+			<![CDATA[where b.status = "报价中" or b.status is null order by a.releaseDate desc limit ${jsonObject.starter},${jsonObject.number }]]>
 		</where>
 		
 	</select>
@@ -316,9 +316,9 @@
 	<select id="getSellerIntentionsListCount" resultType="Integer">
 		select count(*) from
 		(select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} and intentionStatus=#{jsonObject.filter_str1} or intentionStatus=#{jsonObject.filter_str2}) a
-		left join (select * from pengpengpiao.ppp_quote) b on a.billNumber = b.billNumber
+		left join (select * from pengpengpiao.ppp_quote where status=#{jsonObject.quoteStatus}) b on a.billNumber = b.billNumber
 		left join (select * from pengpengpiao.ppp_bill ) c on a.billNumber = c.billNumber
-		LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId
+		LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId where quoteId is not null
 	</select>
 	
 </mapper>
