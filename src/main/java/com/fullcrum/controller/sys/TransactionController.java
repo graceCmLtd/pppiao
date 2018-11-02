@@ -3,6 +3,8 @@ package com.fullcrum.controller.sys;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.annotation.Resource;
 
@@ -52,6 +54,9 @@ public class TransactionController {
 	@Resource(name="msgServiceImpl")
 	private MsgService msgService;
 	
+
+	private Timer timer=  new Timer() ;
+	
 	@RequestMapping("/getAllTrans")
 	public List<Map<String,Object>> getAllTrans(@RequestParam Integer currentPage,@RequestParam Integer pageSize){
 		return transactionService.selectAllTrans(pageSize,(currentPage-1)*pageSize);
@@ -63,7 +68,7 @@ public class TransactionController {
 	}
 	
 	@RequestMapping("/getByTransacId")
-	public ArrayList<TransactionEntity> getByTransacId(@RequestParam(value="transactionId") String transactionId){
+	public ArrayList<Map<String, Object>> getByTransacId(@RequestParam(value="transactionId") String transactionId){
 		
 		return transactionService.selectTransacByTransacId(transactionId);
 	}
@@ -74,12 +79,12 @@ public class TransactionController {
 	}
 	
 	@RequestMapping("/getByBuyerId")
-	public ArrayList<TransactionEntity> getByBuyerId(@RequestParam(value="buyerId") String buyerId){
+	public ArrayList<Map<String, Object>> getByBuyerId(@RequestParam(value="buyerId") String buyerId){
 		return transactionService.selectTransacByBuyerId(buyerId);
 	}
 	
 	@RequestMapping("/getBySellerId")
-	public ArrayList<TransactionEntity> getBySellerId(@RequestParam(value="sellerId") String sellerId){
+	public ArrayList<Map<String, Object>> getBySellerId(@RequestParam(value="sellerId") String sellerId){
 		return transactionService.selectTransacBySellerId(sellerId);
 	}
 	
@@ -155,6 +160,38 @@ public class TransactionController {
 			goEasyAPI.sendMessage(channel, message);
 			System.out.println("updatetransacIntentionStatus");
 			System.out.println(channel);
+			
+			if (intentionObj.containsValue("已支付,待背书") || intentionObj.containsValue("已背书,待签收") || intentionObj.containsValue("已接单,待支付") )  {
+				timer.schedule(new TimerTask() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						
+						JSONObject temp = intentionObj;
+						System.out.println(temp);
+						ArrayList<Map<String, Object>>  transactionTemp = transactionService.selectTransacByTransacId(temp.getString("transacId"));
+						System.out.println(transactionTemp.get(0));
+						if (transactionTemp.get(0).get("intentionStatus").equals(temp.getString("intentionStatus"))) {
+							String timeoutchannel = channel;
+							JSONObject timeoutmsg = msgObj;
+							temp.put("intentionStatus","已超时");
+							msgObj.put("msgContent", "有订单已经超时");
+							String timeoutmessage = timeoutmsg.toJSONString();
+							msgService.insertMsg(timeoutmsg);
+							goEasyAPI.sendMessage(timeoutchannel, timeoutmessage);
+							System.out.println("timertask  dddd");
+							System.out.println(temp);
+						}else {
+							System.out.println("交易状态已经修改，交易或许未超时。不做超时处理。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
+						}
+						
+						
+						
+					}
+				}, 12000);
+			}
+			
 			result.put("errorMsg", null);
 			result.put("status", "success");
 		} catch (Exception e) {

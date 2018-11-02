@@ -13,7 +13,16 @@ buyerId    int  买家id
 SellerId  int   卖家id
 Amount  int  交易金额
 transacStatus  varchar 交易状态
- * 
+ * <id column="transacId" property="transactionId"/>
+		<result column="transacType" property="transactionType"/>
+		<result column="billNumber" property="billNumber"/>
+		<result column="buyerId" property="buyerId"/>
+		<result column="sellerId" property="sellerId"/>
+		<result column="amount" property="amount"/>
+		<result column="transacStatus" property="transactionStatus"/>
+		<result column="transacDate" property="transacDate"/>
+		<result column="intentionStatus" property="intentionStatus"/>
+		<result column="updateTimeStamp" property="updateTimeStamp"/>
  * 
  * */
 public class TransactionEntity {
@@ -40,7 +49,11 @@ public class TransactionEntity {
 	
 	private Date transacDate;
 	
+	private String intentionStatus;
+	
 	private int timeStamp;
+	
+	private int updateTimeStamp;
 
 	
 	
@@ -134,6 +147,26 @@ public class TransactionEntity {
 
 	public void setTimeStamp(int timeStamp) {
 		this.timeStamp = timeStamp;
+	}
+
+
+	public String getIntentionStatus() {
+		return intentionStatus;
+	}
+
+
+	public void setIntentionStatus(String intentionStatus) {
+		this.intentionStatus = intentionStatus;
+	}
+
+
+	public int getUpdateTimeStamp() {
+		return updateTimeStamp;
+	}
+
+
+	public void setUpdateTimeStamp(int updateTimeStamp) {
+		this.updateTimeStamp = updateTimeStamp;
 	}
 	
 	

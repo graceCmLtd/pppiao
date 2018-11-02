@@ -21,7 +21,7 @@ public class TransactionServiceImpl implements TransactionService {
 	private TransactionDao transactionDao;
 
 	@Override
-	public ArrayList<TransactionEntity> selectTransacByTransacId(String transactionId) {
+	public ArrayList<Map<String, Object>> selectTransacByTransacId(String transactionId) {
 		
 		return transactionDao.selectTransacByTransacId(transactionId);
 	}
@@ -33,13 +33,13 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public ArrayList<TransactionEntity> selectTransacByBuyerId(String buyerId) {
+	public ArrayList<Map<String, Object>> selectTransacByBuyerId(String buyerId) {
 		
 		return transactionDao.selectTransacByBuyerId(buyerId);
 	}
 
 	@Override
-	public ArrayList<TransactionEntity> selectTransacBySellerId(String sellerId) {
+	public ArrayList<Map<String, Object>> selectTransacBySellerId(String sellerId) {
 		
 		return transactionDao.selectTransacBySellerId(sellerId);
 	}

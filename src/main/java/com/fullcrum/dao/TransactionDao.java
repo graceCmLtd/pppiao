@@ -24,7 +24,7 @@ public interface TransactionDao {
 	
 	@Select({"select * from ",TABLE_NAME,"where transacId = #{transactionId} order by transacDate desc"})
 	@ResultMap(value="transactionMap")
-	public ArrayList<TransactionEntity> selectTransacByTransacId( @Param("transactionId") String transactionId);
+	public ArrayList<Map<String, Object>> selectTransacByTransacId( @Param("transactionId") String transactionId);
 	
 	@Select({"select * from ",TABLE_NAME,"where billNumber = #{billNumber} order by transacDate desc "})
 	@ResultMap(value="transactionMap")
@@ -32,11 +32,11 @@ public interface TransactionDao {
 	
 	@Select({"select * from " ,TABLE_NAME,"where buyerId = #{buyerId} order by transacDate desc"})
 	@ResultMap(value="transactionMap")
-	public ArrayList<TransactionEntity> selectTransacByBuyerId(@Param("buyerId") String buyerId);
+	public ArrayList<Map<String, Object>> selectTransacByBuyerId(@Param("buyerId") String buyerId);
 	
 	@Select({"select * from ",TABLE_NAME,"where sellerId = #{sellerId} order by transacDate desc"})
 	@ResultMap(value="transactionMap")
-	public ArrayList<TransactionEntity> selectTransacBySellerId(@Param("sellerId") String sellerId);
+	public ArrayList<Map<String, Object>> selectTransacBySellerId(@Param("sellerId") String sellerId);
 	
 	@Insert({"insert " ,TABLE_NAME,"(",INSER_FIELDS,") values (#{transactionEntity.transactionType},#{transactionEntity.billNumber},#{transactionEntity.buyerId},"
 			+ "#{transactionEntity.sellerId},#{transactionEntity.amount},#{transactionEntity.transactionStatus},#{transactionEntity.transacDate})"})

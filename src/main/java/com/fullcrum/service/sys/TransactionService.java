@@ -9,13 +9,13 @@ import com.fullcrum.model.sys.TransactionEntity;
 
 public interface TransactionService {
 
-	public ArrayList<TransactionEntity> selectTransacByTransacId(String transactionId);
+	public ArrayList<Map<String,Object>> selectTransacByTransacId(String transactionId);
 	
 	public ArrayList<Map<String,Object>> selectTransacByBillNumber(String billNumber);
 	
-	public ArrayList<TransactionEntity> selectTransacByBuyerId(String buyerId);
+	public ArrayList<Map<String,Object>> selectTransacByBuyerId(String buyerId);
 	
-	public ArrayList<TransactionEntity> selectTransacBySellerId(String sellerId);
+	public ArrayList<Map<String,Object>> selectTransacBySellerId(String sellerId);
 	
 	public void insertTransaction(TransactionEntity transactionEntity) throws Exception;
 	
