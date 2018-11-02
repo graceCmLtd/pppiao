@@ -113,6 +113,7 @@ public interface QuoteDao {
 	public Integer getUnderQuoteCount(@Param("jsonObject")JSONObject jsonObject);
 	//获取已失效报价总条数
 	public Integer getFailQuoteCount(@Param("jsonObject")JSONObject jsonObject);
-	
 
+	@Update({"update ",TABLE_NAME,"set status=#{jsonObject.status} where billNumber=#{jsonObject.billNumber} and status='已报价,待接受'"})
+	void updateStatusByBillNumAndStatus(@Param("jsonObject") JSONObject jsonObject);
 }

@@ -80,6 +80,22 @@ public class MsgController {
 		}
 	}
 
+	@ApiOperation(value = "将某个用户的某条消息标记为已读",notes = "将某个用户的某条消息标记为已读，通过receiverId和msgId")
+	@RequestMapping("/updateOneFlag")
+	public JSONObject updateFlagByReceiverIdAndMsgId(@RequestBody JSONObject jsonObject){
+		JSONObject result = new JSONObject();
+		try{
+			msgService.updateFlagByReceiverIdAndMsgId(jsonObject);
+			result.put("status","success");
+			return result;
+		}catch (Exception e){
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			e.printStackTrace();
+			result.put("status","failed");
+			return result;
+		}
+	}
+
 	@RequestMapping(value="/updateFlag")
 	public JSONObject updateFlag(@RequestBody JSONObject jsonObject) {
 		JSONObject result = new JSONObject();

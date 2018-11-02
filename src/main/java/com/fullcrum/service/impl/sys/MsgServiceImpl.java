@@ -45,4 +45,9 @@ public class MsgServiceImpl implements MsgService {
 		msgDao.updateAllFlag(jsonObject);
 	}
 
+	@Override
+	public void updateFlagByReceiverIdAndMsgId(JSONObject jsonObject) {
+		msgDao.updateFlagByReceiverIdAndMsgId(jsonObject);
+	}
+
 }

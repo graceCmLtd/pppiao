@@ -32,5 +32,8 @@ public interface MsgDao {
 	Integer selectMsgCount(@Param("receiverId") String receiverId);
 
 	void updateAllFlag(@Param("jsonObject") JSONObject jsonObject);
+
+	@Update({"update ",TABLE_NAME," set flag = #{jsonObject.flag} where receiverId = #{jsonObject.receiverId} and msgId=#{jsonObject.msgId}"})
+    void updateFlagByReceiverIdAndMsgId(@Param("jsonObject") JSONObject jsonObject);
 }
 

@@ -16,4 +16,6 @@ public interface MsgService {
 	Integer selectMsgCount(String receiverId);
 
 	void updateAllFlag(JSONObject jsonObject);
+
+    void updateFlagByReceiverIdAndMsgId(JSONObject jsonObject);
 }
