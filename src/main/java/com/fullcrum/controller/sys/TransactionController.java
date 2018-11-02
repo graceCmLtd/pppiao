@@ -3,9 +3,12 @@ package com.fullcrum.controller.sys;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.annotation.Resource;
 
+import org.apache.activemq.security.TempDestinationAuthorizationEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -51,6 +54,9 @@ public class TransactionController {
 	 
 	@Resource(name="msgServiceImpl")
 	private MsgService msgService;
+	
+
+	private Timer timer=  new Timer() ;
 	
 	@RequestMapping("/getAllTrans")
 	public List<Map<String,Object>> getAllTrans(@RequestParam Integer currentPage,@RequestParam Integer pageSize){
@@ -155,6 +161,31 @@ public class TransactionController {
 			goEasyAPI.sendMessage(channel, message);
 			System.out.println("updatetransacIntentionStatus");
 			System.out.println(channel);
+			
+			if (intentionObj.containsValue("已支付,待背书") || intentionObj.containsValue("已背书,待签收") || intentionObj.containsValue("已接单,待支付") )  {
+				timer.schedule(new TimerTask() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						
+						JSONObject temp = intentionObj;
+						ArrayList<Map<String, Object>>  transactionTemp = transactionService.selectTransacByBillNumber(temp.getString("billNumber"));
+						String timeoutchannel = channel;
+						JSONObject timeoutmsg = msgObj;
+						temp.put("intentionStatus","已超时");
+						msgObj.put("msgContent", "有订单已经超时");
+						String timeoutmessage = timeoutmsg.toJSONString();
+						msgService.insertMsg(timeoutmsg);
+						goEasyAPI.sendMessage(timeoutchannel, timeoutmessage);
+						System.out.println("timertask  dddd");
+						System.out.println(temp);
+						
+						
+					}
+				}, 1200000);
+			}
+			
 			result.put("errorMsg", null);
 			result.put("status", "success");
 		} catch (Exception e) {
