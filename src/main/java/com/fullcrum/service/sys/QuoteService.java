@@ -48,6 +48,7 @@ public interface QuoteService {
 	public Integer getUnderQuoteCount(JSONObject jsonObject);
 
 	public Integer getFailQuoteCount(JSONObject jsonObject);
-	
 
+
+	void updateStatusByBillNumAndStatus(JSONObject jsonObject);
 }

@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -211,5 +212,20 @@ public class QuoteController {
 		}
 		
 		return result;
+	}
+
+	@RequestMapping("/updateStatus")
+	public JSONObject updateStatusByBillNumberAndStatus(@RequestBody JSONObject jsonObject){
+		JSONObject result = new JSONObject();
+		try{
+			quoteService.updateStatusByBillNumAndStatus(jsonObject);
+			result.put("status","success");
+			return result;
+		}catch (Exception e){
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			e.printStackTrace();
+			result.put("status","failed");
+			return result;
+		}
 	}
 }

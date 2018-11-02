@@ -129,6 +129,11 @@ public class QuoteServiceImpl implements QuoteService {
 	}
 
 	@Override
+	public void updateStatusByBillNumAndStatus(JSONObject jsonObject) {
+		quoteDao.updateStatusByBillNumAndStatus(jsonObject);
+	}
+
+	@Override
 	public void insertQuote(JSONObject quoteEntity) {
 		// TODO Auto-generated method stub
 		quoteDao.insertQuoteJson(quoteEntity);
