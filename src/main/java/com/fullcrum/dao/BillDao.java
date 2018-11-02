@@ -88,7 +88,7 @@ public interface BillDao {
 		//获取当前用户发布票据的报价情况
 		@Select({"SELECT * from (SELECT billNumber,billType,acceptor,amount,maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},maturity) as remain_days,`status`,releaseDate,releaserId,billReferer,failReason,updateTimeStamp " +
 				"from ppp_bill WHERE releaserId = #{jsonObject.uuid} and status='审核完成' and billReferer=#{jsonObject.billReferer} ) a "
-					+ " LEFT JOIN(SELECT billNumber,COUNT(*) AS countNum from ppp_quote GROUP BY billNumber) b on a.billNumber = b.billNumber  ORDER BY a.updateTimeStamp DESC" })
+					+ " LEFT JOIN(SELECT billNumber,COUNT(*) AS countNum from ppp_quote where status=#{jsonObject.quoteStatus} GROUP BY billNumber) b on a.billNumber = b.billNumber where countNum is not null ORDER BY a.updateTimeStamp DESC" })
 		@ResultMap(value="billAboutQuote")
 		public List<Map<String, Object>> getBillsInquoting(@Param("jsonObject") JSONObject jsonObject );
 		
@@ -98,7 +98,7 @@ public interface BillDao {
 				+ "c.companyName,c.contactsPhone,c.contactsQQ,c.bankAccountName,c.bankName,c.picId as companyPicId,c.contactsId ,contactsName "
 				+ "from (SELECT billNumber,billType,acceptor,amount,maturity,`status`,releaseDate,releaserId,billReferer,failReason "
 				+ "from ppp_bill WHERE releaserId = #{jsonObject.uuid} AND  billNumber = #{jsonObject.billNumber}) a  "
-				+ "LEFT JOIN(SELECT billNumber,quoterId,interest,xPerLakh,`status`,quoteDate,quoteReferer,real_money,updateTimeStamp from ppp_quote ) b  on a.billNumber = b.billNumber  "
+				+ "LEFT JOIN(SELECT billNumber,quoterId,interest,xPerLakh,`status`,quoteDate,quoteReferer,real_money,updateTimeStamp from ppp_quote where status = #{jsonObject.quoteStatus}) b  on a.billNumber = b.billNumber  "
 				+ "left JOIN ( select * from pengpengpiao.ppp_company ) c on b.quoterId = c.contactsId ORDER BY b.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize} ;"})
 		@ResultMap(value="billAboutQuote")
 		public List<Map<String, Object>> getBillsReceivedQuote(@Param("jsonObject") JSONObject jsonObject);
