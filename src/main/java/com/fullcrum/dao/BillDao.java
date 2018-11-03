@@ -223,9 +223,9 @@ public interface BillDao {
 				"c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer,d.* " +
 				"from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} and " +
 				"intentionStatus=#{jsonObject.filter_str1} or intentionStatus=#{jsonObject.filter_str2}) a left join " +
-				"(select * from pengpengpiao.ppp_quote) b on a.billNumber = b.billNumber " +
+				"(select * from pengpengpiao.ppp_quote where status=#{jsonObject.quoteStatus}) b on a.billNumber = b.billNumber " +
 				"left join (select * from pengpengpiao.ppp_bill ) c on a.billNumber = c.billNumber  " +
-				"LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId ORDER BY a.updateTimeStamp DESC " +
+				"LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId where quoteId is not null ORDER BY a.updateTimeStamp DESC " +
 				"limit #{jsonObject.currentPage},#{jsonObject.pageSize}")
 		@ResultMap(value = "QuoteIntention")
 		List<Map<String,Object>> getSellerIntentionsList(@Param("jsonObject")JSONObject jsonObject);

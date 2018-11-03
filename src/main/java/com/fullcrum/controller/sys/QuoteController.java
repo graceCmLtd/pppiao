@@ -217,8 +217,13 @@ public class QuoteController {
 	@RequestMapping("/updateStatus")
 	public JSONObject updateStatusByBillNumberAndStatus(@RequestBody JSONObject jsonObject){
 		JSONObject result = new JSONObject();
+		String channel = jsonObject.getJSONObject("message").getString("receiverId");
 		try{
-			quoteService.updateStatusByBillNumAndStatus(jsonObject);
+			quoteService.updateStatusByBillNumAndStatus(jsonObject.getJSONObject("quoteBack"));
+			quoteService.updateStatusByBillNumAndStatus(jsonObject.getJSONObject("setQuoteInvalid"));
+			transactionService.updateTransactionIntentionStatus(jsonObject.getJSONObject("setTransacInvalid"));
+			msgService.insertMsg(jsonObject.getJSONObject("message"));
+			goEasyAPI.sendMessage(channel,jsonObject.getJSONObject("message").toJSONString());
 			result.put("status","success");
 			return result;
 		}catch (Exception e){
