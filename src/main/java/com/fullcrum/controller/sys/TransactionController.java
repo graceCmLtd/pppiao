@@ -184,12 +184,10 @@ public class TransactionController {
 							System.out.println(temp);
 						}else {
 							System.out.println("交易状态已经修改，交易或许未超时。不做超时处理。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
-						}
-						
-						
+						}	
 						
 					}
-				}, 12000);
+				}, 1200000);
 			}
 			
 			result.put("errorMsg", null);

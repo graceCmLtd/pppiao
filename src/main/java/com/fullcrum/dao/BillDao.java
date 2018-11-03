@@ -116,9 +116,10 @@ public interface BillDao {
 		
 		
 		//获取用户发布的正在审核中的票据
-		@Select({"SELECT * from (SELECT billNumber,billType,acceptor,amount,maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},maturity) as remain_days,`status`,releaseDate,releaserId,billReferer,failReason,updateTimeStamp from ppp_bill "
+		/*@Select({"SELECT * from (SELECT billNumber,billType,acceptor,amount,maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},maturity) as remain_days,`status`,releaseDate,releaserId,billReferer,failReason,updateTimeStamp from ppp_bill "
 				+ " WHERE releaserId = #{jsonObject.uuid} and status='审核中'  and billReferer = '传统渠道'   ) a "
-				+ " LEFT JOIN(SELECT billNumber,COUNT(*) AS countNum from ppp_quote GROUP BY billNumber) b on a.billNumber = b.billNumber ORDER BY a.updateTimeStamp DESC " })
+				+ " LEFT JOIN(SELECT billNumber,COUNT(*) AS countNum from ppp_quote GROUP BY billNumber) b on a.billNumber = b.billNumber ORDER BY a.updateTimeStamp DESC " })*/
+		@Select({"<script> select *,TIMESTAMPDIFF(day,#{jsonObject.curr_time},maturity) as remain_days ,0 as countNum from ppp_bill where releaserId = #{jsonObject.uuid} and status ='审核中' and billReferer = '传统渠道'  <if test='jsonObject.billNumber != null' > and billNumber = #{jsonObject.billNumber}</if></script>"})
 		@ResultMap(value="billAboutQuote")
 		public List<Map<String, Object>> getBillsAuditing(@Param("jsonObject") JSONObject jsonObject);
 		
