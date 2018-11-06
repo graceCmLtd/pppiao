@@ -120,6 +120,16 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
+	public List<Map<String, Object>> selectOrderIdByBillNum(String billNumber) {
+		return transactionDao.selectOrderIdByBillNum(billNumber);
+	}
+
+	@Override
+	public void updateIntentionStatusByBillNum(JSONObject setTransacInvalid) {
+		transactionDao.updateIntentionStatusByBillNum(setTransacInvalid);
+	}
+
+	@Override
 	public void setTransactionIntentionStatusByOrderId(JSONObject jsonObject) {
 		
 		transactionDao.setTransactionIntentionStatusByOrderId(jsonObject);

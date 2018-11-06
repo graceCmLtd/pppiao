@@ -261,7 +261,7 @@
 	<select id="getSellerALLIntentionsCount" resultType="Integer">
 		select count(*) from 
 		(select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} ) a 
-		left join (select * from pengpengpiao.ppp_quote ) b on a.billNumber = b.billNumber 
+		left join (select * from pengpengpiao.ppp_quote where quoterId=#{jsonObject.uuid}) b on a.billNumber = b.billNumber
 		left join (select * from pengpengpiao.ppp_bill ) c on a.billNumber = c.billNumber  
 		left join (select * from pengpengpiao.ppp_company ) d on a.buyerId =  d.contactsId
 	</select>
@@ -269,7 +269,7 @@
 	<select id="getSellerIntentionsCount" resultType="Integer">
 		select count(*) from 
 		(select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} and intentionStatus= #{jsonObject.filter_str} ) a 
-		left join (select * from pengpengpiao.ppp_quote ) b on a.billNumber = b.billNumber 
+		left join (select * from pengpengpiao.ppp_quote where quoterId=#{jsonObject.uuid} ) b on a.billNumber = b.billNumber
 		left join (select * from pengpengpiao.ppp_bill ) c on a.billNumber = c.billNumber  
 		left join (select * from pengpengpiao.ppp_company ) d on a.buyerId =  d.contactsId
 	</select>
@@ -277,7 +277,7 @@
 	<select id="getBuyerALLIntentionsCount" resultType="Integer">
 		select count(*) from 
 		(select * from pengpengpiao.ppp_transaction where buyerId = #{jsonObject.uuid} ) a 
-		left join (select * from pengpengpiao.ppp_quote ) b on a.billNumber = b.billNumber 
+		left join (select * from pengpengpiao.ppp_quote where quoterId=#{jsonObject.uuid}) b on a.billNumber = b.billNumber
 		left join (select * from pengpengpiao.ppp_bill ) c on a.billNumber = c.billNumber 
 		left join (select * from pengpengpiao.ppp_company ) d on a.sellerId =  d.contactsId
 	</select>
@@ -285,7 +285,7 @@
 	<select id="getBuyerIntentionsCount" resultType="Integer">
 		select count(*) from 
 		(select * from pengpengpiao.ppp_transaction where buyerId = #{jsonObject.uuid} and intentionStatus= #{jsonObject.filter_str} ) a 
-		left join (select * from pengpengpiao.ppp_quote ) b on a.billNumber = b.billNumber 
+		left join (select * from pengpengpiao.ppp_quote where quoterId=#{jsonObject.uuid} ) b on a.billNumber = b.billNumber
 		left join (select * from pengpengpiao.ppp_bill ) c on a.billNumber = c.billNumber  
 		left join (select * from pengpengpiao.ppp_company ) d on a.sellerId =  d.contactsId
 	</select>

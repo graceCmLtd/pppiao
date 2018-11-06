@@ -401,4 +401,9 @@ public class TransactionController {
 		return result;
 
 	}
+
+	@RequestMapping("/getOrderId")
+	public List<Map<String,Object>> getOrderIdByBillN(@RequestParam("billNumber") String billNumber){
+		 return transactionService.selectOrderIdByBillNum(billNumber);
+	}
 }

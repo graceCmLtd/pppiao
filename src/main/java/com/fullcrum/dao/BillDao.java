@@ -136,7 +136,7 @@ public interface BillDao {
 				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer,"
 				+ "d.* "
 				+ "from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} ) a " + 
-				"left join (select * from pengpengpiao.ppp_quote ) b " + 
+				"left join (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid}) b " +
 				"on a.billNumber = b.billNumber " + 
 				"left join (select * from pengpengpiao.ppp_bill ) c " + 
 				"on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId ORDER BY a.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
@@ -148,7 +148,7 @@ public interface BillDao {
 						+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer,"
 						+ "d.* "
 						+ "from (select * from pengpengpiao.ppp_transaction where buyerId = #{jsonObject.uuid} ) a " + 
-						"left join (select * from pengpengpiao.ppp_quote ) b " + 
+						"left join (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid}) b " +
 						"on a.billNumber = b.billNumber " + 
 						"left join (select * from pengpengpiao.ppp_bill ) c " + 
 						"on a.billNumber = c.billNumber LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.sellerId =  d.contactsId ORDER BY a.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
@@ -161,7 +161,7 @@ public interface BillDao {
 				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer,"
 				+ "d.* "
 				+ "from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} and intentionStatus= #{jsonObject.filter_str} ) a " + 
-				"left join (select * from pengpengpiao.ppp_quote ) b " + 
+				"left join (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} ) b " +
 				"on a.billNumber = b.billNumber " + 
 				"left join (select * from pengpengpiao.ppp_bill ) c " + 
 				"on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId ORDER BY a.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize};"})
@@ -173,7 +173,7 @@ public interface BillDao {
 				+ "b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer,"
 				+ "d.* "
 				+ "from (select * from pengpengpiao.ppp_transaction where buyerId = #{jsonObject.uuid} and intentionStatus= #{jsonObject.filter_str} ) a " + 
-				"left join (select * from pengpengpiao.ppp_quote ) b " + 
+				"left join (select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid}) b " +
 				"on a.billNumber = b.billNumber " + 
 				"left join (select * from pengpengpiao.ppp_bill ) c " + 
 				"on a.billNumber = c.billNumber  "
