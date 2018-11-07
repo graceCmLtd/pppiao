@@ -8,10 +8,12 @@ package com.fullcrum.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.fullcrum.model.sys.UserEntity;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface UserDao {
@@ -79,9 +81,7 @@ public interface UserDao {
 	 * @return
 	 * */
 	public void deleteUsers(@Param("groupId") List<String> groupId);
-	
-	
-	
-	
 
+	@Update({"update ppp_user set user_passwd=#{jsonObject.password} where user_phone=#{jsonObject.phoneNum}"})
+	void updatePassword(@Param("jsonObject") JSONObject jsonObject);
 }
