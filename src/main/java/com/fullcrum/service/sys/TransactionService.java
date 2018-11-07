@@ -42,4 +42,8 @@ public interface TransactionService {
 	public void updateTransStatus(String billNumber);
 
 	public Integer getCount();
+
+	List<Map<String, Object>> selectOrderIdByBillNum(String billNumber);
+
+	void updateIntentionStatusByBillNum(JSONObject setTransacInvalid);
 }

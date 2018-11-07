@@ -61,7 +61,7 @@ public interface TransactionDao {
 	public void updateTransactionStatus(@Param("jsonObject") JSONObject jsonObject);
 	
 	//只设置transaction表中的intentionStatus 状态
-	@Update({"update ",TABLE_NAME," set intentionStatus = #{jsonObject.intentionStatus} where billNumber = #{jsonObject.billNumber}"})
+	@Update({"update ",TABLE_NAME," set intentionStatus = #{jsonObject.intentionStatus} where billNumber = #{jsonObject.billNumber} and transacType=#{jsonObject.orderId}"})
 	public void setTransactionIntentionStatus(@Param("jsonObject") JSONObject jsonObject);
 	
 	//只设置transaction表中的intentionStatus 状态
@@ -71,7 +71,7 @@ public interface TransactionDao {
 		
 		
 	//更新设置transaction表中intentionStatus 和 买家Id
-	@Update({"update ",TABLE_NAME," set intentionStatus = #{jsonObject.intentionStatus} ,buyerId = #{jsonObject.quoterId} where billNumber = #{jsonObject.billNumber}"})
+	@Update({"update ",TABLE_NAME," set intentionStatus = #{jsonObject.intentionStatus} ,buyerId = #{jsonObject.quoterId} where transacType = #{jsonObject.orderId}"})
 	public void updateTransactionIntentionStatus(@Param("jsonObject") JSONObject jsonObject);
 	
 	@Select({"select DISTINCT a.transacId,a.billNumber,a.amount,a.transacStatus,a.transacDate," + 
@@ -98,4 +98,11 @@ public interface TransactionDao {
 	
 	@Select({"update ppp_transaction set intentionStatus = '待接单'  where billNumber = #{billNumber}"})
 	public void updateIntentionStatus(String billNumber);
+
+	@Select({"select * from ",TABLE_NAME," where billNumber=#{billNumber} and intentionStatus is null"})
+	@ResultMap(value = "transactionMap")
+	List<Map<String, Object>> selectOrderIdByBillNum(@Param("billNumber") String billNumber);
+
+	@Update({"update ppp_transaction set intentionStatus=#{setTransacInvalid.intentionStatus} where intentionStatus=#{setTransacInvalid.oldStatus} and billNumber = #{setTransacInvalid.billNumber}"})
+	void updateIntentionStatusByBillNum(@Param("setTransacInvalid") JSONObject setTransacInvalid);
 }

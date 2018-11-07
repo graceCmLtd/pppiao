@@ -1,13 +1,11 @@
 package com.fullcrum.controller.sys;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
+import com.fullcrum.model.sys.TransactionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -217,11 +215,26 @@ public class QuoteController {
 	@RequestMapping("/updateStatus")
 	public JSONObject updateStatusByBillNumberAndStatus(@RequestBody JSONObject jsonObject){
 		JSONObject result = new JSONObject();
+		JSONObject transobj = new JSONObject();
+		Integer randomNum = UUID.randomUUID().toString().hashCode();
+		while (randomNum < 0) {
+			randomNum = UUID.randomUUID().toString().hashCode();
+		}
+		String orderId = 1+String.format("%015d", randomNum);
+		transobj.put("transactionType", orderId);
+		transobj.put("billNumber", jsonObject.getJSONObject("billInfo").getString("billNumber"));
+		transobj.put("buyerId", null);
+		transobj.put("sellerId", jsonObject.getJSONObject("billInfo").getString("releaserId"));
+		transobj.put("amount", jsonObject.getJSONObject("billInfo").getString("amount"));
+		transobj.put("transactionStatus", "1");
+		transobj.put("transacDate", jsonObject.getJSONObject("billInfo").get("releaseDate"));
+
 		String channel = jsonObject.getJSONObject("message").getString("receiverId");
 		try{
 			quoteService.updateStatusByBillNumAndStatus(jsonObject.getJSONObject("quoteBack"));
 			quoteService.updateStatusByBillNumAndStatus(jsonObject.getJSONObject("setQuoteInvalid"));
-			transactionService.updateTransactionIntentionStatus(jsonObject.getJSONObject("setTransacInvalid"));
+			transactionService.updateIntentionStatusByBillNum(jsonObject.getJSONObject("setTransacInvalid"));
+			transactionService.insertTransaction(JSONObject.toJavaObject(transobj, TransactionEntity.class));
 			msgService.insertMsg(jsonObject.getJSONObject("message"));
 			goEasyAPI.sendMessage(channel,jsonObject.getJSONObject("message").toJSONString());
 			result.put("status","success");
