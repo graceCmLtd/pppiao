@@ -66,7 +66,7 @@
 	
 	<select id="getAllQuoteCount" resultType="Integer">
 		select count(*) from   
-		(select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} ) b 
+		(select * from pengpengpiao.ppp_quote where quoterId = #{jsonObject.uuid} and status='报价中' or status = '报价失效') b
 		left join (select * from pengpengpiao.ppp_bill ) c on b.billNumber = c.billNumber 
 		left join ( select * from pengpengpiao.ppp_company ) a on c.releaserId = a.contactsId
 	</select>
