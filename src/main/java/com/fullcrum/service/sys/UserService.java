@@ -3,6 +3,7 @@ package com.fullcrum.service.sys;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.UserEntity;
 
 public interface UserService {
@@ -31,6 +32,7 @@ public interface UserService {
 	public Map<String, String> login(String user_phone,String passwd);
 	
 	public Map<String, String> loginBySms(String user_phone,String Sms);
-	
 
+
+    JSONObject updatePassword(JSONObject jsonObject);
 }

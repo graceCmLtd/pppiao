@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -279,5 +280,27 @@ public class UserController {
 		System.out.println("http session ...........................");
 		System.out.println(httpServletResponse.getHeaderNames());
 
+	}
+
+	@RequestMapping("/updatePassword")
+	public JSONObject updatePassword(@RequestBody JSONObject jsonObject){
+		JSONObject res = new JSONObject();
+		//String password = jsonObject.getString("password");
+		//password = new BCryp
+		try{
+			JSONObject result = userService.updatePassword(jsonObject);
+			if(result.getString("msg") == null){
+				res.put("status","success");
+				return res;
+			}else{
+				return result;
+			}
+
+		}catch (Exception e){
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			e.printStackTrace();
+			res.put("status","failed");
+			return res;
+		}
 	}
 }

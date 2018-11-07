@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -199,6 +200,32 @@ public class UserServiceImpl implements UserService{
         return map;
 		
 	}
-	
+
+    @Override
+    public JSONObject updatePassword(JSONObject jsonObject) {
+	    JSONObject msg = new JSONObject();
+	    System.out.println("ffff"+jsonObject.getString("code"));
+	    System.out.println(stringRedisTemplate.opsForValue().get(jsonObject.getString("phoneNum")));
+        UserEntity user = getUserEntityByPhone(jsonObject.getString("phoneNum"));
+	    if(user==null){
+	        msg.put("msg","该用户不存在");
+            return msg;
+        }else if(StringUtils.isEmptyOrWhitespaceOnly(jsonObject.getString("code"))){
+            msg.put("msg","验证码不能为空");
+            return msg;
+        }else if(!jsonObject.getString("code").equals(stringRedisTemplate.opsForValue().get(jsonObject.getString("phoneNum")))){
+	        msg.put("msg","验证码错误");
+            return msg;
+        }else if(StringUtils.isEmptyOrWhitespaceOnly(jsonObject.getString("password"))){
+            msg.put("msg","密码不能为空");
+            return msg;
+        }else{
+            userDao.updatePassword(jsonObject);
+            msg.put("msg",null);
+            return msg;
+        }
+
+    }
+
 
 }
