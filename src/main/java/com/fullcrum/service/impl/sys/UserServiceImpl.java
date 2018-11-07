@@ -7,7 +7,11 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+
+import org.aspectj.bridge.MessageUtil;
+
 import com.alibaba.fastjson.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -146,7 +150,6 @@ public class UserServiceImpl implements UserService{
             map.put("msg","密码错误");
             return map;
         }*/
-
         String ticket = addLoginTicket(u.getUser_id());
         System.out.println("ticket");
         System.out.println(ticket);
