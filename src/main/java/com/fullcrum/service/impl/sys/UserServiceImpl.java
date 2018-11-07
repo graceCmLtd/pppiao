@@ -146,6 +146,7 @@ public class UserServiceImpl implements UserService{
 			map.put("msg", "密码错误");
 			return map;
 		}
+        
         /*if (!JblogUtil.MD5(password+u.getSalt()).equals(u.getPassword())){
             map.put("msg","密码错误");
             return map;
