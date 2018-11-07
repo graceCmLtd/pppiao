@@ -211,7 +211,7 @@
 					<![CDATA[ and maturity < #{jsonObject.maxDate}]]>
 				</if>
 			</if>
-			<![CDATA[and 1=1 and status="审核完成" and billReferer="传统渠道")  a  left join  (select billNumber,status, count(*) as countNumber  from pengpengpiao.ppp_quote where status="报价中"    group by billNumber,status)  b on a.billNumber=b.billNumber  ]]>
+			<![CDATA[and 1=1 and status="审核完成" and billReferer="传统渠道")  a  left join  (select billNumber,status, count(*) as countNumber  from pengpengpiao.ppp_quote  group by billNumber,status)  b on a.billNumber=b.billNumber where b.status = "报价中" or b.status is null ]]>
 		</where>
 		
 	</select>
