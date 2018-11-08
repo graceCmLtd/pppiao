@@ -97,7 +97,15 @@ public class BillController {
 		
 		String channel = jsonObject.getJSONObject("userData").get("uuid").toString();
 		
-		String message = "您有一条票据发布成功，票号为："+theBill.get("billNumber");
+		JSONObject message = new JSONObject();
+		message.put("msgContent", "您有一条票据发布成功，票号为："+theBill.get("billNumber"));
+		message.put("msgType", "交易");
+		message.put("senderId", channel);
+		message.put("receiverId", channel);
+		message.put("flag", 0);
+		message.put("path", "/releasepa");
+		
+		//String message = "您有一条票据发布成功，票号为："+theBill.get("billNumber");
 		
 		JSONObject result = new JSONObject();
 		System.out.println("output add bill transobj data .................");
@@ -110,7 +118,7 @@ public class BillController {
 			
 			billPicsService.insertBillPics(JSONObject.toJavaObject(jsonObject.getJSONObject("billPics"), BillPicsEntity.class));
 			
-			goEasyAPI.sendMessage(channel, message);
+			goEasyAPI.sendMessage(channel, message.toJSONString());
 			result.put("statusCode", "success");
 			result.put("errorMsg", null);
 		} catch (Exception e) {
@@ -322,7 +330,7 @@ public class BillController {
 				//获取买家所有意向
 				return billService.getBuyerALLIntentions(jsonObject);
 			case "3":
-				//获取卖家某类意向
+				//获取卖家某(些)类意向
 				return billService.getSellerIntentions(jsonObject);
 			case "4":
 				//获取买家某类意向

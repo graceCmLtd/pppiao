@@ -171,20 +171,28 @@ public class TransactionController {
 						JSONObject temp = intentionObj;
 						System.out.println(temp);
 						ArrayList<Map<String, Object>>  transactionTemp = transactionService.selectTransacByTransacId(temp.getString("transacId"));
-						System.out.println(transactionTemp.get(0));
-						if (transactionTemp.get(0).get("intentionStatus").equals(temp.getString("intentionStatus"))) {
-							String timeoutchannel = channel;
-							JSONObject timeoutmsg = msgObj;
-							temp.put("intentionStatus","已超时");
-							msgObj.put("msgContent", "有订单已经超时");
-							String timeoutmessage = timeoutmsg.toJSONString();
-							msgService.insertMsg(timeoutmsg);
-							goEasyAPI.sendMessage(timeoutchannel, timeoutmessage);
-							System.out.println("timertask  dddd");
-							System.out.println(temp);
+						System.out.println("ppppprint transactionTemp     .....");
+						System.out.println(transactionTemp);
+						if (!transactionTemp.isEmpty()  ) {
+							if (transactionTemp.get(0).containsKey("intentionStatus")) {
+								if (transactionTemp.get(0).get("intentionStatus").equals(temp.getString("intentionStatus"))) {
+									String timeoutchannel = channel;
+									JSONObject timeoutmsg = msgObj;
+									temp.put("intentionStatus","已超时");
+									msgObj.put("msgContent", "有订单已经超时");
+									String timeoutmessage = timeoutmsg.toJSONString();
+									msgService.insertMsg(timeoutmsg);
+									goEasyAPI.sendMessage(timeoutchannel, timeoutmessage);
+									System.out.println("timertask  dddd");
+									System.out.println(temp);
+								}else {
+									System.out.println("交易状态已经修改，交易或许未超时。不做超时处理。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
+								}
+							}
 						}else {
-							System.out.println("交易状态已经修改，交易或许未超时。不做超时处理。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
-						}	
+							
+						}
+							
 						
 					}
 				}, 1200000);
@@ -194,7 +202,8 @@ public class TransactionController {
 			result.put("status", "success");
 		} catch (Exception e) {
 			// TODO: handle exception
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			//TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			
 			result.put("errorMsg", e);
 			result.put("status", "fail");
 		}

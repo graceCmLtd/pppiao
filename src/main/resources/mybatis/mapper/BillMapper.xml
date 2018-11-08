@@ -161,6 +161,26 @@
        select count(*) from pengpengpiao.ppp_bill
     </select>
 	
+	<select id="getSellerIntentions" resultMap="QuoteIntention">
+		<![CDATA[ select a.transacId,a.transacType,a.billNumber,a.buyerId,a.sellerId,a.amount,a.transacStatus,a.transacDate,a.intentionStatus,unix_timestamp(a.updateTimeStamp) as updateTimeStamp,b.quoteId,b.quoteAmount,b.quoterId,b.interest,b.xPerLakh,b.real_money,b.quoteDate,c.billType,c.amount,c.billId,c.acceptor,c.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},c.maturity)as remain_days,c.status,c.releaseDate,c.releaserId,c.billPicsId,c.transferable ,c.billReferer,d.* from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid}  ]]>
+			<if test="jsonObject.transaction_filter != null">
+				 and intentionStatus  in
+				<foreach collection="jsonObject.transaction_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+			</if>
+		<![CDATA[ ) a left join (select * from pengpengpiao.ppp_quote where 1=1   ]]> 
+			<if test="jsonObject.quote_filter != null">
+				 and status  in
+				<foreach collection="jsonObject.quote_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+			</if>
+		<![CDATA[ ) b on a.billNumber = b.billNumber left join (select * from pengpengpiao.ppp_bill where 1=1  ]]>
+			<if test="jsonObject.bill_filter != null">
+				and status in
+				<foreach collection="jsonObject.bill_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+			</if>
+		<![CDATA[  ) c on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId ORDER BY a.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize};]]>
+	
+	</select>
+	
 	<select id="selectByFilter" resultMap="billFilter" >
 	<![CDATA[select a.billId,a.billNumber,a.billType,a.acceptor,a.billReferer,a.amount,a.maturity,TIMESTAMPDIFF(day,#{jsonObject.curr_time},a.maturity)as remain_days,a.status,a.releaseDate,a.releaserId,a.billPicsId,a.transferable,a.billReferer,case when b.countNumber is null then 0 else b.countNumber end as count,case when b.status is null then "未报价" else b.status end as quoteStatus from ]]>
 		<![CDATA[(select * from pengpengpiao.ppp_bill  ]]>
