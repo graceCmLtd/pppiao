@@ -307,11 +307,23 @@
 	</select>
 	
 	<select id="getSellerIntentionsCount" resultType="Integer">
-		select count(*) from 
-		(select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid} and intentionStatus= #{jsonObject.filter_str} ) a 
-		left join (select * from pengpengpiao.ppp_quote where quoterId=#{jsonObject.uuid} ) b on a.billNumber = b.billNumber
-		left join (select * from pengpengpiao.ppp_bill ) c on a.billNumber = c.billNumber  
-		left join (select * from pengpengpiao.ppp_company ) d on a.buyerId =  d.contactsId
+			<![CDATA[select count(*)  from (select * from pengpengpiao.ppp_transaction where sellerId = #{jsonObject.uuid}  ]]>
+			<if test="jsonObject.transaction_filter != null">
+				 and intentionStatus  in
+				<foreach collection="jsonObject.transaction_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+			</if>
+		<![CDATA[ ) a left join (select * from pengpengpiao.ppp_quote where 1=1   ]]> 
+			<if test="jsonObject.quote_filter != null">
+				 and status  in
+				<foreach collection="jsonObject.quote_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+			</if>
+		<![CDATA[ ) b on a.billNumber = b.billNumber left join (select * from pengpengpiao.ppp_bill where 1=1  ]]>
+			<if test="jsonObject.bill_filter != null">
+				and status in
+				<foreach collection="jsonObject.bill_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+			</if>
+		<![CDATA[  ) c on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.buyerId =  d.contactsId ;]]>
+	
 	</select>
 	
 	<select id="getBuyerALLIntentionsCount" resultType="Integer">
