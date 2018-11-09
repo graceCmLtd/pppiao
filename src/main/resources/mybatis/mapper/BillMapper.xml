@@ -338,7 +338,7 @@
 			and status in
 			<foreach collection="jsonObject.bill_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
 		</if>
-		<![CDATA[  ) c on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.sellerId =  d.contactsId ORDER BY a.updateTimeStamp DESC limit #{jsonObject.currentPage},#{jsonObject.pageSize};]]>
+		<![CDATA[  ) c on a.billNumber = c.billNumber  LEFT JOIN(select * from pengpengpiao.ppp_company ) d ON a.sellerId =  d.contactsId ;]]>
 	</select>
 	
 	<select id="getBillsReceivedQuoteCount" resultType="Integer">
