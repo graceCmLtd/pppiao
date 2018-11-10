@@ -105,4 +105,6 @@ public interface TransactionDao {
 
 	@Update({"update ppp_transaction set intentionStatus=#{setTransacInvalid.intentionStatus} where intentionStatus=#{setTransacInvalid.oldStatus} and billNumber = #{setTransacInvalid.billNumber}"})
 	void updateIntentionStatusByBillNum(@Param("setTransacInvalid") JSONObject setTransacInvalid);
+
+	List<Map<String, Object>> selectCountByIntentionStatus(@Param("jsonObject") JSONObject jsonObject);
 }

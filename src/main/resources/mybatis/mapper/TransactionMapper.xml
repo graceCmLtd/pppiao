@@ -32,10 +32,30 @@
 		<result column="seller_phone" property="seller_phone"/>
 	</resultMap>
 
+	<resultMap id="countAndStatus" type="java.util.Map">
+		<result column="count" property="count"/>
+		<result column="intentionStatus" property="intentionStatus"/>
+	</resultMap>
+
 	<select id="getCount" resultType="Integer">
 		SELECT count(*) from
 					(select * from pengpengpiao.ppp_transaction where buyerId is not NULL) a
 					LEFT JOIN (SELECT contactsName as buyerName,contactsId from pengpengpiao.ppp_company ) b ON a.buyerId = b.contactsId
 					LEFT JOIN (SELECT contactsName as sellerName,contactsId from pengpengpiao.ppp_company ) c ON a.sellerId = c.contactsId
+	</select>
+
+	<select id="selectCountByIntentionStatus" resultMap="countAndStatus">
+		select count(*) count,intentionStatus from ppp_transaction where 1=1
+		<if test="jsonObject.role == 'seller'">
+			and sellerId=#{jsonObject.uuid}
+		</if>
+		<if test="jsonObject.role == 'buyer'">
+			and buyerId=#{jsonObject.uuid}
+		</if>
+		<if test="jsonObject.filter_str != null">
+			and intentionStatus  in
+			<foreach collection="jsonObject.filter_str" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+		</if>
+		group by intentionStatus;
 	</select>
 </mapper>

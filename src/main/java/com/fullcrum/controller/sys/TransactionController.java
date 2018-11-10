@@ -415,4 +415,10 @@ public class TransactionController {
 	public List<Map<String,Object>> getOrderIdByBillN(@RequestParam("billNumber") String billNumber){
 		 return transactionService.selectOrderIdByBillNum(billNumber);
 	}
+
+	@RequestMapping("/getCountByIntentionStatus")
+	public List<Map<String,Object>> getCountByIntentionStatus(@RequestBody JSONObject jsonObject){
+			System.out.println("ssqqqqqqqq");
+			return transactionService.selectCountByIntentionStatus(jsonObject);
+	}
 }

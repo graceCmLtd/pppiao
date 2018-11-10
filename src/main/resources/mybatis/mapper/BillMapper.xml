@@ -156,7 +156,7 @@
 		<result column="pic1" property="pic1"/>
 		<result column="pic2" property="pic2"/>
 	</resultMap>
-	
+
 	<select id="selectCount" resultType="Integer">
        select count(*) from pengpengpiao.ppp_bill
     </select>
@@ -167,7 +167,7 @@
 			and intentionStatus  in
 			<foreach collection="jsonObject.transaction_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
 		</if>
-		<![CDATA[ ) a left join (select * from pengpengpiao.ppp_quote where 1=1   ]]>
+		<![CDATA[ ) a left join (select * from pengpengpiao.ppp_quote where 1=1  and quoterId = #{jsonObject.uuid}]]>
 		<if test="jsonObject.quote_filter != null">
 			and status  in
 			<foreach collection="jsonObject.quote_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
@@ -187,7 +187,7 @@
 				 and intentionStatus  in
 				<foreach collection="jsonObject.transaction_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
 			</if>
-		<![CDATA[ ) a left join (select * from pengpengpiao.ppp_quote where 1=1   ]]> 
+		<![CDATA[ ) a left join (select * from pengpengpiao.ppp_quote where 1=1 and quoterId = #{jsonObject.uuid}]]>
 			<if test="jsonObject.quote_filter != null">
 				 and status  in
 				<foreach collection="jsonObject.quote_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
@@ -312,7 +312,7 @@
 				 and intentionStatus  in
 				<foreach collection="jsonObject.transaction_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
 			</if>
-		<![CDATA[ ) a left join (select * from pengpengpiao.ppp_quote where 1=1   ]]> 
+		<![CDATA[ ) a left join (select * from pengpengpiao.ppp_quote where 1=1 and quoterId = #{jsonObject.uuid}   ]]>
 			<if test="jsonObject.quote_filter != null">
 				 and status  in
 				<foreach collection="jsonObject.quote_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
@@ -340,7 +340,7 @@
 			and intentionStatus  in
 			<foreach collection="jsonObject.transaction_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
 		</if>
-		<![CDATA[ ) a left join (select * from pengpengpiao.ppp_quote where 1=1   ]]>
+		<![CDATA[ ) a left join (select * from pengpengpiao.ppp_quote where 1=1  and quoterId = #{jsonObject.uuid} ]]>
 		<if test="jsonObject.quote_filter != null">
 			and status  in
 			<foreach collection="jsonObject.quote_filter" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>

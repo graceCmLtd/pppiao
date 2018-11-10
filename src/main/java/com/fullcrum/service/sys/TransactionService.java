@@ -46,4 +46,6 @@ public interface TransactionService {
 	List<Map<String, Object>> selectOrderIdByBillNum(String billNumber);
 
 	void updateIntentionStatusByBillNum(JSONObject setTransacInvalid);
+
+	List<Map<String, Object>> selectCountByIntentionStatus(JSONObject jsonObject);
 }
