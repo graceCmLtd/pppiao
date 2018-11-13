@@ -130,6 +130,11 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
+	public List<Map<String, Object>> selectCountByIntentionStatus(JSONObject jsonObject) {
+		return transactionDao.selectCountByIntentionStatus(jsonObject);
+	}
+
+	@Override
 	public void setTransactionIntentionStatusByOrderId(JSONObject jsonObject) {
 		
 		transactionDao.setTransactionIntentionStatusByOrderId(jsonObject);
