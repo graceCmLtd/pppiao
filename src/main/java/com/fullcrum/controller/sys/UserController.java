@@ -33,8 +33,6 @@ import com.fullcrum.service.sys.UserService;
 import com.fullcrum.utils.PicValidateUtil;
 import com.fullcrum.utils.SendSms;
 
-import io.goeasy.GoEasy;
-
 @RestController
 @CrossOrigin
 @RequestMapping("/ppp")
@@ -111,6 +109,7 @@ public class UserController {
 				result.put("role", companyData.get(0).getRole());
 				
 			}
+            stringRedisTemplate.opsForValue().set(map.get("ticket"), result.toString(), 60,TimeUnit.SECONDS );
             return result;
         }else {
             model.addAttribute("msg", map.get("msg"));
@@ -158,6 +157,7 @@ public class UserController {
 				result.put("CompanyAuthentication", true);
 				result.put("role", companyData.get(0).getRole());
 			}
+            stringRedisTemplate.opsForValue().set(map.get("ticket"), result.toString(), 60,TimeUnit.SECONDS );
             return result;
         }else {
             model.addAttribute("msg", map.get("msg"));
@@ -215,7 +215,6 @@ public class UserController {
 		try {
 			 map = userService.register(jsonObject.getString("login_name"), jsonObject.getString("user_phone"), jsonObject.getString("user_passwd"));
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println("exception  .................");
 			System.out.println(e);
 		}

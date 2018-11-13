@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
+//import java.util.Random;
 import java.util.UUID;
 
-
-import org.aspectj.bridge.MessageUtil;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -126,7 +124,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Map<String,String> login(String user_phone, String passwd){
         Map<String,String> map = new HashMap<>();
-        Random random = new Random();
+        //Random random = new Random();
         if (StringUtils.isEmptyOrWhitespaceOnly(user_phone)){
             map.put("msg","手机号码不能为空");
             return map;
@@ -170,7 +168,7 @@ public class UserServiceImpl implements UserService{
 	public Map<String, String> loginBySms(String user_phone, String Sms) {
 		// TODO Auto-generated method stub
 		Map<String,String> map = new HashMap<>();
-        Random random = new Random();
+        //Random random = new Random();
         if (StringUtils.isEmptyOrWhitespaceOnly(user_phone)){
             map.put("msg","手机号码不能为空");
             return map;

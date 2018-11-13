@@ -3,7 +3,6 @@ package com.fullcrum.controller.sys;
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.utils.GoEasyAPI;
 
-import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
