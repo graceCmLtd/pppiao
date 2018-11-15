@@ -9,8 +9,11 @@ import io.goeasy.publish.PublishListener;
 @Component
 public class GoEasyAPI {
 
+	private static final String REGIONHOST = "https://rest-hangzhou.goeasy.io";
+	private static final String APPKEY = "BC-a9752c0d240f407298d5346075fb6de4";
+
     public  void sendMessage(String channel,String message){
-        GoEasy goEasy = new GoEasy("https://rest-hangzhou.goeasy.io","BC-a9752c0d240f407298d5346075fb6de4");
+        GoEasy goEasy = new GoEasy(REGIONHOST,APPKEY);
         System.out.println("saaaaaa"+message);
         goEasy.publish(channel,message,new PublishListener() {
         	@Override
