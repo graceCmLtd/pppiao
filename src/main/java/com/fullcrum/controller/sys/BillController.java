@@ -32,11 +32,10 @@ import com.fullcrum.utils.AipOcrImage;
 import com.fullcrum.utils.GoEasyAPI;
 
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(allowCredentials="true")
 @RequestMapping("/ppp/bills")
 public class BillController {
 
