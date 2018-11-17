@@ -2,6 +2,8 @@ package com.fullcrum.controller.sys;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.AdminEntity;
 import com.fullcrum.service.sys.AdminService;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * 
@@ -23,7 +27,10 @@ import com.fullcrum.service.sys.AdminService;
 @CrossOrigin
 @RequestMapping("/ppp/admin")
 public class AdminController {
-	
+
+	@Autowired
+	private StringRedisTemplate stringRedisTemplate;
+
 	@Resource(name = "adminServiceImpl")
 	private AdminService adminService;
 	
@@ -40,6 +47,8 @@ public class AdminController {
 			if(adminInfo != null) {
 				System.out.println(adminInfo.getLoginName());
 				json.put("status", "success");
+				json.put("ticket",adminInfo.getLoginName());
+				stringRedisTemplate.opsForValue().set(adminInfo.getLoginName(),adminInfo.toString(),60, TimeUnit.SECONDS);
 			}else {
 				json.put("status", "failed");
 			}
