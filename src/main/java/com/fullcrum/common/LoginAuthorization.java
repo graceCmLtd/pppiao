@@ -46,7 +46,7 @@ public class LoginAuthorization {
 		}else if(authTicket == null) {
 			System.out.println("authticket is null ............");
 			try {
-				//response.getWriter().println("authnticket is nu");;
+				response.getWriter().println("authnticket is nu");;
 				response.sendError(602, "Authorization cannot be null");
 			} catch (IOException e) {
 				e.printStackTrace();

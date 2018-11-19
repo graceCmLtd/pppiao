@@ -332,7 +332,7 @@ public class BillController {
 				//获取卖家某(些)类意向
 				return billService.getSellerIntentions(jsonObject);
 			case "4":
-				//获取买家某类意向
+				//获取买家某(些)类意向
 				return billService.getBuyerIntentions(jsonObject);
 
 				//获取卖家资源池审核中的票据
