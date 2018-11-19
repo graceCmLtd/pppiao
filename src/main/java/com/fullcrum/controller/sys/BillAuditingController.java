@@ -77,13 +77,18 @@ public class BillAuditingController {
 				System.out.println(billReferer);
 				billAuditingService.updateBillStatus(billNumber,status,failReason);
 				transactionService.updateTransStatus(billNumber);
-				goEasyAPI.sendMessage(json.getJSONObject("message").getString("receiverId"), json.get("message").toString());
-				JSONObject msg = json.getJSONObject("message");
+				goEasyAPI.sendMessage(json.getJSONObject("message2").getString("receiverId"), json.getJSONObject("message2").toString());
+				JSONObject msg = json.getJSONObject("message2");
 				msgService.insertMsg(msg);
+				if("审核完成".equals(status)){
+					goEasyAPI.sendMessage(json.getJSONObject("message3").getString("receiverId"), json.getJSONObject("message3").toString());
+					JSONObject msg2 = json.getJSONObject("message3");
+					msgService.insertMsg(msg2);
+				}
 			}else {
 				billAuditingService.updateBillStatus(billNumber,status,failReason);
-				goEasyAPI.sendMessage(json.getJSONObject("message").getString("receiverId"), json.getJSONObject("message").toString());
-				JSONObject msg = json.getJSONObject("message");
+				goEasyAPI.sendMessage(json.getJSONObject("message1").getString("receiverId"), json.getJSONObject("message1").toString());
+				JSONObject msg = json.getJSONObject("message1");
 				msgService.insertMsg(msg);
 			}
 			return "success";

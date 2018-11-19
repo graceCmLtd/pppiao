@@ -97,12 +97,14 @@ public class BillController {
 		String channel = jsonObject.getJSONObject("userData").get("uuid").toString();
 		
 		JSONObject message = new JSONObject();
-		message.put("msgContent", "您有一条票据发布成功，票号为："+theBill.get("billNumber"));
+		//消息只展示票号后四位
+		String billNum = theBill.get("billNumber").toString();
+		message.put("msgContent", "您有一张票据发布成功，票号后四位("+billNum.substring(billNum.length()-4)+"),请到我的求贴页面审核中查看");
 		message.put("msgType", "交易");
 		message.put("senderId", channel);
 		message.put("receiverId", channel);
 		message.put("flag", 0);
-		message.put("path", "/releasepa");
+		message.put("path", "/release/paper/offerIn");
 		
 		//String message = "您有一条票据发布成功，票号为："+theBill.get("billNumber");
 		
