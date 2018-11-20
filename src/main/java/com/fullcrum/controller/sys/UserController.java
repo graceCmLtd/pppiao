@@ -75,13 +75,14 @@ public class UserController {
  /*   public String login(Model model, HttpServletResponse httpResponse,
                         @RequestParam(value="login_name",required=false) String login_name,@RequestParam(value="passwd" ,required=false) String passwd,@RequestParam(value = "next",required = false)String next){*/
 	public JSONObject login(Model model, HttpServletResponse httpResponse,
-            @RequestBody UserEntity userEntity){
+            @RequestBody JSONObject jsonObject){
 		System.out.println("login_name");
-        System.out.println(userEntity.getUser_phone());
-        System.out.println(userEntity.getUser_passwd());
+        System.out.println(jsonObject.getString("user_phone"));
+        System.out.println(jsonObject.getString("user_passwd"));
+		System.out.println(jsonObject.getString("picCode"));
 		//String next = "xx";
 		JSONObject result  = new JSONObject();
-		Map<String,String> map = userService.login(userEntity.getUser_phone(),userEntity.getUser_passwd());
+		Map<String,String> map = userService.login(jsonObject.getString("user_phone"),jsonObject.getString("user_passwd"),jsonObject.getString("picCode"));
 		
 		
         if (map.containsKey("ticket")) {
@@ -92,7 +93,7 @@ public class UserController {
             result.put("status", "success");
             result.put("ticket", map.get("ticket"));
             result.put("errorMsg", null);
-            result.put("user_phone",userEntity.getUser_phone());
+            result.put("user_phone",jsonObject.getString("user_phone"));
             /*System.out.println("on success////////////////");
             System.out.println(result);
             if (StringUtils.isEmptyOrWhitespaceOnly(next)){
@@ -132,7 +133,7 @@ public class UserController {
 		System.out.println("login_name");
 		//String next = "xx";
 		JSONObject result  = new JSONObject();
-		Map<String,String> map = userService.loginBySms(jsonObject.getString("user_phone"), jsonObject.getString("Sms"));
+		Map<String,String> map = userService.loginBySms(jsonObject.getString("user_phone"), jsonObject.getString("Sms"),jsonObject.getString("picCode"));
         if (map.containsKey("ticket")) {
             Cookie cookie = new Cookie("ticket",map.get("ticket"));
             cookie.setPath("/");
@@ -213,7 +214,7 @@ public class UserController {
 		Map<String, String> map = null;
 		
 		try {
-			 map = userService.register(jsonObject.getString("login_name"), jsonObject.getString("user_phone"), jsonObject.getString("user_passwd"));
+			 map = userService.register(jsonObject.getString("login_name"), jsonObject.getString("user_phone"), jsonObject.getString("user_passwd"),jsonObject.getString("picCode"));
 		} catch (Exception e) {
 			System.out.println("exception  .................");
 			System.out.println(e);
@@ -267,7 +268,7 @@ public class UserController {
 		request.getCookies();*/
 		
 		Object[] objects = PicValidateUtil.createImage();
-
+		stringRedisTemplate.opsForValue().set("picCode", objects[0].toString(), 60,TimeUnit.SECONDS );
 		httpServletResponse.setContentType("image/png");
 		try {
 			OutputStream outputStream = httpServletResponse.getOutputStream();

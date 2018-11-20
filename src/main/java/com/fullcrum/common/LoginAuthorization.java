@@ -45,8 +45,10 @@ public class LoginAuthorization {
 		System.out.println(authTicket);
 
 		System.out.println(request.getRequestURI());
-		if (request.getRequestURI().equals("/ppp/login") || request.getRequestURI().equals("/ppp/loginBySms") || request.getRequestURI().equals("/ppp/admin/login") || request.getRequestURI().equals("/ppp/msg/getUserMsg")
-				|| request.getRequestURI().equals("/ppp/resourceMarket/getAllInfo") || request.getRequestURI().equals("/ppp/resourceMarket/getCount") || request.getRequestURI().equals("/ppp/bills/filterbill")|| request.getRequestURI().equals("/ppp/getValidatePic")) {
+		if (request.getRequestURI().equals("/ppp/login") || request.getRequestURI().equals("/ppp/loginBySms") || request.getRequestURI().equals("/ppp/admin/login") || request.getRequestURI().equals("/ppp/msg/getUserMsg") 
+				|| request.getRequestURI().equals("/ppp/resourceMarket/getAllInfo") || request.getRequestURI().equals("/ppp/resourceMarket/getCount") || request.getRequestURI().equals("/ppp/bills/filterbill")
+				|| request.getRequestURI().equals("/ppp/getValidatePic") || request.getRequestURI().equals("/ppp/register")) {
+
 			System.out.println("login page ......");
 		}else if(authTicket == null) {
 			System.out.println("authticket is null ............");
@@ -72,24 +74,14 @@ public class LoginAuthorization {
 			JSONObject parsejson = JSONObject.parseObject(auth_str);
 			if (!parsejson.getString("uuid").equals(uuid)) {
 				try {
-					response.sendError(802, "invalid token, token is invalid");
+					response.sendError(802, "invalid token, token is not match the userid ");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			Enumeration<String> ss =  request.getParameterNames();
-			System.out.println("print parameternames..................................................................");
 			
-			while (ss.hasMoreElements()) {
-				System.out.println(ss.nextElement());
-				
-			}
-			Enumeration<String> headn = request.getHeaderNames();
-			while(headn.hasMoreElements()) {
-				System.out.println(headn.nextElement());
-			}
-			stringRedisTemplate.expire(authTicket, 60, TimeUnit.SECONDS);
+			stringRedisTemplate.expire(authTicket, 900, TimeUnit.SECONDS);
 		}else {
 			System.out.println("request ticket else ............................");
 		}

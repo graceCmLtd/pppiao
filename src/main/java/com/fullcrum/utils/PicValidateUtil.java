@@ -77,6 +77,7 @@ public class PicValidateUtil {
 		
 		JSONObject result = new JSONObject();
 		System.out.println("the image  is  :............>>>>>>>>>>>>>>>>>>>");
+		System.out.println(sb.toString());
 		System.out.println(image);
 		result.put("str", sb.toString());
 		result.put("image", image.toString());

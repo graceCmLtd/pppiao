@@ -95,7 +95,7 @@ public interface BillDao {
 		//根据订单号获取当前用户发布票据的已报价的报价情况
 		@Select({"SELECT a.billNumber,a.billType,a.acceptor,a.amount,a.maturity,a.`status` AS billstatus,a.releaseDate,a.releaserId ,a.billReferer,a.failReason,"
 				+ "TIMESTAMPDIFF(day,#{jsonObject.curr_time},a.maturity) as remain_days,b.quoterId,b.interest,b.xPerLakh,b.`status` as quotesattus,b.quoteReferer,b.real_money, "
-				+ "c.companyName,c.contactsPhone,c.contactsQQ,c.bankAccountName,c.bankName,c.picId as companyPicId,c.contactsId ,contactsName "
+				+ "c.companyName,c.contactsPhone,c.contactsQQ,c.bankAccountName,c.bankAccount,c.bankName,c.picId as companyPicId,c.contactsId ,contactsName "
 				+ "from (SELECT billNumber,billType,acceptor,amount,maturity,`status`,releaseDate,releaserId,billReferer,failReason "
 				+ "from ppp_bill WHERE releaserId = #{jsonObject.uuid} AND  billNumber = #{jsonObject.billNumber}) a  "
 				+ "LEFT JOIN(SELECT billNumber,quoterId,interest,xPerLakh,`status`,quoteDate,quoteReferer,real_money,updateTimeStamp from ppp_quote where status = #{jsonObject.quoteStatus}) b  on a.billNumber = b.billNumber  "

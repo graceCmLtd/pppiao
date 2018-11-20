@@ -26,12 +26,12 @@ public interface UserService {
 	public UserEntity getUserEntityByPhone(String user_phone);
 	public ArrayList<UserEntity> userList( String login_name, int pageSize, int start);
 	
-	public Map<String, String> register( String login_name,String user_phone,String passwd);
+	public Map<String, String> register(String login_name, String user_phone, String passwd, String picCode);
 	public String addLoginTicket(String userId);
 	
-	public Map<String, String> login(String user_phone,String passwd);
+	public Map<String, String> login(String user_phone, String passwd, String picCode);
 	
-	public Map<String, String> loginBySms(String user_phone,String Sms);
+	public Map<String, String> loginBySms(String user_phone, String Sms, String picCode);
 
 
     JSONObject updatePassword(JSONObject jsonObject);
