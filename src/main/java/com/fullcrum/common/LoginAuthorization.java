@@ -41,7 +41,8 @@ public class LoginAuthorization {
 
 		System.out.println(request.getRequestURI());
 		if (request.getRequestURI().equals("/ppp/login") || request.getRequestURI().equals("/ppp/loginBySms") || request.getRequestURI().equals("/ppp/admin/login") || request.getRequestURI().equals("/ppp/msg/getUserMsg")
-				|| request.getRequestURI().equals("/ppp/resourceMarket/getAllInfo") || request.getRequestURI().equals("/ppp/resourceMarket/getCount") || request.getRequestURI().equals("/ppp/bills/filterbill")) {
+				|| request.getRequestURI().equals("/ppp/resourceMarket/getAllInfo") || request.getRequestURI().equals("/ppp/resourceMarket/getCount") || request.getRequestURI().equals("/ppp/bills/filterbill")
+				|| request.getRequestURI().equals("/ppp/getValidatePic") || request.getRequestURI().equals("/ppp/register")) {
 			System.out.println("login page ......");
 		}else if(authTicket == null) {
 			System.out.println("authticket is null ............");

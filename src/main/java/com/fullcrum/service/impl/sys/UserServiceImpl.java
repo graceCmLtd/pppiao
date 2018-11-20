@@ -59,12 +59,16 @@ public class UserServiceImpl implements UserService{
 	
 	//用户注册
 	@Override
-	public Map<String,String> register(String login_name,String user_phone, String passwd){
+	public Map<String,String> register(String login_name, String user_phone, String passwd, String picCode){
         Map<String,String> map = new HashMap<>();
        // Random random = new Random();
         
         System.out.println("register impl XXXXXXXXXXXXXXXXXXXXX");
-
+        String code = stringRedisTemplate.opsForValue().get("picCode");
+        if(!picCode.equalsIgnoreCase(code)){
+            map.put("msg","图片验证码错误");
+            return map;
+        }
         if (StringUtils.isEmptyOrWhitespaceOnly(user_phone)){
             map.put("msg","用户名不能为空");
             return map;
@@ -81,7 +85,7 @@ public class UserServiceImpl implements UserService{
             return map;
         }
 
-        
+
 
         UserEntity user = new UserEntity();
         String uuid = UUID.randomUUID().toString();
@@ -96,7 +100,7 @@ public class UserServiceImpl implements UserService{
         //user.setPassword(JblogUtil.MD5(password+user.getSalt()));
         //user.setRole("user");
         userDao.insertUser(user);
-        
+
 
         String ticket = addLoginTicket(user.getUser_phone());
         map.put("ticket",ticket);
@@ -122,9 +126,15 @@ public class UserServiceImpl implements UserService{
 	
 	//用户登录
 	@Override
-	public Map<String,String> login(String user_phone, String passwd){
+	public Map<String,String> login(String user_phone, String passwd, String picCode){
         Map<String,String> map = new HashMap<>();
         //Random random = new Random();
+        String code = stringRedisTemplate.opsForValue().get("picCode");
+        System.out.println(code);
+        if(!picCode.equalsIgnoreCase(code)){
+            map.put("msg","图片验证码错误");
+            return map;
+        }
         if (StringUtils.isEmptyOrWhitespaceOnly(user_phone)){
             map.put("msg","手机号码不能为空");
             return map;
@@ -165,10 +175,16 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public Map<String, String> loginBySms(String user_phone, String Sms) {
+	public Map<String, String> loginBySms(String user_phone, String Sms, String picCode) {
 		// TODO Auto-generated method stub
 		Map<String,String> map = new HashMap<>();
         //Random random = new Random();
+        String code = stringRedisTemplate.opsForValue().get("picCode");
+        if(!picCode.equalsIgnoreCase(code)){
+            map.put("msg","图片验证码错误");
+            return map;
+        }
+
         if (StringUtils.isEmptyOrWhitespaceOnly(user_phone)){
             map.put("msg","手机号码不能为空");
             return map;
