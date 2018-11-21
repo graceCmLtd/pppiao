@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -43,7 +42,7 @@ public class LoginAuthorization {
 		String authTicket = request.getHeader("Authorization");
 		String uuid = request.getHeader("UUID");
 		System.out.println(authTicket);
-
+		System.out.println(uuid);
 		System.out.println(request.getRequestURI());
 		if (request.getRequestURI().equals("/ppp/login") || request.getRequestURI().equals("/ppp/loginBySms") || request.getRequestURI().equals("/ppp/admin/login") || request.getRequestURI().equals("/ppp/msg/getUserMsg") 
 				|| request.getRequestURI().equals("/ppp/resourceMarket/getAllInfo") || request.getRequestURI().equals("/ppp/resourceMarket/getCount") || request.getRequestURI().equals("/ppp/bills/filterbill")
@@ -101,10 +100,10 @@ public class LoginAuthorization {
 		System.out.println(request.getRequestedSessionId());
 		System.out.println(request.getRequestURI());
 		System.out.println(request.getHeaderNames());*/
-		/*Enumeration<String> headn = request.getHeaderNames();
+		Enumeration<String> headn = request.getHeaderNames();
 		while(headn.hasMoreElements()) {
 			System.out.println(headn.nextElement());
-		}*/
+		}
 /*		Cookie [] cc = request.getCookies();
 		
 		for (int i = 0; i < cc.length; i++) {
