@@ -67,11 +67,12 @@ public class BillAuditingController {
 		return billAuditingService.getBillInfo(billNumber);
 	}
 	@RequestMapping("/updateBillStatus")
-	public String updateBillStatus(@RequestBody JSONObject json) {
+	public JSONObject updateBillStatus(@RequestBody JSONObject json) {
 		String billNumber = json.getString("billNumber");
 		String status = json.getString("status");
 		String failReason = json.getString("failReason");
 		String billReferer = json.getString("billReferer");
+		JSONObject result = new JSONObject();
 		try{
 			if(billReferer.equals("资源池")) {//这里判断票据的来源，如果是资源池的票据就更改交易状态为：待接单
 				System.out.println(billReferer);
@@ -91,10 +92,12 @@ public class BillAuditingController {
 				JSONObject msg = json.getJSONObject("message1");
 				msgService.insertMsg(msg);
 			}
-			return "success";
+			result.put("status","success");
+			return result;
 		}catch (Exception e){
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "failed";
+			result.put("status","failed");
+			return result;
 		}
 	}
 }

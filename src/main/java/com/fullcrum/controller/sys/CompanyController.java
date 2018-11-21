@@ -91,17 +91,20 @@ public class CompanyController {
 	
 	//公司审核(分为普通用户和包装户和未审核)
 	@RequestMapping("/auditCompany")
-	public String auditCompany(@RequestBody JSONObject json) {
+	public JSONObject auditCompany(@RequestBody JSONObject json) {
 		String companyId = json.getString("companyId");
 		String role = json.getString("role");
+		JSONObject result = new JSONObject();
 		try{
 			companyService.updateCompanyStatus(companyId,role);
 			goEasyAPI.sendMessage(json.getJSONObject("message").getString("receiverId"),json.getJSONObject("message").toString());
 			msgService.insertMsg(json.getJSONObject("message"));
-			return "success";
+			result.put("status","success");
+			return result;
 		}catch (Exception e){
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "failed";
+			result.put("status","failed");
+			return result;
 		}
 
 	}

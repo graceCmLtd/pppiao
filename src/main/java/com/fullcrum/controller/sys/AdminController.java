@@ -48,7 +48,9 @@ public class AdminController {
 				System.out.println(adminInfo.getLoginName());
 				json.put("status", "success");
 				json.put("ticket",adminInfo.getLoginName());
-				stringRedisTemplate.opsForValue().set(adminInfo.getLoginName(),adminInfo.toString(),60, TimeUnit.SECONDS);
+				json.put("role",adminInfo.getRole());
+				json.put("uuid",adminInfo.getLoginName());
+				stringRedisTemplate.opsForValue().set(adminInfo.getLoginName(),json.toString(),900, TimeUnit.SECONDS);
 			}else {
 				json.put("status", "failed");
 			}
