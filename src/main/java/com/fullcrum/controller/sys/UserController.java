@@ -110,7 +110,8 @@ public class UserController {
 				result.put("role", companyData.get(0).getRole());
 				
 			}
-            stringRedisTemplate.opsForValue().set(map.get("ticket"), result.toString(), 60,TimeUnit.SECONDS );
+            //System.out.println("store user login info into redis.................");
+            stringRedisTemplate.opsForValue().set(map.get("ticket"), result.toString(), 900,TimeUnit.SECONDS );
             return result;
         }else {
             model.addAttribute("msg", map.get("msg"));

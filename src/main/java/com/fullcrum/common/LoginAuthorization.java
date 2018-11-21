@@ -1,6 +1,7 @@
 package com.fullcrum.common;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +42,7 @@ public class LoginAuthorization {
 		String authTicket = request.getHeader("Authorization");
 		String uuid = request.getHeader("UUID");
 		System.out.println(authTicket);
-
+		System.out.println(uuid);
 		System.out.println(request.getRequestURI());
 		if (request.getRequestURI().equals("/ppp/login") || request.getRequestURI().equals("/ppp/loginBySms") || request.getRequestURI().equals("/ppp/admin/login") || request.getRequestURI().equals("/ppp/msg/getUserMsg") 
 				|| request.getRequestURI().equals("/ppp/resourceMarket/getAllInfo") || request.getRequestURI().equals("/ppp/resourceMarket/getCount") || request.getRequestURI().equals("/ppp/bills/filterbill")
@@ -99,10 +100,10 @@ public class LoginAuthorization {
 		System.out.println(request.getRequestedSessionId());
 		System.out.println(request.getRequestURI());
 		System.out.println(request.getHeaderNames());*/
-		/*Enumeration<String> headn = request.getHeaderNames();
+		Enumeration<String> headn = request.getHeaderNames();
 		while(headn.hasMoreElements()) {
 			System.out.println(headn.nextElement());
-		}*/
+		}
 /*		Cookie [] cc = request.getCookies();
 		
 		for (int i = 0; i < cc.length; i++) {
