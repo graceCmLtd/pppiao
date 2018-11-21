@@ -275,7 +275,6 @@ public class UserController {
 			OutputStream outputStream = httpServletResponse.getOutputStream();
 			ImageIO.write((RenderedImage) objects[1], "png", outputStream);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("http session ...........................");
