@@ -84,8 +84,24 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-
 		</dependency>
+
+		<dependency>
+			<groupId>com.yeepay</groupId>
+			<artifactId>yop-java-sdk</artifactId>
+            <version>2.2.8-jdk18</version>
+            <scope>system</scope>
+			<systemPath>${project.basedir}/libs/yop-java-sdk-2.2.8-jdk18.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.yeepay</groupId>
+			<artifactId>yos-java-sdk</artifactId>
+            <version>1.0.3</version>
+            <scope>system</scope>
+			<systemPath>${project.basedir}/libs/yos-java-sdk-1.0.3.jar</systemPath>
+		</dependency>
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -169,6 +185,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<includeSystemScope>true</includeSystemScope>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

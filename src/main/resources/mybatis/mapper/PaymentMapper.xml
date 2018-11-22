@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fullcrum.dao.PaymentDao">
+  <resultMap id="BaseResultMap" type="com.fullcrum.model.sys.PaymentEntity">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="payment_way" jdbcType="VARCHAR" property="paymentWay" />
+    <result column="external_id" jdbcType="VARCHAR" property="externalId" />
+    <result column="transac_id" jdbcType="INTEGER" property="transacId" />
+    <result column="bill_number" jdbcType="VARCHAR" property="billNumber" />
+    <result column="seller_id" jdbcType="VARCHAR" property="sellerId" />
+    <result column="buyer_id" jdbcType="VARCHAR" property="buyerId" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="request_date" jdbcType="TIMESTAMP" property="requestDate" />
+    <result column="expire" jdbcType="INTEGER" property="expire" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="fee_type" jdbcType="INTEGER" property="feeType" />
+    <result column="fee" jdbcType="DECIMAL" property="fee" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="extra" jdbcType="VARCHAR" property="extra" />
+    <result column="error_msg" jdbcType="VARCHAR" property="errorMsg" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="profit" jdbcType="DECIMAL" property="profit" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, payment_way, external_id, transac_id, bill_number, seller_id, buyer_id, amount, 
+    request_date, expire, memo, fee_type, fee, `status`, extra, error_msg, update_date, 
+    profit
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ppp_tx_payment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ppp_tx_payment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fullcrum.model.sys.PaymentEntity" useGeneratedKeys="true">
+    insert into ppp_tx_payment (payment_way, external_id, transac_id, 
+      bill_number, seller_id, buyer_id, 
+      amount, request_date, expire, 
+      memo, fee_type, fee, 
+      `status`, extra, error_msg, 
+      update_date, profit)
+    values (#{paymentWay,jdbcType=VARCHAR}, #{externalId,jdbcType=VARCHAR}, #{transacId,jdbcType=INTEGER}, 
+      #{billNumber,jdbcType=VARCHAR}, #{sellerId,jdbcType=VARCHAR}, #{buyerId,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DECIMAL}, #{requestDate,jdbcType=TIMESTAMP}, #{expire,jdbcType=INTEGER}, 
+      #{memo,jdbcType=VARCHAR}, #{feeType,jdbcType=INTEGER}, #{fee,jdbcType=DECIMAL}, 
+      #{status,jdbcType=INTEGER}, #{extra,jdbcType=VARCHAR}, #{errorMsg,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{profit,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fullcrum.model.sys.PaymentEntity" useGeneratedKeys="true">
+    insert into ppp_tx_payment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="paymentWay != null">
+        payment_way,
+      </if>
+      <if test="externalId != null">
+        external_id,
+      </if>
+      <if test="transacId != null">
+        transac_id,
+      </if>
+      <if test="billNumber != null">
+        bill_number,
+      </if>
+      <if test="sellerId != null">
+        seller_id,
+      </if>
+      <if test="buyerId != null">
+        buyer_id,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="requestDate != null">
+        request_date,
+      </if>
+      <if test="expire != null">
+        expire,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+      <if test="feeType != null">
+        fee_type,
+      </if>
+      <if test="fee != null">
+        fee,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="extra != null">
+        extra,
+      </if>
+      <if test="errorMsg != null">
+        error_msg,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="profit != null">
+        profit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="paymentWay != null">
+        #{paymentWay,jdbcType=VARCHAR},
+      </if>
+      <if test="externalId != null">
+        #{externalId,jdbcType=VARCHAR},
+      </if>
+      <if test="transacId != null">
+        #{transacId,jdbcType=INTEGER},
+      </if>
+      <if test="billNumber != null">
+        #{billNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null">
+        #{sellerId,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerId != null">
+        #{buyerId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="requestDate != null">
+        #{requestDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expire != null">
+        #{expire,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null">
+        #{feeType,jdbcType=INTEGER},
+      </if>
+      <if test="fee != null">
+        #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="extra != null">
+        #{extra,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMsg != null">
+        #{errorMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="profit != null">
+        #{profit,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fullcrum.model.sys.PaymentEntity">
+    update ppp_tx_payment
+    <set>
+      <if test="paymentWay != null">
+        payment_way = #{paymentWay,jdbcType=VARCHAR},
+      </if>
+      <if test="externalId != null">
+        external_id = #{externalId,jdbcType=VARCHAR},
+      </if>
+      <if test="transacId != null">
+        transac_id = #{transacId,jdbcType=INTEGER},
+      </if>
+      <if test="billNumber != null">
+        bill_number = #{billNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null">
+        seller_id = #{sellerId,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerId != null">
+        buyer_id = #{buyerId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="requestDate != null">
+        request_date = #{requestDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expire != null">
+        expire = #{expire,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null">
+        fee_type = #{feeType,jdbcType=INTEGER},
+      </if>
+      <if test="fee != null">
+        fee = #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="extra != null">
+        extra = #{extra,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMsg != null">
+        error_msg = #{errorMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="profit != null">
+        profit = #{profit,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fullcrum.model.sys.PaymentEntity">
+    update ppp_tx_payment
+    set payment_way = #{paymentWay,jdbcType=VARCHAR},
+      external_id = #{externalId,jdbcType=VARCHAR},
+      transac_id = #{transacId,jdbcType=INTEGER},
+      bill_number = #{billNumber,jdbcType=VARCHAR},
+      seller_id = #{sellerId,jdbcType=VARCHAR},
+      buyer_id = #{buyerId,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      request_date = #{requestDate,jdbcType=TIMESTAMP},
+      expire = #{expire,jdbcType=INTEGER},
+      memo = #{memo,jdbcType=VARCHAR},
+      fee_type = #{feeType,jdbcType=INTEGER},
+      fee = #{fee,jdbcType=DECIMAL},
+      `status` = #{status,jdbcType=INTEGER},
+      extra = #{extra,jdbcType=VARCHAR},
+      error_msg = #{errorMsg,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      profit = #{profit,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
