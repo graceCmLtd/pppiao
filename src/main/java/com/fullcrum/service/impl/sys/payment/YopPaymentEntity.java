@@ -20,7 +20,7 @@ public class YopPaymentEntity {
     private Integer feeType;
     private BigDecimal profit;
     private BigDecimal fee;
-    private Integer status;
+    private String status;
     private String extra;
     private String errorMsg;
     private Date updateDate;
