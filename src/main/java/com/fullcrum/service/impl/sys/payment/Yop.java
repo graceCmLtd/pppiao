@@ -18,6 +18,9 @@ import com.yeepay.g3.sdk.yop.utils.InternalConfig;
 
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.HashMap;
@@ -34,6 +37,7 @@ public class Yop implements PaymentService {
     @Autowired
     private PaymentDao paymentDao;
 
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Override
     public String pay(String payMethod, PaymentEntity entity) throws PaymentException {
         Map<String, String> params = new HashMap<>();
@@ -67,12 +71,23 @@ public class Yop implements PaymentService {
             params.put("timestamp", ""+new java.util.Date().getTime());
             params.put("userNo", entity.getBuyerId());
             params.put("userType", "MAC");
-
             String url = YeepayService.getUrl(params);
+
+            //接口请求成功后实例化到数据库
+            java.util.Date d = sdf.parse(result.get("requestDate"));
+            entity.setRequestDate(d);
+            entity.setMemo("test memo");
+            entity.setPaymentWay("yop");
+            entity.setExternalId(result.get("uiqueOrderNo"));
+//            entity.setExpire();
+            entity.setStatus(PaymentService.PAYMENT_STATUS_PROCESSING);
+
             return url;
 
         } catch (IOException e) {
             throw PaymentException.newOffLineException(e);
+        } catch (ParseException e) {//第三方返回数据格式有变
+            throw PaymentException.newThirdPartyInterException(e);
         }
 
     }
