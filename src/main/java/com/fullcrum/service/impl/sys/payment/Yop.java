@@ -2,6 +2,7 @@ package com.fullcrum.service.impl.sys.payment;
 
 
 import com.fullcrum.dao.PaymentDao;
+import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.sys.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class Yop implements PaymentService {
     private PaymentDao paymentDao;
 
     @Override
-    public void pay(String payMethod) {
+    public void pay(String payMethod, PaymentEntity entity) {
 
     }
 
