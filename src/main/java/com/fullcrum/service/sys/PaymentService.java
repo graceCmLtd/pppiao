@@ -15,7 +15,7 @@ public interface PaymentService {
 	*	通知策略：收到易宝回调通知需回写大写“SUCCESS”,如没有回写则每 5 分钟通知一次，总共 3 次，3 次后没有拿到回写则停止通知。
 	*	同一笔订单收到多次易宝回调，切忌请不要重复入账。
 	**/
-	void onPaySuccess(String response,String customerIdentification);
+	String onPaySuccess(String response,String customerIdentification);
 	
 
     String pay(String payMethod, PaymentEntity entity) throws PaymentException;
