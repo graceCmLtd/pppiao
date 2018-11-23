@@ -421,7 +421,18 @@ public class TransactionController {
 	}
 
 // ----------------------  支付相关 -----------------------------------------
-	@RequestMapping("/yopPay")
+
+    /**
+     * 需传入
+     * transacId: 交易id
+     * billNumber 票据id
+     * sellerId   卖家id
+     * buyerId    买家id
+     * amount      票面金额
+     * @param transactionEntity
+     * @return
+     */
+    @RequestMapping("/yopPay")
 	public JSONObject payBuyYop(@RequestBody TransactionEntity transactionEntity) {
 		System.out.println(transactionEntity);
 	    return null;

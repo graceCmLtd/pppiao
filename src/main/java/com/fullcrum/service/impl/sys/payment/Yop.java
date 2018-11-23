@@ -81,6 +81,7 @@ public class Yop implements PaymentService {
             entity.setExternalId(result.get("uiqueOrderNo"));
 //            entity.setExpire();
             entity.setStatus(PaymentService.PAYMENT_STATUS_PROCESSING);
+            paymentDao.insert(entity);
 
             return url;
 
