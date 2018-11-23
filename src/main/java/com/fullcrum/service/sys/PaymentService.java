@@ -1,13 +1,14 @@
 package com.fullcrum.service.sys;
 
 
+import com.fullcrum.model.sys.PaymentEntity;
+import com.fullcrum.service.PaymentException;
+
 public interface PaymentService {
 	enum PaymentMethod {
 		YOP_TRANSFER, //易宝代付：
 
 	}
-
-	void pay(String payMethod);
 	
 	/**通知地址 : 商户的通知地址（下单接口 notifyUrl 参数）,只有订单支付成功才有此服务器点对点通知
 	*	说明：通知回调参数有：response、customerIdentification ，其中 response 为密文串，获取到之后解密成明文，明文信息如下：
@@ -16,6 +17,10 @@ public interface PaymentService {
 	**/
 	void onPaySuccess(String response,String customerIdentification);
 	
+
+    String pay(String payMethod, PaymentEntity entity) throws PaymentException;
+	
+
 	void confirm();
 
 

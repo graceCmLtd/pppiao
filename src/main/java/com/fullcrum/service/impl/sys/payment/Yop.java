@@ -1,10 +1,16 @@
 package com.fullcrum.service.impl.sys.payment;
 
 
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+
+import com.fullcrum.dao.PaymentDao;
+
 import com.fullcrum.model.sys.PaymentEntity;
+import com.fullcrum.service.PaymentException;
 import com.fullcrum.service.sys.PaymentService;
+
 import com.yeepay.g3.sdk.yop.encrypt.CertTypeEnum;
 import com.yeepay.g3.sdk.yop.encrypt.DigitalEnvelopeDTO;
 import com.yeepay.g3.sdk.yop.utils.DigitalEnvelopeUtils;
@@ -12,39 +18,62 @@ import com.yeepay.g3.sdk.yop.utils.InternalConfig;
 
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-@Service(value="yop")
+
+import org.springframework.beans.factory.annotation.Autowired;
+import java.io.IOException;
+
+@Service(value="yopPaymentServiceImpl")
 public class Yop implements PaymentService {
 
-    private String platformMerchantNo;
-    private String sellerId;
-    private Integer transacId;
-    private BigDecimal amount;
-    private Integer expire;
-    private Date requestDate;
-    private String redirectUrl;
-    private String notifyUrl;
-    private String memo;
-    private String billNumber;
-    private String buyerId;
-    private Integer feeType;
-    private BigDecimal profit;
-    private BigDecimal fee;
-    private Integer status;
-    private String extra;
-    private String errorMsg;
-    private Date updateDate;
-
+    @Autowired
+    private PaymentDao paymentDao;
 
     @Override
-    public void pay(String payMethod) {
+    public String pay(String payMethod, PaymentEntity entity) throws PaymentException {
+        Map<String, String> params = new HashMap<>();
+        params.put("orderId", entity.getTransacId().toString());
+        params.put("orderAmount", entity.getAmount().toString());
+//        params.put("timeoutExpress", String.format("%d",entity.getExpire()/60));
+//        params.put("requestDate", entity.getRequestDate());
+//        params.put("redirectUrl", redirectUrl);
+        params.put("notifyUrl", "empty for now");
+//        params.put("goodsParamExt", goodsParamExt);
+//        params.put("paymentParamExt", paymentParamExt);
+//        params.put("industryParamExt", industryParamExt);
+        params.put("memo", "test");
+//        params.put("riskParamExt", riskParamExt);
+//        params.put("csUrl", csUrl);
+        Map<String, String> result = new HashMap<>();
+        String uri = YeepayService.getUrl(YeepayService.TRADEORDER_URL);
+        try {
+            result = YeepayService.requestYOP(params, uri, YeepayService.TRADEORDER);
+            String token = result.get("token");
+            String codeRe = result.get("code");
+            if(!"OPR00000".equals(codeRe)){
+                throw PaymentException.newPaymentException(
+                        new RuntimeException(String.format("易宝下单失败，返回错误码[%s], 提示信息[%s]",codeRe,result.get("message"))));
+            }
+            String parentMerchantNo = YeepayService.getParentMerchantNo();
+            String merchantNo = YeepayService.getMerchantNo();
+            params.put("parentMerchantNo", parentMerchantNo);
+            params.put("merchantNo", merchantNo);
+            params.put("token", token);
+            params.put("timestamp", ""+new java.util.Date().getTime());
+            params.put("userNo", entity.getBuyerId());
+            params.put("userType", "MAC");
+
+            String url = YeepayService.getUrl(params);
+            return url;
+
+        } catch (IOException e) {
+            throw PaymentException.newOffLineException(e);
+        }
 
     }
     
@@ -79,26 +108,7 @@ public class Yop implements PaymentService {
     public void confirm() {
 
     }
-
-    public PaymentEntity toPaymentEntity(){
-        PaymentEntity p = new PaymentEntity();
-        p.setAmount(this.amount);
-        p.setBillNumber(this.billNumber);
-        p.setBuyerId(this.buyerId);
-        p.setErrorMsg(this.errorMsg);
-        p.setExpire(this.expire);
-        p.setExtra(this.extra);
-        p.setFee(this.fee);
-        p.setFeeType(this.feeType);
-        p.setMemo(this.memo);
-        p.setProfit(this.profit);
-        p.setRequestDate(this.requestDate);
-        p.setSellerId(this.sellerId);
-        p.setStatus(this.status);
-        p.setTransacId(this.transacId);
-        return p;
-    }
-    
+  
     public static Map<String, String> parseResponse(String response){
 		
 		Map<String,String> jsonMap  = new HashMap<>();
@@ -107,4 +117,6 @@ public class Yop implements PaymentService {
 		
 		return jsonMap;
 	}
+
+
 }

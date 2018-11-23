@@ -8,6 +8,7 @@ import java.util.TimerTask;
 
 import javax.annotation.Resource;
 
+import com.fullcrum.service.sys.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -20,12 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.TransactionEntity;
 import com.fullcrum.model.sys.TransactionPicsEntity;
-import com.fullcrum.service.sys.BillPicsService;
-import com.fullcrum.service.sys.BillService;
-import com.fullcrum.service.sys.MsgService;
-import com.fullcrum.service.sys.QuoteService;
-import com.fullcrum.service.sys.TransactionPicsService;
-import com.fullcrum.service.sys.TransactionService;
 import com.fullcrum.utils.GoEasyAPI;
 
 @RestController
@@ -44,9 +39,12 @@ public class TransactionController {
 	
 	@Resource(name="billServiceImpl")
 	private BillService billService;
-	
-	@Resource(name="billPicsServiceImpl")
-	private BillPicsService billPicsService;
+
+    @Resource(name="billPicsServiceImpl")
+    private BillPicsService billPicsService;
+
+    @Resource(name="yopPaymentServiceImpl")
+    private PaymentService yopPaymentServiceImpl;
 	
 	@Autowired
 	private GoEasyAPI goEasyAPI;
@@ -420,5 +418,12 @@ public class TransactionController {
 	public List<Map<String,Object>> getCountByIntentionStatus(@RequestBody JSONObject jsonObject){
 			System.out.println("ssqqqqqqqq");
 			return transactionService.selectCountByIntentionStatus(jsonObject);
+	}
+
+// ----------------------  支付相关 -----------------------------------------
+	@RequestMapping("/yopPay")
+	public JSONObject payBuyYop(@RequestBody TransactionEntity transactionEntity) {
+		System.out.println(transactionEntity);
+	    return null;
 	}
 }
