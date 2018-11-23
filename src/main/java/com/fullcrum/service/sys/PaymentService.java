@@ -2,6 +2,7 @@ package com.fullcrum.service.sys;
 
 
 import com.fullcrum.model.sys.PaymentEntity;
+import com.fullcrum.service.PaymentException;
 
 public interface PaymentService {
 	enum PaymentMethod {
