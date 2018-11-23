@@ -9,6 +9,7 @@ import com.yeepay.g3.sdk.yop.encrypt.CertTypeEnum;
 import com.yeepay.g3.sdk.yop.encrypt.DigestAlgEnum;
 import com.yeepay.g3.sdk.yop.encrypt.DigitalEnvelopeDTO;
 import com.yeepay.g3.sdk.yop.encrypt.DigitalSignatureDTO;
+import com.yeepay.g3.sdk.yop.error.YopSubError;
 import com.yeepay.g3.sdk.yop.utils.DigitalEnvelopeUtils;
 import com.yeepay.g3.sdk.yop.utils.InternalConfig;
 import com.yeepay.g3.yop.sdk.api.StdApi;
@@ -19,6 +20,10 @@ import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
+
+import java.util.*;
+
 
 public class YeepayService {
 
@@ -36,6 +41,12 @@ public class YeepayService {
 	public static final String CERTORDER_URL = "certOrderURI";
 	public static final String CERTORDERQUERY_URL = "certOrderQueryURI";
 	public static final String APICASHIER_URI = "APICASHIER";
+
+	//代发代付出款
+	public static final String PAYMENT_URL = "paymentURI";
+	public static final String PAYMENTQUERY_URL = "paymentqueryURI";
+	public static final String customeramountQuery_URL = "customeramountQueryURI";
+	public static final String batchsend_URL = "batchsendURI";
 	
 	//接口参数
 	public static final String[] TRADEORDER = {"parentMerchantNo","merchantNo","orderId","orderAmount","timeoutExpress","requestDate","redirectUrl","notifyUrl","goodsParamExt","paymentParamExt","industryParamExt","memo","riskParamExt","csUrl","fundProcessType","divideDetail","divideNotifyUrl"};
@@ -58,6 +69,7 @@ public class YeepayService {
 	public static final String TRADEDAYDOWNLOAD = "tradedaydownload";
 	public static final String TRADEMONTHDOWNLOAD = "trademonthdownload";
 	public static final String REMITDAYDOWNLOAD = "remitdaydownload";
+
 		
 	//获取对应的请求地址
 	public static String getUrl(String payType){
@@ -336,5 +348,64 @@ public class YeepayService {
 		return result;
 	}
 
-	
+	//--------------------------------------------代发代付出款接口---------------------------------------------------------------------------------------
+	public static Map<String, Object> yeepayYOP(Map<String, Object> map, String Uri) throws IOException {
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, YopSubError> erresult = new HashMap<String, YopSubError>();
+		YopRequest yoprequest = new YopRequest("OPR:" + getMerchantNo());
+
+		Set<Entry<String, Object>> entry = map.entrySet();
+		for (Entry<String, Object> s : entry) {
+			yoprequest.addParam(s.getKey(), s.getValue());
+		}
+		System.out.println("yoprequest:" + yoprequest.getParams());
+
+		//向YOP发请求
+		YopResponse yopresponse = YopClient3.postRsa(Uri, yoprequest);
+
+
+		System.out.println("请求YOP之后的结果：" + yopresponse.getStringResult());
+
+
+		// System.out.println("+++++" + JSON.toJSONString(yopresponse));
+//        	对结果进行处理
+		if ("FAILURE".equals(yopresponse.getState())) {
+			if (yopresponse.getError() != null) {
+				result.put("errorcode", yopresponse.getError().getCode());
+				result.put("errormsg", yopresponse.getError().getMessage());
+
+				if (yopresponse.getError().getSubErrors() != null && yopresponse.getError().getSubErrors().size() > 0) {
+					erresult.put("errorDetails", yopresponse.getError().getSubErrors().get(0));
+				} else {
+					erresult.put("errorDetails", null);
+				}
+
+				System.err.println("错误明细：" + yopresponse.getError().getSubErrors());
+				result.putAll(erresult);
+				System.out.println("系统处理异常结果：" + result);
+			}
+
+			return result;
+		}
+		//成功则进行相关处理
+		if (yopresponse.getStringResult() != null) {
+			result = parseResponse1(yopresponse.getStringResult());
+
+
+		}
+
+		return result;
+	}
+
+	//将获取到的response转换成json格式
+	public static Map<String, Object> parseResponse1(String yopresponse) {
+
+		Map<String, Object> jsonMap = new HashMap<>();
+		jsonMap = JSON.parseObject(yopresponse,
+				new TypeReference<TreeMap<String, Object>>() {
+				});
+		System.out.println("将response转化为map格式之后: " + jsonMap);
+		return jsonMap;
+	}
 }
