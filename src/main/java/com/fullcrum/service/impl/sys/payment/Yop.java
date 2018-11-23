@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-@Service(value="billPicsServiceImpl")
+@Service(value="yop")
 public class Yop implements PaymentService {
 
     private String platformMerchantNo;
