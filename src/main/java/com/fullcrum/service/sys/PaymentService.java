@@ -10,7 +10,7 @@ public interface PaymentService {
 
 	}
 
-	void pay(String payMethod, PaymentEntity entity);
+    String pay(String payMethod, PaymentEntity entity) throws PaymentException;
 	void onPaySuccess();
 	void confirm();
 

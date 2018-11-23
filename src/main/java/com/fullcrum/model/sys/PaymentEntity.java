@@ -65,6 +65,11 @@ public class PaymentEntity implements Serializable {
     private Integer feeType;
 
     /**
+     * 公司收益部分，卖方实得=amount-profit-fee
+     */
+    private BigDecimal profit;
+
+    /**
      * 第三方支付平台手续费，卖方实得=amount-profit-fee
      */
     private BigDecimal fee;
@@ -80,7 +85,22 @@ public class PaymentEntity implements Serializable {
 													REVOKED 订单取消(网银订单)
 													REVERSAL 冲正
      */
-    private Integer status;
+    private String status;
+
+    /**
+     * 暂时参照易宝，其他支付产品有不一致再另行添加
+WECHAT 微信
+ALIPAY 支付宝
+NET 网银
+NCPAY 快捷
+CFL 分期(马上金融)
+     */
+    private String platformType;
+
+    /**
+     * 银行/支付宝/微信等流水号
+     */
+    private Integer serialNum;
 
     /**
      * 额外信息，json字符串形式
@@ -93,11 +113,6 @@ public class PaymentEntity implements Serializable {
     private String errorMsg;
 
     private Date updateDate;
-
-    /**
-     * 公司收益部分，卖方实得=amount-profit-fee
-     */
-    private BigDecimal profit;
 
     private static final long serialVersionUID = 1L;
 
@@ -197,6 +212,14 @@ public class PaymentEntity implements Serializable {
         this.feeType = feeType;
     }
 
+    public BigDecimal getProfit() {
+        return profit;
+    }
+
+    public void setProfit(BigDecimal profit) {
+        this.profit = profit;
+    }
+
     public BigDecimal getFee() {
         return fee;
     }
@@ -205,12 +228,28 @@ public class PaymentEntity implements Serializable {
         this.fee = fee;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getPlatformType() {
+        return platformType;
+    }
+
+    public void setPlatformType(String platformType) {
+        this.platformType = platformType;
+    }
+
+    public Integer getSerialNum() {
+        return serialNum;
+    }
+
+    public void setSerialNum(Integer serialNum) {
+        this.serialNum = serialNum;
     }
 
     public String getExtra() {
@@ -237,14 +276,6 @@ public class PaymentEntity implements Serializable {
         this.updateDate = updateDate;
     }
 
-    public BigDecimal getProfit() {
-        return profit;
-    }
-
-    public void setProfit(BigDecimal profit) {
-        this.profit = profit;
-    }
-
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -269,12 +300,14 @@ public class PaymentEntity implements Serializable {
             && (this.getExpire() == null ? other.getExpire() == null : this.getExpire().equals(other.getExpire()))
             && (this.getMemo() == null ? other.getMemo() == null : this.getMemo().equals(other.getMemo()))
             && (this.getFeeType() == null ? other.getFeeType() == null : this.getFeeType().equals(other.getFeeType()))
+            && (this.getProfit() == null ? other.getProfit() == null : this.getProfit().equals(other.getProfit()))
             && (this.getFee() == null ? other.getFee() == null : this.getFee().equals(other.getFee()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
+            && (this.getPlatformType() == null ? other.getPlatformType() == null : this.getPlatformType().equals(other.getPlatformType()))
+            && (this.getSerialNum() == null ? other.getSerialNum() == null : this.getSerialNum().equals(other.getSerialNum()))
             && (this.getExtra() == null ? other.getExtra() == null : this.getExtra().equals(other.getExtra()))
             && (this.getErrorMsg() == null ? other.getErrorMsg() == null : this.getErrorMsg().equals(other.getErrorMsg()))
-            && (this.getUpdateDate() == null ? other.getUpdateDate() == null : this.getUpdateDate().equals(other.getUpdateDate()))
-            && (this.getProfit() == null ? other.getProfit() == null : this.getProfit().equals(other.getProfit()));
+            && (this.getUpdateDate() == null ? other.getUpdateDate() == null : this.getUpdateDate().equals(other.getUpdateDate()));
     }
 
     @Override
@@ -293,12 +326,14 @@ public class PaymentEntity implements Serializable {
         result = prime * result + ((getExpire() == null) ? 0 : getExpire().hashCode());
         result = prime * result + ((getMemo() == null) ? 0 : getMemo().hashCode());
         result = prime * result + ((getFeeType() == null) ? 0 : getFeeType().hashCode());
+        result = prime * result + ((getProfit() == null) ? 0 : getProfit().hashCode());
         result = prime * result + ((getFee() == null) ? 0 : getFee().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
+        result = prime * result + ((getPlatformType() == null) ? 0 : getPlatformType().hashCode());
+        result = prime * result + ((getSerialNum() == null) ? 0 : getSerialNum().hashCode());
         result = prime * result + ((getExtra() == null) ? 0 : getExtra().hashCode());
         result = prime * result + ((getErrorMsg() == null) ? 0 : getErrorMsg().hashCode());
         result = prime * result + ((getUpdateDate() == null) ? 0 : getUpdateDate().hashCode());
-        result = prime * result + ((getProfit() == null) ? 0 : getProfit().hashCode());
         return result;
     }
 
@@ -320,12 +355,14 @@ public class PaymentEntity implements Serializable {
         sb.append(", expire=").append(expire);
         sb.append(", memo=").append(memo);
         sb.append(", feeType=").append(feeType);
+        sb.append(", profit=").append(profit);
         sb.append(", fee=").append(fee);
         sb.append(", status=").append(status);
+        sb.append(", platformType=").append(platformType);
+        sb.append(", serialNum=").append(serialNum);
         sb.append(", extra=").append(extra);
         sb.append(", errorMsg=").append(errorMsg);
         sb.append(", updateDate=").append(updateDate);
-        sb.append(", profit=").append(profit);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

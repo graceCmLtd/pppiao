@@ -14,17 +14,19 @@
     <result column="expire" jdbcType="INTEGER" property="expire" />
     <result column="memo" jdbcType="VARCHAR" property="memo" />
     <result column="fee_type" jdbcType="INTEGER" property="feeType" />
+    <result column="profit" jdbcType="DECIMAL" property="profit" />
     <result column="fee" jdbcType="DECIMAL" property="fee" />
-    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="platform_type" jdbcType="VARCHAR" property="platformType" />
+    <result column="serial_num" jdbcType="INTEGER" property="serialNum" />
     <result column="extra" jdbcType="VARCHAR" property="extra" />
     <result column="error_msg" jdbcType="VARCHAR" property="errorMsg" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="profit" jdbcType="DECIMAL" property="profit" />
   </resultMap>
   <sql id="Base_Column_List">
     id, payment_way, external_id, transac_id, bill_number, seller_id, buyer_id, amount, 
-    request_date, expire, memo, fee_type, fee, `status`, extra, error_msg, update_date, 
-    profit
+    request_date, expire, memo, fee_type, profit, fee, `status`, platform_type, serial_num, 
+    extra, error_msg, update_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -40,15 +42,17 @@
     insert into ppp_tx_payment (payment_way, external_id, transac_id, 
       bill_number, seller_id, buyer_id, 
       amount, request_date, expire, 
-      memo, fee_type, fee, 
-      `status`, extra, error_msg, 
-      update_date, profit)
+      memo, fee_type, profit, 
+      fee, `status`, platform_type, 
+      serial_num, extra, error_msg, 
+      update_date)
     values (#{paymentWay,jdbcType=VARCHAR}, #{externalId,jdbcType=VARCHAR}, #{transacId,jdbcType=INTEGER}, 
       #{billNumber,jdbcType=VARCHAR}, #{sellerId,jdbcType=VARCHAR}, #{buyerId,jdbcType=VARCHAR}, 
       #{amount,jdbcType=DECIMAL}, #{requestDate,jdbcType=TIMESTAMP}, #{expire,jdbcType=INTEGER}, 
-      #{memo,jdbcType=VARCHAR}, #{feeType,jdbcType=INTEGER}, #{fee,jdbcType=DECIMAL}, 
-      #{status,jdbcType=INTEGER}, #{extra,jdbcType=VARCHAR}, #{errorMsg,jdbcType=VARCHAR}, 
-      #{updateDate,jdbcType=TIMESTAMP}, #{profit,jdbcType=DECIMAL})
+      #{memo,jdbcType=VARCHAR}, #{feeType,jdbcType=INTEGER}, #{profit,jdbcType=DECIMAL}, 
+      #{fee,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{platformType,jdbcType=VARCHAR}, 
+      #{serialNum,jdbcType=INTEGER}, #{extra,jdbcType=VARCHAR}, #{errorMsg,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fullcrum.model.sys.PaymentEntity" useGeneratedKeys="true">
     insert into ppp_tx_payment
@@ -86,11 +90,20 @@
       <if test="feeType != null">
         fee_type,
       </if>
+      <if test="profit != null">
+        profit,
+      </if>
       <if test="fee != null">
         fee,
       </if>
       <if test="status != null">
         `status`,
+      </if>
+      <if test="platformType != null">
+        platform_type,
+      </if>
+      <if test="serialNum != null">
+        serial_num,
       </if>
       <if test="extra != null">
         extra,
@@ -100,9 +113,6 @@
       </if>
       <if test="updateDate != null">
         update_date,
-      </if>
-      <if test="profit != null">
-        profit,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -139,11 +149,20 @@
       <if test="feeType != null">
         #{feeType,jdbcType=INTEGER},
       </if>
+      <if test="profit != null">
+        #{profit,jdbcType=DECIMAL},
+      </if>
       <if test="fee != null">
         #{fee,jdbcType=DECIMAL},
       </if>
       <if test="status != null">
-        #{status,jdbcType=INTEGER},
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="platformType != null">
+        #{platformType,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNum != null">
+        #{serialNum,jdbcType=INTEGER},
       </if>
       <if test="extra != null">
         #{extra,jdbcType=VARCHAR},
@@ -153,9 +172,6 @@
       </if>
       <if test="updateDate != null">
         #{updateDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="profit != null">
-        #{profit,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -195,11 +211,20 @@
       <if test="feeType != null">
         fee_type = #{feeType,jdbcType=INTEGER},
       </if>
+      <if test="profit != null">
+        profit = #{profit,jdbcType=DECIMAL},
+      </if>
       <if test="fee != null">
         fee = #{fee,jdbcType=DECIMAL},
       </if>
       <if test="status != null">
-        `status` = #{status,jdbcType=INTEGER},
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="platformType != null">
+        platform_type = #{platformType,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNum != null">
+        serial_num = #{serialNum,jdbcType=INTEGER},
       </if>
       <if test="extra != null">
         extra = #{extra,jdbcType=VARCHAR},
@@ -209,9 +234,6 @@
       </if>
       <if test="updateDate != null">
         update_date = #{updateDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="profit != null">
-        profit = #{profit,jdbcType=DECIMAL},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -229,12 +251,14 @@
       expire = #{expire,jdbcType=INTEGER},
       memo = #{memo,jdbcType=VARCHAR},
       fee_type = #{feeType,jdbcType=INTEGER},
+      profit = #{profit,jdbcType=DECIMAL},
       fee = #{fee,jdbcType=DECIMAL},
-      `status` = #{status,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=VARCHAR},
+      platform_type = #{platformType,jdbcType=VARCHAR},
+      serial_num = #{serialNum,jdbcType=INTEGER},
       extra = #{extra,jdbcType=VARCHAR},
       error_msg = #{errorMsg,jdbcType=VARCHAR},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
-      profit = #{profit,jdbcType=DECIMAL}
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
