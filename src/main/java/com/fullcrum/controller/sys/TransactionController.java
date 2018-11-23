@@ -437,4 +437,9 @@ public class TransactionController {
 		System.out.println(transactionEntity);
 	    return null;
 	}
+
+	@RequestMapping("/yopConfirm")
+	public Map<String, Object> yopConfirm(@RequestBody JSONObject jsonObject){
+    	return yopPaymentServiceImpl.confirm(jsonObject);
+	}
 }
