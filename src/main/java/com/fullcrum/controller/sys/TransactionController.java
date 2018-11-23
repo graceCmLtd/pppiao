@@ -421,4 +421,11 @@ public class TransactionController {
 			System.out.println("ssqqqqqqqq");
 			return transactionService.selectCountByIntentionStatus(jsonObject);
 	}
+
+// ----------------------  支付相关 -----------------------------------------
+	@RequestMapping("/yopPay")
+	public JSONObject payBuyYop(@RequestBody TransactionEntity transactionEntity) {
+		System.out.println(transactionEntity);
+	    return null;
+	}
 }
