@@ -2,7 +2,7 @@ package com.fullcrum.service.impl.sys.reapay;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.reapal.config.ReapalWebConfig;
+import com.fullcrum.service.impl.sys.reapay.ReapalWebConfig;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;

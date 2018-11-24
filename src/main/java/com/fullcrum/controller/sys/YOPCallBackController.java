@@ -31,4 +31,15 @@ public class YOPCallBackController {
 			}
 		}
 	}
+	
+	@RequestMapping("/test")
+	public void test(HttpServletResponse response) {
+		System.out.println("in test xxxxxxxxxxxxx");
+		try {
+			response.sendRedirect("http://www.baidu.com");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

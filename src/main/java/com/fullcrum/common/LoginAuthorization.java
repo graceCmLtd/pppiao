@@ -80,7 +80,7 @@ public class LoginAuthorization {
 				}
 			}
 			
-			stringRedisTemplate.expire(authTicket, 900, TimeUnit.SECONDS);
+			stringRedisTemplate.expire(authTicket, 1800, TimeUnit.SECONDS);
 		}else {
 			System.out.println("request ticket else ............................");
 		}

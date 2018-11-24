@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.PaymentException;
 import com.fullcrum.service.sys.PaymentService;
-import com.reapal.config.ReapalWebConfig;
+import com.fullcrum.service.impl.sys.reapay.ReapalWebConfig;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -46,7 +46,7 @@ public class RongpayService implements PaymentService {
 		sPara.put("return_url", ReapalWebConfig.return_url);
 		sPara.put("transtime", sdf.format(new java.util.Date()));
 //		sPara.put("currency", "156");融宝仅支持默认值人民币
-		sPara.put("member_ip", member_ip);
+//		sPara.put("member_ip", member_ip);
 		//sPara.put("terminal_type", terminal_type);
 //		sPara.put("terminal_info", );
 //		sPara.put("sign_type", sign_type);
@@ -58,27 +58,35 @@ public class RongpayService implements PaymentService {
 //		sPara.put("default_bank", default_bank);
 //		sPara.put("pay_method", pay_method);
 
-		String mysign = Md5Utils.BuildMysign(sPara, key);//生成签名结果
+//		String mysign = Md5Utils.BuildMysign(sPara, key);//生成签名结果
 
-		sPara.put("sign", mysign);
+//		sPara.put("sign", mysign);
 
 		String json = JSON.toJSONString(sPara);
 
-		Map<String, String> maps = DecipherWeb.encryptData(json);
+		Map<String, String> maps;
+		try {
+			maps = DecipherWeb.encryptData(json);
+			StringBuffer sbHtml = new StringBuffer();
 
-		StringBuffer sbHtml = new StringBuffer();
+
+			//post方式传递
+			sbHtml.append("<form id=\"rongpaysubmit\" name=\"rongpaysubmit\" action=\"").append(gateway).append("\" method=\"post\">");
+
+//			sbHtml.append("<input type=\"hidden\" name=\"merchant_id\" value=\"").append(merchant_id).append("\"/>");
+			sbHtml.append("<input type=\"hidden\" name=\"data\" value=\"").append(maps.get("data")).append("\"/>");
+			sbHtml.append("<input type=\"hidden\" name=\"encryptkey\" value=\"").append(maps.get("encryptkey")).append("\"/>");
+
+			//submit按钮控件请不要含有name属性
+			sbHtml.append("<input type=\"submit\" class=\"button_p2p\" value=\"融宝支付确认付款\"></form>");
+			return sbHtml.toString();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 
-		//post方式传递
-		sbHtml.append("<form id=\"rongpaysubmit\" name=\"rongpaysubmit\" action=\"").append(gateway).append("\" method=\"post\">");
 
-		sbHtml.append("<input type=\"hidden\" name=\"merchant_id\" value=\"").append(merchant_id).append("\"/>");
-		sbHtml.append("<input type=\"hidden\" name=\"data\" value=\"").append(maps.get("data")).append("\"/>");
-		sbHtml.append("<input type=\"hidden\" name=\"encryptkey\" value=\"").append(maps.get("encryptkey")).append("\"/>");
-
-		//submit按钮控件请不要含有name属性
-		sbHtml.append("<input type=\"submit\" class=\"button_p2p\" value=\"融宝支付确认付款\"></form>");
-		return sbHtml.toString();
 		return null;
 	}
 
