@@ -9,6 +9,7 @@ import java.util.TimerTask;
 
 import javax.annotation.Resource;
 
+import com.fullcrum.common.CheckTransactionStatus;
 import com.fullcrum.controller.sys.Exception.InvalidParamException;
 import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.sys.*;
@@ -59,6 +60,8 @@ public class TransactionController {
 	@Resource(name="msgServiceImpl")
 	private MsgService msgService;
 	
+	@Autowired
+	private  CheckTransactionStatus checkTransactionStatus;
 
 	private Timer timer=  new Timer() ;
 	
@@ -158,6 +161,18 @@ public class TransactionController {
 		JSONObject msgObj = jsonObject.getJSONObject("message");
 		String channel = msgObj.getString("receiverId");
 		String message = msgObj.toJSONString();
+		System.out.println("panduan ...........kjkjkjkjkjjjjjjjjjjjjjjjjjj");
+		System.out.println(transactionService.getIntentionStatusByTransacType(intentionObj.getString("orderId")));
+		System.out.println("dfsd");
+		/*判断intentionStatus 状态的修改是否正常。*/
+		if (checkTransactionStatus.updatable(transactionService.getIntentionStatusByTransacType(intentionObj.getString("orderId")), intentionObj.getString("intentionStatus"))) {
+			System.out.println("tttttttttttttttttttttttttttttttttttttttttttt");
+		}else {
+			System.out.println("fffffffffffffffffffffffffffffffffff");
+			result.put("status", "fail");
+			result.put("errorMsg", "operator skip steps");
+			return result;
+		}
 		
 		try {
 			transactionService.setTransactionIntentionStatus(intentionObj);

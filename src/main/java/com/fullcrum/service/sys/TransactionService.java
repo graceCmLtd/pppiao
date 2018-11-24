@@ -11,6 +11,8 @@ public interface TransactionService {
 
 	public ArrayList<Map<String,Object>> selectTransacByTransacId(String transactionId);
 	
+	String getIntentionStatusByTransacType(String orderId);
+	
 	public ArrayList<Map<String,Object>> selectTransacByBillNumber(String billNumber);
 	
 	public ArrayList<Map<String,Object>> selectTransacByBuyerId(String buyerId);
