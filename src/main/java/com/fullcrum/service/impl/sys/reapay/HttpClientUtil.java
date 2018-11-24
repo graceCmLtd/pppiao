@@ -56,6 +56,26 @@ public class HttpClientUtil {
     /**
      * 封装HTTP POST方法
      * @param
+     * @param
+     * @return
+     * @throws ClientProtocolException
+     * @throws java.io.IOException
+     */
+    public static String post1(String url, Map<String, String> paramMap) throws ClientProtocolException, IOException {
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpPost httpPost = new HttpPost(url);
+        List<NameValuePair> formparams = setHttpParams(paramMap);
+        UrlEncodedFormEntity param = new UrlEncodedFormEntity(formparams, "UTF-8");
+        httpPost.setEntity(param);
+        HttpResponse response = httpClient.execute(httpPost);
+        String httpEntityContent = getHttpEntityContent(response);
+        httpPost.abort();
+        return httpEntityContent;
+    }
+
+    /**
+     * 封装HTTP POST方法
+     * @param
      * @param （如JSON串）
      * @return
      * @throws ClientProtocolException

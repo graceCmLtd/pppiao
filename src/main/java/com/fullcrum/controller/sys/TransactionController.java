@@ -1,5 +1,6 @@
 package com.fullcrum.controller.sys;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,8 @@ import java.util.TimerTask;
 
 import javax.annotation.Resource;
 
+import com.fullcrum.controller.sys.Exception.InvalidParamException;
+import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.sys.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +25,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.TransactionEntity;
 import com.fullcrum.model.sys.TransactionPicsEntity;
 import com.fullcrum.utils.GoEasyAPI;
+import org.springframework.web.server.ServerWebInputException;
 
 @RestController
 @CrossOrigin
@@ -45,7 +49,10 @@ public class TransactionController {
 
     @Resource(name="yopPaymentServiceImpl")
     private PaymentService yopPaymentServiceImpl;
-	
+
+    @Resource(name="rongpayService")
+    private PaymentService rongpayService;
+
 	@Autowired
 	private GoEasyAPI goEasyAPI;
 	 
@@ -422,6 +429,18 @@ public class TransactionController {
 
 // ----------------------  支付相关 -----------------------------------------
 
+    private boolean validateTransactionEntity(PaymentEntity paymentEntity){
+        return paymentEntity.getTransacId()!=null
+                && paymentEntity.getTransacId()!= 0
+                && paymentEntity.getBillNumber()!=null
+                &&!"".equals(paymentEntity.getBillNumber().trim())
+                && paymentEntity.getBuyerId()!=null
+                &&!"".equals(paymentEntity.getBuyerId().trim())
+                && paymentEntity.getSellerId()!=null
+                &&!"".equals(paymentEntity.getSellerId().trim())
+                && paymentEntity.getAmount()!=null
+                && BigDecimal.valueOf(0).compareTo(paymentEntity.getAmount())<0;
+    }
     /**
      * 需传入
      * transacId: 交易id
@@ -429,14 +448,38 @@ public class TransactionController {
      * sellerId   卖家id
      * buyerId    买家id
      * amount      票面金额
-     * @param transactionEntity
+     * @param paymentEntity
      * @return
      */
     @RequestMapping("/yopPay")
-	public JSONObject payBuyYop(@RequestBody TransactionEntity transactionEntity) {
-		System.out.println(transactionEntity);
-	    return null;
+	public JSONObject payByYop(@RequestBody PaymentEntity paymentEntity) throws InvalidParamException {
+        if (!validateTransactionEntity(paymentEntity)){
+            throw new InvalidParamException();
+        }
+        JSONObject ret = new JSONObject();
+        ret.put("url",yopPaymentServiceImpl.pay(paymentEntity));
+	    return ret;
 	}
+
+    /**
+     * 需传入
+     * transacId: 交易id
+     * billNumber 票据id
+     * sellerId   卖家id
+     * buyerId    买家id
+     * amount      票面金额
+     * @param paymentEntity
+     * @return
+     */
+    @RequestMapping("/reaPay")
+    public JSONObject payByRong(@RequestBody PaymentEntity paymentEntity) throws InvalidParamException {
+        if (!validateTransactionEntity(paymentEntity)){
+            throw new InvalidParamException();
+        }
+        JSONObject ret = new JSONObject();
+        ret.put("data",rongpayService.pay(paymentEntity));
+        return ret;
+    }
 
 	@RequestMapping("/yopConfirm")
 	public Map<String, Object> yopConfirm(@RequestBody JSONObject jsonObject){
