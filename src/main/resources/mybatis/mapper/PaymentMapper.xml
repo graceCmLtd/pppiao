@@ -36,7 +36,7 @@
   </select>
   
   <select id="selectByUniqueOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-  	select <include refid="Base_Colum_List"></include>
+  	select <include refid="Base_Column_List"></include>
   	from ppp_tx_payment 
   	where external_id = #{uniqueOrderId,jdbcType=INTEGER}
   </select>
