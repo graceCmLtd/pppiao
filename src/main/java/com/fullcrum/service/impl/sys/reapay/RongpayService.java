@@ -7,6 +7,8 @@ import com.fullcrum.service.PaymentException;
 import com.fullcrum.service.sys.PaymentService;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -87,6 +89,58 @@ public class RongpayService implements PaymentService {
 
 	@Override
 	public Map<String, Object> confirm(JSONObject jsonObject) {
-		return null;
+
+		String batch_no = jsonObject.getString("batch_no").trim();
+		String batch_count = jsonObject.getString("batch_count").trim();
+		String batch_amount = jsonObject.getString("batch_amount").trim();
+		String pay_type = jsonObject.getString("pay_type").trim();
+		String content = jsonObject.getString("content").trim();
+
+		//AgentPayRequest agentPayRequest = new AgentPayRequest();
+		Map<String, String> map = new HashMap<String, String>(0);
+		map.put("charset", ReapalUtil.getCharset());
+		map.put("trans_time",
+				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+		map.put("notify_url", ReapalUtil.getNotify_url());
+		map.put("batch_no", batch_no);
+		map.put("batch_count", batch_count);
+		map.put("batch_amount", batch_amount);
+		map.put("pay_type", pay_type);
+		map.put("content", content);
+
+		String mysign = ReapalUtil.BuildMysign(map, ReapalUtil.getKey());
+
+		System.out.println("签名结果==========>" + mysign);
+		map.put("sign", mysign);
+		map.put("sign_type", ReapalUtil.getSign_type());
+
+		String json = JSON.toJSONString(map);
+
+		Map<String, String> maps = null;
+		try {
+			maps = ReapalUtil.addkey(json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		maps.put("merchant_id", ReapalUtil.getMerchant_id());
+		maps.put("version", ReapalUtil.getVersion());
+		System.out.println("maps==========>" + com.alibaba.fastjson.JSON.toJSONString(maps));
+
+		String post = null;
+		try {
+			post = HttpClientUtil.post1(ReapalUtil.getUrl()
+					+ "agentpay/pay", maps);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String res = "";
+		try {
+			 res = ReapalUtil.pubkey(post);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Map<String,Object> result = new HashMap<>();
+		result.put("result",res);
+		return result;
 	}
 }
