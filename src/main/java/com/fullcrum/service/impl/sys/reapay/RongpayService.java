@@ -2,10 +2,13 @@ package com.fullcrum.service.impl.sys.reapay;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.fullcrum.dao.PaymentDao;
 import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.PaymentException;
 import com.fullcrum.service.sys.PaymentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 import java.util.*;
@@ -16,6 +19,10 @@ import java.util.Map;
 
 @Service(value="rongPayService")
 public class RongpayService implements PaymentService {
+
+	@Autowired
+	private PaymentDao paymentDao;
+
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static String gateway=ReapalWebConfig.rongpay_api+"/web/portal";
 
@@ -138,6 +145,17 @@ public class RongpayService implements PaymentService {
 			 res = ReapalUtil.pubkey(post);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		if("".equals(res) && res != null){
+			JSONObject jsStr = JSONObject.parseObject(res);
+			if("0000".equals(jsStr.getString("result_code"))){
+				try{
+
+					System.out.println(jsStr);
+				}catch (Exception e){
+					System.out.println(e.getMessage());
+				}
+			}
 		}
 		Map<String,Object> result = new HashMap<>();
 		result.put("result",res);
