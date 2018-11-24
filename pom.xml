@@ -93,13 +93,20 @@
             <scope>system</scope>
 			<systemPath>${project.basedir}/libs/yop-java-sdk-2.2.8-jdk18.jar</systemPath>
 		</dependency>
-		<dependency>
-			<groupId>com.yeepay</groupId>
-			<artifactId>yos-java-sdk</artifactId>
+        <dependency>
+            <groupId>com.yeepay</groupId>
+            <artifactId>yos-java-sdk</artifactId>
             <version>1.0.3</version>
             <scope>system</scope>
-			<systemPath>${project.basedir}/libs/yos-java-sdk-1.0.3.jar</systemPath>
-		</dependency>
+            <systemPath>${project.basedir}/libs/yos-java-sdk-1.0.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.yeepay</groupId>
+            <artifactId>bcprov</artifactId>
+            <version>jdk15-1.45</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/bcprov-jdk15-1.45.jar</systemPath>
+        </dependency>
 
 
 		<dependency>
