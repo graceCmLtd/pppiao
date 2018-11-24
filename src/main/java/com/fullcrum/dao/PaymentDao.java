@@ -1,5 +1,7 @@
 package com.fullcrum.dao;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.fullcrum.model.sys.PaymentEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,4 +18,6 @@ public interface PaymentDao {
     int updateByPrimaryKeySelective(PaymentEntity record);
 
     int updateByPrimaryKey(PaymentEntity record);
+    
+    PaymentEntity selectByUniqueOrderId(Integer uniqueOrderNo);
 }

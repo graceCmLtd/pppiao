@@ -10,7 +10,7 @@ import java.util.Map;
 public interface PaymentService {
 	enum PaymentMethod {
 		YOP_TRANSFER, //易宝代付：
-
+        REAPAL,//融宝
 	}
 	
 	/**通知地址 : 商户的通知地址（下单接口 notifyUrl 参数）,只有订单支付成功才有此服务器点对点通知
@@ -38,7 +38,7 @@ public interface PaymentService {
 	public static String PAYMENT_STATUS_REVOKED = "REVOKED";
 	public static String PAYMENT_STATUS_REVERSAL = "REVERSAL";
 
-    String pay(String payMethod, PaymentEntity entity) throws PaymentException;
+    String pay(PaymentEntity entity) throws PaymentException;
 
 
 	Map<String,Object> confirm(JSONObject jsonObject);

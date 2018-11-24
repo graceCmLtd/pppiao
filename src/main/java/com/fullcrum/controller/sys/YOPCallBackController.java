@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,15 +19,27 @@ public class YOPCallBackController {
 
 	@Resource(name="yopPaymentServiceImpl")
 	PaymentService yop ;
+	
+	@RequestMapping(value="/payCallBack" ,method=RequestMethod.GET)
 	public void  payCallBack(@RequestParam String response,@RequestParam String customerIdentification, HttpServletResponse response2 ) {
 		if (yop.onPaySuccess(response, customerIdentification).equals("SUCCESS")) {
 			try {
-				PrintWriter op= response2.getWriter();
-				op.println("SUCCESS");
+				response2.getWriter().write("SUCCESS");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	@RequestMapping("/test")
+	public void test(HttpServletResponse response) {
+		System.out.println("in test xxxxxxxxxxxxx");
+		try {
+			response.sendRedirect("http://www.baidu.com");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

@@ -41,6 +41,11 @@
     delete from ppp_tx_payment
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <select id="selectByUniqueOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+  	select <include refid="Base_Column_List"></include>
+  	from ppp_tx_payment
+  	where external_id =#{uniqueOrderNo}
+  </select>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fullcrum.model.sys.PaymentEntity" useGeneratedKeys="true">
     insert into ppp_tx_payment (payment_way, external_id, transac_id, 
       bill_number, seller_id, buyer_id, 

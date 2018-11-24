@@ -38,7 +38,7 @@ public class Yop implements PaymentService {
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Override
-    public String pay(String payMethod, PaymentEntity entity) throws PaymentException {
+    public String pay(PaymentEntity entity) throws PaymentException {
         Map<String, String> params = new HashMap<>();
         params.put("orderId", entity.getTransacId().toString());
         params.put("orderAmount", entity.getAmount().toString());
