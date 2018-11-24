@@ -353,7 +353,8 @@ public class YeepayService {
 
 		Map<String, Object> result = new HashMap<String, Object>();
 		Map<String, YopSubError> erresult = new HashMap<String, YopSubError>();
-		YopRequest yoprequest = new YopRequest("OPR:" + getMerchantNo());
+		String merchantNo = YeepayService.getMerchantNo();
+		YopRequest yoprequest = new YopRequest("OPR:" + merchantNo);
 
 		Set<Entry<String, Object>> entry = map.entrySet();
 		for (Entry<String, Object> s : entry) {
