@@ -18,7 +18,7 @@ public interface PaymentService {
 	*	通知策略：收到易宝回调通知需回写大写“SUCCESS”,如没有回写则每 5 分钟通知一次，总共 3 次，3 次后没有拿到回写则停止通知。
 	*	同一笔订单收到多次易宝回调，切忌请不要重复入账。
 	**/
-	String onPaySuccess(String response,String customerIdentification);
+	String onPaySuccess(JSONObject request,String customerIdentification);
 	
 
 //    PROCESSING 处理中(非终态)
@@ -29,7 +29,8 @@ public interface PaymentService {
 //    REPEALED 订单撤销(分账订单退款后查询)
 //    REVOKED 订单取消(网银订单)
 //    REVERSAL 冲正',
-	public static String PAYMENT_STATUS_PROCESSING = "PROCESSING";
+    public static String PAYMENT_STATUS_SENDING = "SENDING";
+    public static String PAYMENT_STATUS_PROCESSING = "PROCESSING";
 	public static String PAYMENT_STATUS_SUCCESS = "SUCCESS";
 	public static String PAYMENT_STATUS_CLOSED = "CLOSED";
 	public static String PAYMENT_STATUS_TIME_OUT = "TIME_OUT";

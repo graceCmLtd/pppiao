@@ -7,8 +7,8 @@ import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.PaymentException;
 import com.fullcrum.service.sys.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 import java.util.*;
@@ -20,16 +20,78 @@ import java.util.Map;
 @Service(value = "rongpayService")
 public class RongpayService implements PaymentService {
 
-
-	@Autowired
-	private PaymentDao paymentDao;
+    @Autowired
+    private PaymentDao paymentDao;
 
    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
    private static String gateway=ReapalWebConfig.rongpay_api+"/web/portal";
 
    @Override
-   public String onPaySuccess(String response, String customerIdentification) {
-      return null;
+   public String onPaySuccess( JSONObject request, String customerIdentification) {
+       String key = ReapalWebConfig.key;
+       String merchantId = request.getString("merchant_id");
+       String data = request.getString("data");
+       String encryptkey = request.getString("encryptkey");
+       //解析密文数据
+       String decryData = null;
+       try {
+           decryData = DecipherWeb.decryptData(encryptkey,data);
+       } catch (Exception e) {
+           throw PaymentException.newThirdPartyInterException(e);
+       }
+
+       //获取融宝支付的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
+       JSONObject jsonObject = JSON.parseObject(decryData);
+
+       String merchant_id = jsonObject.getString("merchant_id");
+       String trade_no = jsonObject.getString("trade_no");
+       String order_no = jsonObject.getString("order_no");
+       String total_fee = jsonObject.getString("total_fee");
+       String status = jsonObject.getString("status");
+       String result_code = jsonObject.getString("result_code");
+       String result_msg = jsonObject.getString("result_msg");
+       String sign = jsonObject.getString("sign");
+       String notify_id = jsonObject.getString("notify_id");
+
+
+       Map<String, String> map = new HashMap<String, String>();
+       map.put("merchant_id", merchant_id);
+       map.put("trade_no", trade_no);
+       map.put("order_no", order_no);
+       map.put("total_fee", total_fee);
+       map.put("status", status);
+       map.put("result_code", result_code);
+       map.put("result_msg", result_msg);
+       map.put("notify_id", notify_id);
+       //将返回的参数进行验签
+       String mysign = Md5Utils.BuildMysign(map, key);
+
+       System.out.println("mysign:" + mysign);
+       System.out.println("sign:" + sign);
+
+
+       String verifyStatus = "";
+
+       //建议校验responseTxt，判读该返回结果是否由融宝发出
+       if(mysign.equals(sign) ){
+
+           //——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
+           if(status.equals("TRADE_FINISHED")){
+               //支付成功，如果没有做过处理，根据订单号（out_trade_no）及金额（total_fee）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
+               //一定要做金额判断，防止恶意窜改金额，只支付了小金额的订单。
+               //如果有做过处理，不执行商户的业务程序
+           }else{
+
+               //支付失败处理相关订单
+           }
+
+           verifyStatus = "验证成功";
+           //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
+
+       }else{
+           verifyStatus = "验证失败";
+       }
+       return null;
    }
 
    /**
@@ -38,40 +100,40 @@ public class RongpayService implements PaymentService {
     */
    @Override
    public String pay(PaymentEntity entity) throws PaymentException {
-      Map<String, String> sPara = new HashMap<String, String>();
-      sPara.put("seller_email",ReapalWebConfig.seller_email);
-      sPara.put("merchant_id",ReapalWebConfig.merchant_id);
-      sPara.put("notify_url", ReapalWebConfig.notify_url);//后端服务器通知
-      sPara.put("return_url", ReapalWebConfig.return_url);//前端页面跳转
-      sPara.put("transtime", sdf.format(new java.util.Date()));
-//    sPara.put("currency", "156");融宝仅支持默认值人民币
-      sPara.put("member_ip", entity.getTerminalIp());
-      //sPara.put("terminal_type", terminal_type);
-      sPara.put("terminal_info", entity.getTerminalInfo() );
-      sPara.put("sign_type", ReapalWebConfig.sign_type);
-      sPara.put("order_no", ""+entity.getTransacId());
-      sPara.put("title", entity.getBillNumber());
-      sPara.put("body", entity.getBillNumber());
-      //融宝金额以分为单位
-      sPara.put("total_fee", ""+entity.getAmount().multiply(BigDecimal.valueOf(10)));
-      //支付方式为银行间连时：值为1
+        Map<String, String> sPara = new HashMap<String, String>();
+        sPara.put("seller_email",ReapalWebConfig.seller_email);
+        sPara.put("merchant_id",ReapalWebConfig.merchant_id);
+        sPara.put("notify_url", ReapalWebConfig.notify_url);//后端服务器通知
+        sPara.put("return_url", ReapalWebConfig.return_url);//前端页面跳转
+        sPara.put("transtime", sdf.format(new java.util.Date()));
+        //    sPara.put("currency", "156");融宝仅支持默认值人民币
+        sPara.put("member_ip", entity.getTerminalIp());
+        //sPara.put("terminal_type", terminal_type);
+        sPara.put("terminal_info", entity.getTerminalInfo() );
+        sPara.put("sign_type", ReapalWebConfig.sign_type);
+        sPara.put("order_no", ""+entity.getTransacId());
+        sPara.put("title", entity.getBillNumber());
+        sPara.put("body", entity.getBillNumber());
+        //融宝金额以分为单位
+        sPara.put("total_fee", ""+entity.getAmount().multiply(BigDecimal.valueOf(10)));
+        //支付方式为银行间连时：值为1
         //支付方式为银行直连时：银行代码为B2B支付：
         //值为1
         //银行代码为B2C支付：
         //1借记卡支付，2贷记卡支付
         //采用银行间连接
-      sPara.put("payment_type", "1");
-      sPara.put("default_bank", "");
-//        固定值
-//        1. bankPay，银行间接支付，默认值；
-//        2. directPay ，银行直连
+        sPara.put("payment_type", "1");
+        sPara.put("default_bank", "");
+        //        固定值
+        //        1. bankPay，银行间接支付，默认值；
+        //        2. directPay ，银行直连
         sPara.put("pay_method", "bankPay");
 
-      String mysign = Md5Utils.BuildMysign(sPara, ReapalWebConfig.key);//生成签名结果
+        String mysign = Md5Utils.BuildMysign(sPara, ReapalWebConfig.key);//生成签名结果
 
-      sPara.put("sign", mysign);
+        sPara.put("sign", mysign);
 
-      String json = JSON.toJSONString(sPara);
+        String json = JSON.toJSONString(sPara);
 
         Map<String, String> maps;
         try {
@@ -79,20 +141,28 @@ public class RongpayService implements PaymentService {
         } catch (Exception e) {
             throw PaymentException.newPaymentException(e);
         }
-
         StringBuffer sbHtml = new StringBuffer();
+        //post方式传递
+        sbHtml.append("<form id=\"rongpaysubmit\" name=\"rongpaysubmit\" action=\"").append(gateway).append("\" method=\"post\">");
+
+        sbHtml.append("<input type=\"hidden\" name=\"merchant_id\" value=\"").append(ReapalWebConfig.merchant_id).append("\"/>");
+        sbHtml.append("<input type=\"hidden\" name=\"data\" value=\"").append(maps.get("data")).append("\"/>");
+        sbHtml.append("<input type=\"hidden\" name=\"encryptkey\" value=\"").append(maps.get("encryptkey")).append("\"/>");
+
+        //submit按钮控件请不要含有name属性
+        sbHtml.append("<input type=\"submit\" class=\"button_p2p\" value=\"融宝支付确认付款\"></form>");
 
 
-	   //post方式传递
-	   sbHtml.append("<form id=\"rongpaysubmit\" name=\"rongpaysubmit\" action=\"").append(gateway).append("\" method=\"post\">");
+        entity.setRequestDate(new java.util.Date());
+        entity.setMemo("test memo");
+        entity.setPaymentWay("reapal");
+        //        entity.setExternalId();等待返回时可以得到融宝流水号
+        //            entity.setExpire();
+        entity.setStatus(PaymentService.PAYMENT_STATUS_SENDING);
+        paymentDao.insert(entity);
 
-	   sbHtml.append("<input type=\"hidden\" name=\"merchant_id\" value=\"").append(ReapalWebConfig.merchant_id).append("\"/>");
-	   sbHtml.append("<input type=\"hidden\" name=\"data\" value=\"").append(maps.get("data")).append("\"/>");
-	   sbHtml.append("<input type=\"hidden\" name=\"encryptkey\" value=\"").append(maps.get("encryptkey")).append("\"/>");
 
-	   //submit按钮控件请不要含有name属性
-	   sbHtml.append("<input type=\"submit\" class=\"button_p2p\" value=\"融宝支付确认付款\"></form>");
-	   return sbHtml.toString();
+        return sbHtml.toString();
 	}
 
 	@Override
