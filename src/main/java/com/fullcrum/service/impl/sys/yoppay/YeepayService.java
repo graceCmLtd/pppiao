@@ -1,4 +1,4 @@
-package com.fullcrum.service.impl.sys.payment;
+package com.fullcrum.service.impl.sys.yoppay;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
