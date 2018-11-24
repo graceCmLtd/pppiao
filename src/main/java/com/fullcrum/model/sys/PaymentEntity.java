@@ -114,6 +114,22 @@ CFL 分期(马上金融)
 
     private Date updateDate;
 
+    /**
+     * 终端类型：(对于易宝的user_type和融宝的terminal_type)
+IMEI,MAC,UUID
+     */
+    private String terminalType;
+
+    /**
+     * 手机IMEI地址、MAC地址、UUID
+     */
+    private String terminalInfo;
+
+    /**
+     * 进行支付用户的ip
+     */
+    private String terminalIp;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -276,6 +292,30 @@ CFL 分期(马上金融)
         this.updateDate = updateDate;
     }
 
+    public String getTerminalType() {
+        return terminalType;
+    }
+
+    public void setTerminalType(String terminalType) {
+        this.terminalType = terminalType;
+    }
+
+    public String getTerminalInfo() {
+        return terminalInfo;
+    }
+
+    public void setTerminalInfo(String terminalInfo) {
+        this.terminalInfo = terminalInfo;
+    }
+
+    public String getTerminalIp() {
+        return terminalIp;
+    }
+
+    public void setTerminalIp(String terminalIp) {
+        this.terminalIp = terminalIp;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -307,7 +347,10 @@ CFL 分期(马上金融)
             && (this.getSerialNum() == null ? other.getSerialNum() == null : this.getSerialNum().equals(other.getSerialNum()))
             && (this.getExtra() == null ? other.getExtra() == null : this.getExtra().equals(other.getExtra()))
             && (this.getErrorMsg() == null ? other.getErrorMsg() == null : this.getErrorMsg().equals(other.getErrorMsg()))
-            && (this.getUpdateDate() == null ? other.getUpdateDate() == null : this.getUpdateDate().equals(other.getUpdateDate()));
+            && (this.getUpdateDate() == null ? other.getUpdateDate() == null : this.getUpdateDate().equals(other.getUpdateDate()))
+            && (this.getTerminalType() == null ? other.getTerminalType() == null : this.getTerminalType().equals(other.getTerminalType()))
+            && (this.getTerminalInfo() == null ? other.getTerminalInfo() == null : this.getTerminalInfo().equals(other.getTerminalInfo()))
+            && (this.getTerminalIp() == null ? other.getTerminalIp() == null : this.getTerminalIp().equals(other.getTerminalIp()));
     }
 
     @Override
@@ -334,6 +377,9 @@ CFL 分期(马上金融)
         result = prime * result + ((getExtra() == null) ? 0 : getExtra().hashCode());
         result = prime * result + ((getErrorMsg() == null) ? 0 : getErrorMsg().hashCode());
         result = prime * result + ((getUpdateDate() == null) ? 0 : getUpdateDate().hashCode());
+        result = prime * result + ((getTerminalType() == null) ? 0 : getTerminalType().hashCode());
+        result = prime * result + ((getTerminalInfo() == null) ? 0 : getTerminalInfo().hashCode());
+        result = prime * result + ((getTerminalIp() == null) ? 0 : getTerminalIp().hashCode());
         return result;
     }
 
@@ -363,6 +409,9 @@ CFL 分期(马上金融)
         sb.append(", extra=").append(extra);
         sb.append(", errorMsg=").append(errorMsg);
         sb.append(", updateDate=").append(updateDate);
+        sb.append(", terminalType=").append(terminalType);
+        sb.append(", terminalInfo=").append(terminalInfo);
+        sb.append(", terminalIp=").append(terminalIp);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

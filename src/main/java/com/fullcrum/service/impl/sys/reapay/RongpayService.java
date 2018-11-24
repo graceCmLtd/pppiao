@@ -5,8 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.PaymentException;
 import com.fullcrum.service.sys.PaymentService;
-import com.reapal.config.ReapalWebConfig;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,18 +23,6 @@ public class RongpayService implements PaymentService {
 
 	/**
 	 * 功能：构造表单提交HTML
-	 * @param merchant_ID 合作身份者ID
-	 * @param seller_email 签约融宝支付账号或卖家融宝支付帐户
-	 * @param return_url 付完款后跳转的页面 要用 以http开头格式的完整路径，不允许加?id=123这类自定义参数
-	 * @param notify_url 交易过程中服务器通知的页面 要用 以http开格式的完整路径，不允许加?id=123这类自定义参数
-	 * @param order_no 请与贵网站订单系统中的唯一订单号匹配
-	 * @param title 订单名称，显示在融宝支付收银台里的“商品名称”里，显示在融宝支付的交易管理的“商品名称”的列表里。
-	 * @param body 订单描述、订单详细、订单备注，显示在融宝支付收银台里的“商品描述”里
-	 * @param total_fee 订单总金额，显示在融宝支付收银台里的“交易金额”里
-	 * @param buyer_email 默认买家融宝支付账号
-	 * @param charset 字符编码格式 目前支持 GBK 或 utf-8
-	 * @param key 安全校验码
-	 * @param sign_type 签名方式 不需修改
 	 * @return 表单提交HTML文本
 	 */
 	@Override
@@ -42,44 +30,58 @@ public class RongpayService implements PaymentService {
 		Map<String, String> sPara = new HashMap<String, String>();
 		sPara.put("seller_email",ReapalWebConfig.seller_email);
 		sPara.put("merchant_id",ReapalWebConfig.merchant_id);
-		sPara.put("notify_url", ReapalWebConfig.notify_url);
-		sPara.put("return_url", ReapalWebConfig.return_url);
+		sPara.put("notify_url", ReapalWebConfig.notify_url);//后端服务器通知
+		sPara.put("return_url", ReapalWebConfig.return_url);//前端页面跳转
 		sPara.put("transtime", sdf.format(new java.util.Date()));
 //		sPara.put("currency", "156");融宝仅支持默认值人民币
-		sPara.put("member_ip", member_ip);
+		sPara.put("member_ip", entity.getTerminalIp());
 		//sPara.put("terminal_type", terminal_type);
-//		sPara.put("terminal_info", );
-//		sPara.put("sign_type", sign_type);
-//		sPara.put("order_no", order_no);
-//		sPara.put("title", title);
-//		sPara.put("body", body);
-//		sPara.put("total_fee", total_fee);
-//		sPara.put("payment_type", "1");
-//		sPara.put("default_bank", default_bank);
-//		sPara.put("pay_method", pay_method);
+		sPara.put("terminal_info", entity.getTerminalInfo() );
+		sPara.put("sign_type", ReapalWebConfig.sign_type);
+		sPara.put("order_no", ""+entity.getTransacId());
+		sPara.put("title", entity.getBillNumber());
+		sPara.put("body", entity.getBillNumber());
+		//融宝金额以分为单位
+		sPara.put("total_fee", ""+entity.getAmount().multiply(BigDecimal.valueOf(10)));
+		//支付方式为银行间连时：值为1
+        //支付方式为银行直连时：银行代码为B2B支付：
+        //值为1
+        //银行代码为B2C支付：
+        //1借记卡支付，2贷记卡支付
+        //采用银行间连接
+		sPara.put("payment_type", "1");
+		sPara.put("default_bank", "");
+//        固定值
+//        1. bankPay，银行间接支付，默认值；
+//        2. directPay ，银行直连
+        sPara.put("pay_method", "bankPay");
 
-		String mysign = Md5Utils.BuildMysign(sPara, key);//生成签名结果
+		String mysign = Md5Utils.BuildMysign(sPara, ReapalWebConfig.key);//生成签名结果
 
 		sPara.put("sign", mysign);
 
 		String json = JSON.toJSONString(sPara);
 
-		Map<String, String> maps = DecipherWeb.encryptData(json);
+        Map<String, String> maps;
+        try {
+            maps = DecipherWeb.encryptData(json);
+        } catch (Exception e) {
+            throw PaymentException.newPaymentException(e);
+        }
 
-		StringBuffer sbHtml = new StringBuffer();
+        StringBuffer sbHtml = new StringBuffer();
 
 
 		//post方式传递
 		sbHtml.append("<form id=\"rongpaysubmit\" name=\"rongpaysubmit\" action=\"").append(gateway).append("\" method=\"post\">");
 
-		sbHtml.append("<input type=\"hidden\" name=\"merchant_id\" value=\"").append(merchant_id).append("\"/>");
+		sbHtml.append("<input type=\"hidden\" name=\"merchant_id\" value=\"").append(ReapalWebConfig.merchant_id).append("\"/>");
 		sbHtml.append("<input type=\"hidden\" name=\"data\" value=\"").append(maps.get("data")).append("\"/>");
 		sbHtml.append("<input type=\"hidden\" name=\"encryptkey\" value=\"").append(maps.get("encryptkey")).append("\"/>");
 
 		//submit按钮控件请不要含有name属性
 		sbHtml.append("<input type=\"submit\" class=\"button_p2p\" value=\"融宝支付确认付款\"></form>");
 		return sbHtml.toString();
-		return null;
 	}
 
 	@Override

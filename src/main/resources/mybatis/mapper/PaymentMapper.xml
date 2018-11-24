@@ -22,11 +22,14 @@
     <result column="extra" jdbcType="VARCHAR" property="extra" />
     <result column="error_msg" jdbcType="VARCHAR" property="errorMsg" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="terminal_type" jdbcType="VARCHAR" property="terminalType" />
+    <result column="terminal_info" jdbcType="VARCHAR" property="terminalInfo" />
+    <result column="terminal_ip" jdbcType="VARCHAR" property="terminalIp" />
   </resultMap>
   <sql id="Base_Column_List">
     id, payment_way, external_id, transac_id, bill_number, seller_id, buyer_id, amount, 
     request_date, expire, memo, fee_type, profit, fee, `status`, platform_type, serial_num, 
-    extra, error_msg, update_date
+    extra, error_msg, update_date, terminal_type, terminal_info, terminal_ip
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -34,13 +37,6 @@
     from ppp_tx_payment
     where id = #{id,jdbcType=INTEGER}
   </select>
-  
-  <select id="selectByUniqueOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-  	select <include refid="Base_Column_List"></include>
-  	from ppp_tx_payment 
-  	where external_id = #{uniqueOrderId,jdbcType=INTEGER}
-  </select>
-  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from ppp_tx_payment
     where id = #{id,jdbcType=INTEGER}
@@ -52,14 +48,16 @@
       memo, fee_type, profit, 
       fee, `status`, platform_type, 
       serial_num, extra, error_msg, 
-      update_date)
+      update_date, terminal_type, terminal_info, 
+      terminal_ip)
     values (#{paymentWay,jdbcType=VARCHAR}, #{externalId,jdbcType=VARCHAR}, #{transacId,jdbcType=INTEGER}, 
       #{billNumber,jdbcType=VARCHAR}, #{sellerId,jdbcType=VARCHAR}, #{buyerId,jdbcType=VARCHAR}, 
       #{amount,jdbcType=DECIMAL}, #{requestDate,jdbcType=TIMESTAMP}, #{expire,jdbcType=INTEGER}, 
       #{memo,jdbcType=VARCHAR}, #{feeType,jdbcType=INTEGER}, #{profit,jdbcType=DECIMAL}, 
       #{fee,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{platformType,jdbcType=VARCHAR}, 
       #{serialNum,jdbcType=INTEGER}, #{extra,jdbcType=VARCHAR}, #{errorMsg,jdbcType=VARCHAR}, 
-      #{updateDate,jdbcType=TIMESTAMP})
+      #{updateDate,jdbcType=TIMESTAMP}, #{terminalType,jdbcType=VARCHAR}, #{terminalInfo,jdbcType=VARCHAR}, 
+      #{terminalIp,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fullcrum.model.sys.PaymentEntity" useGeneratedKeys="true">
     insert into ppp_tx_payment
@@ -121,6 +119,15 @@
       <if test="updateDate != null">
         update_date,
       </if>
+      <if test="terminalType != null">
+        terminal_type,
+      </if>
+      <if test="terminalInfo != null">
+        terminal_info,
+      </if>
+      <if test="terminalIp != null">
+        terminal_ip,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="paymentWay != null">
@@ -179,6 +186,15 @@
       </if>
       <if test="updateDate != null">
         #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="terminalType != null">
+        #{terminalType,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalInfo != null">
+        #{terminalInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalIp != null">
+        #{terminalIp,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -242,6 +258,15 @@
       <if test="updateDate != null">
         update_date = #{updateDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="terminalType != null">
+        terminal_type = #{terminalType,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalInfo != null">
+        terminal_info = #{terminalInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalIp != null">
+        terminal_ip = #{terminalIp,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -265,7 +290,10 @@
       serial_num = #{serialNum,jdbcType=INTEGER},
       extra = #{extra,jdbcType=VARCHAR},
       error_msg = #{errorMsg,jdbcType=VARCHAR},
-      update_date = #{updateDate,jdbcType=TIMESTAMP}
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      terminal_type = #{terminalType,jdbcType=VARCHAR},
+      terminal_info = #{terminalInfo,jdbcType=VARCHAR},
+      terminal_ip = #{terminalIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
