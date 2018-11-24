@@ -5,13 +5,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.PaymentException;
 import com.fullcrum.service.sys.PaymentService;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.util.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Service(value="rongPayService")
 public class RongpayService implements PaymentService {
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static String gateway=ReapalWebConfig.rongpay_api+"/web/portal";
@@ -123,9 +126,21 @@ public class RongpayService implements PaymentService {
 		maps.put("version", ReapalUtil.getVersion());
 		System.out.println("maps==========>" + com.alibaba.fastjson.JSON.toJSONString(maps));
 
-		String post = HttpClientUtil.post(ReapalUtil.getUrl()
-				+ "agentpay/pay", maps);
-		String res = ReapalUtil.pubkey(post);
-
+		String post = null;
+		try {
+			post = HttpClientUtil.post1(ReapalUtil.getUrl()
+					+ "agentpay/pay", maps);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String res = "";
+		try {
+			 res = ReapalUtil.pubkey(post);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Map<String,Object> result = new HashMap<>();
+		result.put("result",res);
+		return result;
 	}
 }

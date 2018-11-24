@@ -28,7 +28,7 @@ public class ReapalUtil {
 		return s.substring(0,8)+s.substring(9,13)+s.substring(14,18)+s.substring(19,23)+s.substring(24);
 	}
 
-	protected static ResourceBundle resourceBundle = ResourceBundle.getBundle("application");
+	protected static ResourceBundle resourceBundle = ResourceBundle.getBundle("application_rongpay");
 	protected static String privateKey = resourceBundle.getString("privateKey");// 私钥
 	protected static String password = resourceBundle.getString("password");// 密码
 	protected static String key = resourceBundle.getString("user_key");// 用户key
@@ -164,7 +164,7 @@ public class ReapalUtil {
 	}
 	/**
 	 * 解密
-	 * @param post
+	 * @param
 	 * @return
 	 * @throws Exception
 	 */
