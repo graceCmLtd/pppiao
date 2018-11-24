@@ -5,13 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.PaymentException;
 import com.fullcrum.service.sys.PaymentService;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Service(value = "rongpayService")
 public class RongpayService implements PaymentService {
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static String gateway=ReapalWebConfig.rongpay_api+"/web/portal";
@@ -26,7 +27,7 @@ public class RongpayService implements PaymentService {
 	 * @return 表单提交HTML文本
 	 */
 	@Override
-	public String pay(String payMethod, PaymentEntity entity) throws PaymentException {
+	public String pay(PaymentEntity entity) throws PaymentException {
 		Map<String, String> sPara = new HashMap<String, String>();
 		sPara.put("seller_email",ReapalWebConfig.seller_email);
 		sPara.put("merchant_id",ReapalWebConfig.merchant_id);
