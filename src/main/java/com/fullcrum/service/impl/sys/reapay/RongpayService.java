@@ -7,13 +7,12 @@ import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.PaymentException;
 import com.fullcrum.service.sys.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -152,14 +151,29 @@ public class RongpayService implements PaymentService {
         //submit按钮控件请不要含有name属性
         sbHtml.append("<input type=\"submit\" class=\"button_p2p\" value=\"融宝支付确认付款\"></form>");
 
+        //TODO 暂时使用全局锁
+       synchronized (this){
+           PaymentEntity p = paymentDao.selectByTxId(entity.getTransacId());
+           if (p != null
+                   && ((!PaymentService.PAYMENT_STATUS_REJECT.equals(p.getStatus()))
+                   && (!PaymentService.PAYMENT_STATUS_CLOSED.equals(p.getStatus()))
+                   && (!PaymentService.PAYMENT_STATUS_REPEALED.equals(p.getStatus()))
+                   && (!PaymentService.PAYMENT_STATUS_REVOKED.equals(p.getStatus()))
+                   && (!PaymentService.PAYMENT_STATUS_TIME_OUT.equals(p.getStatus())))
+           ){
+               throw PaymentException.newInvalidOrderException(new RuntimeException("重复付款"));
+           }else if (p!=null){
+               paymentDao.deleteByPrimaryKey(p.getId());
+           }
 
-        entity.setRequestDate(new java.util.Date());
-        entity.setMemo("test memo");
-        entity.setPaymentWay("reapal");
-        //        entity.setExternalId();等待返回时可以得到融宝流水号
-        //            entity.setExpire();
-        entity.setStatus(PaymentService.PAYMENT_STATUS_SENDING);
-        paymentDao.insert(entity);
+           entity.setRequestDate(new java.util.Date());
+           entity.setMemo("test memo");
+           entity.setPaymentWay("reapal");
+           //        entity.setExternalId();等待返回时可以得到融宝流水号
+           //            entity.setExpire();
+           entity.setStatus(PaymentService.PAYMENT_STATUS_SENDING);
+           paymentDao.insert(entity);
+       }
 
 
         return sbHtml.toString();

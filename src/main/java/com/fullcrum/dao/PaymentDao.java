@@ -18,6 +18,7 @@ public interface PaymentDao {
     int updateByPrimaryKeySelective(PaymentEntity record);
 
     int updateByPrimaryKey(PaymentEntity record);
-    
+
     PaymentEntity selectByUniqueOrderId(Integer uniqueOrderNo);
+    PaymentEntity selectByTxId(Integer txId);
 }

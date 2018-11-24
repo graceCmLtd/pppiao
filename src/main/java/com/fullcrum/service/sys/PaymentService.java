@@ -37,7 +37,6 @@ public interface PaymentService {
 	public static String PAYMENT_STATUS_REJECT = "REJECT";
 	public static String PAYMENT_STATUS_REPEALED = "REPEALED";
 	public static String PAYMENT_STATUS_REVOKED = "REVOKED";
-	public static String PAYMENT_STATUS_REVERSAL = "REVERSAL";
 
     String pay(PaymentEntity entity) throws PaymentException;
 
