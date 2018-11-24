@@ -129,6 +129,7 @@ public class RongpayService implements PaymentService {
 			maps = ReapalUtil.addkey(json);
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		maps.put("merchant_id", ReapalUtil.getMerchant_id());
 		maps.put("version", ReapalUtil.getVersion());
@@ -140,12 +141,14 @@ public class RongpayService implements PaymentService {
 					+ "agentpay/pay", maps);
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		String res = "";
 		try {
 			 res = ReapalUtil.pubkey(post);
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		if("".equals(res) && res != null){
 			JSONObject jsStr = JSONObject.parseObject(res);
@@ -154,6 +157,7 @@ public class RongpayService implements PaymentService {
 
 					System.out.println(jsStr);
 				}catch (Exception e){
+					e.printStackTrace();
 					System.out.println(e.getMessage());
 				}
 			}
@@ -162,5 +166,6 @@ public class RongpayService implements PaymentService {
 		result.put("result",res);
 		return result;
 	}
+
 
 }
