@@ -2,10 +2,13 @@ package com.fullcrum.service.impl.sys.reapay;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.fullcrum.dao.PaymentDao;
 import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.PaymentException;
 import com.fullcrum.service.sys.PaymentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 import java.util.*;
@@ -16,6 +19,11 @@ import java.util.Map;
 
 @Service(value = "rongpayService")
 public class RongpayService implements PaymentService {
+
+
+	@Autowired
+	private PaymentDao paymentDao;
+
    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
    private static String gateway=ReapalWebConfig.rongpay_api+"/web/portal";
 
@@ -75,72 +83,84 @@ public class RongpayService implements PaymentService {
         StringBuffer sbHtml = new StringBuffer();
 
 
-      //post方式传递
-      sbHtml.append("<form id=\"rongpaysubmit\" name=\"rongpaysubmit\" action=\"").append(gateway).append("\" method=\"post\">");
+	   //post方式传递
+	   sbHtml.append("<form id=\"rongpaysubmit\" name=\"rongpaysubmit\" action=\"").append(gateway).append("\" method=\"post\">");
 
-      sbHtml.append("<input type=\"hidden\" name=\"merchant_id\" value=\"").append(ReapalWebConfig.merchant_id).append("\"/>");
-      sbHtml.append("<input type=\"hidden\" name=\"data\" value=\"").append(maps.get("data")).append("\"/>");
-      sbHtml.append("<input type=\"hidden\" name=\"encryptkey\" value=\"").append(maps.get("encryptkey")).append("\"/>");
+	   sbHtml.append("<input type=\"hidden\" name=\"merchant_id\" value=\"").append(ReapalWebConfig.merchant_id).append("\"/>");
+	   sbHtml.append("<input type=\"hidden\" name=\"data\" value=\"").append(maps.get("data")).append("\"/>");
+	   sbHtml.append("<input type=\"hidden\" name=\"encryptkey\" value=\"").append(maps.get("encryptkey")).append("\"/>");
 
-      //submit按钮控件请不要含有name属性
-      sbHtml.append("<input type=\"submit\" class=\"button_p2p\" value=\"融宝支付确认付款\"></form>");
-      return sbHtml.toString();
-   }
+	   //submit按钮控件请不要含有name属性
+	   sbHtml.append("<input type=\"submit\" class=\"button_p2p\" value=\"融宝支付确认付款\"></form>");
+	   return sbHtml.toString();
+	}
 
-   @Override
-   public Map<String, Object> confirm(JSONObject jsonObject) {
+	@Override
+	public Map<String, Object> confirm(JSONObject jsonObject) {
 
-      String batch_no = jsonObject.getString("batch_no").trim();
-      String batch_count = jsonObject.getString("batch_count").trim();
-      String batch_amount = jsonObject.getString("batch_amount").trim();
-      String pay_type = jsonObject.getString("pay_type").trim();
-      String content = jsonObject.getString("content").trim();
+		String batch_no = jsonObject.getString("batch_no").trim();
+		String batch_count = jsonObject.getString("batch_count").trim();
+		String batch_amount = jsonObject.getString("batch_amount").trim();
+		String pay_type = jsonObject.getString("pay_type").trim();
+		String content = jsonObject.getString("content").trim();
 
-      //AgentPayRequest agentPayRequest = new AgentPayRequest();
-      Map<String, String> map = new HashMap<String, String>(0);
-      map.put("charset", ReapalUtil.getCharset());
-      map.put("trans_time",
-            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-      map.put("notify_url", ReapalUtil.getNotify_url());
-      map.put("batch_no", batch_no);
-      map.put("batch_count", batch_count);
-      map.put("batch_amount", batch_amount);
-      map.put("pay_type", pay_type);
-      map.put("content", content);
+		//AgentPayRequest agentPayRequest = new AgentPayRequest();
+		Map<String, String> map = new HashMap<String, String>(0);
+		map.put("charset", ReapalUtil.getCharset());
+		map.put("trans_time",
+				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+		map.put("notify_url", ReapalUtil.getNotify_url());
+		map.put("batch_no", batch_no);
+		map.put("batch_count", batch_count);
+		map.put("batch_amount", batch_amount);
+		map.put("pay_type", pay_type);
+		map.put("content", content);
 
-      String mysign = ReapalUtil.BuildMysign(map, ReapalUtil.getKey());
+		String mysign = ReapalUtil.BuildMysign(map, ReapalUtil.getKey());
 
-      System.out.println("签名结果==========>" + mysign);
-      map.put("sign", mysign);
-      map.put("sign_type", ReapalUtil.getSign_type());
+		System.out.println("签名结果==========>" + mysign);
+		map.put("sign", mysign);
+		map.put("sign_type", ReapalUtil.getSign_type());
 
-      String json = JSON.toJSONString(map);
+		String json = JSON.toJSONString(map);
 
-      Map<String, String> maps = null;
-      try {
-         maps = ReapalUtil.addkey(json);
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-      maps.put("merchant_id", ReapalUtil.getMerchant_id());
-      maps.put("version", ReapalUtil.getVersion());
-      System.out.println("maps==========>" + com.alibaba.fastjson.JSON.toJSONString(maps));
+		Map<String, String> maps = null;
+		try {
+			maps = ReapalUtil.addkey(json);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		maps.put("merchant_id", ReapalUtil.getMerchant_id());
+		maps.put("version", ReapalUtil.getVersion());
+		System.out.println("maps==========>" + com.alibaba.fastjson.JSON.toJSONString(maps));
 
-      String post = null;
-      try {
-         post = HttpClientUtil.post1(ReapalUtil.getUrl()
-               + "agentpay/pay", maps);
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
-      String res = "";
-      try {
-          res = ReapalUtil.pubkey(post);
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-      Map<String,Object> result = new HashMap<>();
-      result.put("result",res);
-      return result;
-   }
+		String post = null;
+		try {
+			post = HttpClientUtil.post1(ReapalUtil.getUrl()
+					+ "agentpay/pay", maps);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String res = "";
+		try {
+			 res = ReapalUtil.pubkey(post);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if("".equals(res) && res != null){
+			JSONObject jsStr = JSONObject.parseObject(res);
+			if("0000".equals(jsStr.getString("result_code"))){
+				try{
+
+					System.out.println(jsStr);
+				}catch (Exception e){
+					System.out.println(e.getMessage());
+				}
+			}
+		}
+		Map<String,Object> result = new HashMap<>();
+		result.put("result",res);
+		return result;
+	}
+
 }

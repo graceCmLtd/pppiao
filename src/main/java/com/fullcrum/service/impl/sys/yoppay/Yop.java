@@ -111,9 +111,9 @@ public class Yop implements PaymentService {
     		System.out.println("解密结果:"+dto.getPlainText());
     		jsonMap = parseResponse(dto.getPlainText());
     		System.out.println(jsonMap);
-    		PaymentEntity paymentEntity = paymentDao.selectByUniqueOrderId(Integer.getInteger(jsonMap.get("uniqueOrderNo")));
+    		//PaymentEntity paymentEntity = paymentDao.selectByUniqueOrderId(Integer.getInteger(jsonMap.get("uniqueOrderNo")));
     		
-    		if (paymentEntity != null ) {
+    		/*if (paymentEntity != null ) {
 				if (paymentEntity.getStatus().equals("SUCCESS") ) {
 					return "SUCCESS";
 				}else {
@@ -123,12 +123,12 @@ public class Yop implements PaymentService {
 				}
 			}else {
 				throw new Exception("cannot find UniqueOrderNo in db");
-			}
+			}*/
     	} catch (Exception e) {
     		throw new RuntimeException("回调解密失败！");
     	
     	}
-    	
+        return "SUCCESS";
     }
 
     @Override

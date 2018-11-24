@@ -3,6 +3,7 @@ package com.fullcrum.dao;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.fullcrum.model.sys.PaymentEntity;
+import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface PaymentDao {

@@ -13,13 +13,12 @@ import java.util.TreeMap;
 
 public class DecipherWeb {
 	
+
 	/**
-	 * 解密
-	 * @param merchant_id
-	 * @param data
-	 * @param encryptkey
+	 *
+	 * @param post
 	 * @return
-	 * @throws com.reapal.common.exception.ServiceException
+	 * @throws Exception
 	 */
 	public static String decryptData(String post) throws Exception {
 
@@ -49,6 +48,12 @@ public class DecipherWeb {
 	 * @param encryptkey
 	 * @return
 	 * @throws com.reapal.common.exception.ServiceException
+	 */
+	/**
+	 *
+	 * @param json
+	 * @return
+	 * @throws Exception
 	 */
 	public static Map<String, String> encryptData(String json) throws Exception {
 		System.out.println("json数据=============>" + json);
@@ -97,6 +102,13 @@ public class DecipherWeb {
 	 * @param encryptkey
 	 * @return
 	 * @throws com.reapal.common.exception.ServiceException
+	 */
+	/**
+	 *
+	 * @param encryptkey
+	 * @param data
+	 * @return
+	 * @throws Exception
 	 */
 	public static String decryptData(String encryptkey,String data) throws Exception {
 
