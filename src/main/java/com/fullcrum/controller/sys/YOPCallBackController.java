@@ -22,14 +22,14 @@ public class YOPCallBackController {
 	
 	@RequestMapping(value="/payCallBack" ,method=RequestMethod.GET)
 	public void  payCallBack(@RequestParam String response,@RequestParam String customerIdentification, HttpServletResponse response2 ) {
-		if (yop.onPaySuccess(response, customerIdentification).equals("SUCCESS")) {
+		/*if (yop.onPaySuccess(response, customerIdentification).equals("SUCCESS")) {
 			try {
 				response2.getWriter().write("SUCCESS");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 	
 	@RequestMapping("/test")

@@ -25,7 +25,10 @@ public class TransactionServiceImpl implements TransactionService {
 		
 		return transactionDao.selectTransacByTransacId(transactionId);
 	}
-
+	
+	public String getIntentionStatusByTransacType(String orderId) {
+		return transactionDao.getIntentionStatusByTransacType(orderId);
+	}
 	@Override
 	public ArrayList<Map<String,Object>> selectTransacByBillNumber(String billNumber) {
 		

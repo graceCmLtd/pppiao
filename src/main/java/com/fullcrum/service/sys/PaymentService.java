@@ -18,7 +18,7 @@ public interface PaymentService {
 	*	通知策略：收到易宝回调通知需回写大写“SUCCESS”,如没有回写则每 5 分钟通知一次，总共 3 次，3 次后没有拿到回写则停止通知。
 	*	同一笔订单收到多次易宝回调，切忌请不要重复入账。
 	**/
-	String onPaySuccess(String response,String customerIdentification);
+	String onPaySuccess(JSONObject request,String customerIdentification);
 	
 
 //    PROCESSING 处理中(非终态)
@@ -31,7 +31,10 @@ public interface PaymentService {
 //    REVERSAL 冲正',
 //    UNCONFIRM 打款中(非终态)
 //	  CONFIRM 打款成功(终态)
+//    REFUND 退款成功(终态)
+//    UNREFUND 退款失败(非终态)
 	public static String PAYMENT_STATUS_PROCESSING = "PROCESSING";
+    public static String PAYMENT_STATUS_SENDING = "SENDING";
 	public static String PAYMENT_STATUS_SUCCESS = "SUCCESS";
 	public static String PAYMENT_STATUS_CLOSED = "CLOSED";
 	public static String PAYMENT_STATUS_TIME_OUT = "TIME_OUT";
@@ -41,11 +44,13 @@ public interface PaymentService {
 	public static String PAYMENT_STATUS_REVERSAL = "REVERSAL";
 	public static String PAYMENT_STATUS_UNCONFIRM = "UNCONFIRM";
 	public static String PAYMENT_STATUS_CONFIRM = "CONFIRM";
+	public static String PAYMENT_STATUS_UNREFUND = "UNREFUND";
+	public static String PAYMENT_STATUS_REFUND = "REFUND";
 
     String pay(PaymentEntity entity) throws PaymentException;
 
 
 	Map<String,Object> confirm(JSONObject jsonObject);
 
-	String refund(JSONObject jsonObject);
+	Map<String,Object> refund(JSONObject jsonObject);
 }
