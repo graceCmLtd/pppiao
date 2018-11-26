@@ -25,6 +25,8 @@ package com.fullcrum.service.impl.sys.reapay;
  */
 
 
+import org.springframework.util.ResourceUtils;
+
 import javax.crypto.Cipher;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -115,7 +117,7 @@ public class RSA {
                 .addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
 
         KeyStore ks = KeyStore.getInstance("PKCS12", "BC");
-        fis = new FileInputStream(strPfx);
+        fis = new FileInputStream(ResourceUtils.getFile(strPfx));
         // If the keystore password is empty(""), then we have to set
         // to null, otherwise it won't work!!!
         char[] nPassword = null;
@@ -155,7 +157,7 @@ public class RSA {
     }
 
     public static PublicKey getPubKeyFromCRT(String crtFileName) throws Exception {
-        InputStream is = new FileInputStream(crtFileName);
+        InputStream is = new FileInputStream(ResourceUtils.getFile(crtFileName));
         CertificateFactory cf = CertificateFactory.getInstance("x509");
         Certificate cerCert = cf.generateCertificate(is);
         return cerCert.getPublicKey();

@@ -33,11 +33,11 @@ public class ReapalWebConfig {
 	//返回地址，由商户提供
 	public static String return_url = "http://127.0.0.1:8080/ppp/transaction/reacb";
 	//商户私钥
-	public static String privateKey = "D:\\cert\\itrus001.pfx";
+	public static String privateKey = "classpath:key/reapal.pfx";
 	// 私钥密码
 	public static String password = "123456";
     //融宝公钥
-	public static String pubKeyUrl = "D:\\cert\\itrus001.cer";
+	public static String pubKeyUrl = "classpath:key/reapal.cer";
 
 	//↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 	
