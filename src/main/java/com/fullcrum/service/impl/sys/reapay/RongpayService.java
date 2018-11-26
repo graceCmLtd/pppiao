@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service(value = "rongpayService")
@@ -76,7 +77,6 @@ public class RongpayService implements PaymentService {
 
        String verifyStatus = "";
 
-       Integer txId = Integer.parseInt(order_no);
        //建议校验responseTxt，判读该返回结果是否由融宝发出
        if(mysign.equals(sign) ){
 
@@ -85,7 +85,7 @@ public class RongpayService implements PaymentService {
                //支付成功，如果没有做过处理，根据订单号（out_trade_no）及金额（total_fee）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                //一定要做金额判断，防止恶意窜改金额，只支付了小金额的订单。
                //如果有做过处理，不执行商户的业务程序
-               PaymentEntity p = paymentDao.selectByTxId(txId);
+               PaymentEntity p = paymentDao.selectByTxId(order_no);
                if (p == null){
                    throw PaymentException.newPaymentException(
                            new RuntimeException("第三方支付已成功支付订单，但没有在系统数据库查找到该订单[transac_id: "+"order_no"+"]!"));
@@ -100,7 +100,7 @@ public class RongpayService implements PaymentService {
 
 
            }else{
-               PaymentEntity p = paymentDao.selectByTxId(txId);
+               PaymentEntity p = paymentDao.selectByTxId(order_no);
                p.setExternalId(trade_no);
                p.setStatus(PaymentService.PAYMENT_STATUS_REJECT);
                p.setErrorMsg(String.format("{code: %s, msg: %s}",result_code,result_msg));
@@ -129,7 +129,14 @@ public class RongpayService implements PaymentService {
    @Override
    public String pay(PaymentEntity entity) throws PaymentException {
        //对比ppp_transaction表验证订单id/billNumber和金额
-       transactionDao.selectTransacByTransacType(entity.getTransacId());
+       List<Map<String,Object>> l = transactionDao.selectTransacByTransacType(entity.getTransacId());
+       if (l.size() != 1){
+           throw PaymentException.newInvalidOrderException(
+                   new RuntimeException(String.format("except 1 transaction of id[%s], get %d", entity.getTransacId(),l.size())));
+       } else if (entity.getAmount().compareTo(new BigDecimal(Double.parseDouble((l.get(0).get("amount")).toString())))!=0){
+           throw PaymentException.newInvalidOrderException(
+                   new RuntimeException(String.format("invalid transaction amount, expect %s, get %s", l.get(0).get("amount").toString(),entity.getAmount().toString())));
+       }
 
         Map<String, String> sPara = new HashMap<String, String>();
         sPara.put("seller_email",ReapalWebConfig.seller_email);
@@ -267,7 +274,7 @@ public class RongpayService implements PaymentService {
 			System.out.println(e.getMessage());
 		}
 		Map<String,Object> result = new HashMap<>();
-		PaymentEntity paymentEntity = paymentDao.selectByTxId((jsonObject.getInteger("transactionId")));
+		PaymentEntity paymentEntity = paymentDao.selectByTxId((jsonObject.getString("transactionId")));
 		if(!"".equals(res)  && PaymentService.PAYMENT_STATUS_SUCCESS.equals(paymentEntity.getStatus())){
 			JSONObject jsStr = JSONObject.parseObject(res);
 			try{
@@ -334,7 +341,7 @@ public class RongpayService implements PaymentService {
 			e.printStackTrace();
 		}
 		Map<String,Object> result = new HashMap<>();
-		PaymentEntity paymentEntity = paymentDao.selectByTxId((jsonObject.getInteger("transactionId")));
+		PaymentEntity paymentEntity = paymentDao.selectByTxId((jsonObject.getString("transactionId")));
 		if(!"".equals(res)  && PaymentService.PAYMENT_STATUS_SUCCESS.equals(paymentEntity.getStatus())){
 			JSONObject jsStr = JSONObject.parseObject(res);
 			try{
