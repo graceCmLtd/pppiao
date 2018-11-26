@@ -523,6 +523,7 @@ public class TransactionController {
 	 * batch_amount 打款总金额
 	 * pay_type = 打款类型 1普通（默认） 0加急
 	 * content 批次明细(参考融宝接口文档)
+	 * transactionId 交易ID(用于查看支付的状态)
 	 * @param jsonObject
 	 * @return
 	 */
@@ -537,6 +538,7 @@ public class TransactionController {
 	 * orig_order_no 订单号
 	 * amount 退款金额
 	 * note 备注
+	 * transactionId 交易ID(用于查看支付的状态)
 	 * @param jsonObject
 	 * @return
 	 */
