@@ -25,8 +25,12 @@ public interface TransactionDao {
 	@Select({"select * from ",TABLE_NAME,"where transacId = #{transactionId} order by transacDate desc"})
 	@ResultMap(value="transactionMap")
 	public ArrayList<Map<String, Object>> selectTransacByTransacId( @Param("transactionId") String transactionId);
-	
-	
+
+	@Select({"select * from ",TABLE_NAME,"where transacType = #{transacType} order by transacDate desc"})
+	@ResultMap(value="transactionMap")
+	public ArrayList<Map<String, Object>> selectTransacByTransacType( @Param("transacType") String transactionId);
+
+
 	@Select({"select intentionStatus from ",TABLE_NAME,"where transacType = #{orderId}"})
 	public String getIntentionStatusByTransacType(@Param("orderId") String orderId);
 	

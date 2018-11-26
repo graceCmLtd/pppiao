@@ -501,7 +501,7 @@ public class TransactionController {
     //	String data = request.getParameter("data");
     //	String encryptkey = request.getParameter("encryptkey");
     @RequestMapping("/reacb")
-    public JSONObject reaPayCallback(@RequestParam String merchantId, @RequestParam String data, @RequestParam String encryptkey) {
+    public JSONObject reaPayCallback(@RequestParam(value = "merchant_id") String merchantId, @RequestParam String data, @RequestParam String encryptkey) {
         JSONObject t = new JSONObject();
         t.put("merchant_id",merchantId);
         t.put("data",data);

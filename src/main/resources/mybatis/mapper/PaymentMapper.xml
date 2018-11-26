@@ -5,7 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="payment_way" jdbcType="VARCHAR" property="paymentWay" />
     <result column="external_id" jdbcType="VARCHAR" property="externalId" />
-    <result column="transac_id" jdbcType="INTEGER" property="transacId" />
+    <result column="transac_id" jdbcType="VARCHAR" property="transacId" />
     <result column="bill_number" jdbcType="VARCHAR" property="billNumber" />
     <result column="seller_id" jdbcType="VARCHAR" property="sellerId" />
     <result column="buyer_id" jdbcType="VARCHAR" property="buyerId" />
@@ -46,7 +46,7 @@
     from ppp_tx_payment
     where external_id =#{uniqueOrderNo}
   </select>
-  <select id="selectByTxId" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+  <select id="selectByTxId" parameterType="java.lang.String" resultMap="BaseResultMap" >
     select <include refid="Base_Column_List"></include>
     from ppp_tx_payment
     where transac_id =#{txId}
@@ -60,7 +60,7 @@
       serial_num, extra, error_msg, 
       update_date, terminal_type, terminal_info, 
       terminal_ip)
-    values (#{paymentWay,jdbcType=VARCHAR}, #{externalId,jdbcType=VARCHAR}, #{transacId,jdbcType=INTEGER}, 
+    values (#{paymentWay,jdbcType=VARCHAR}, #{externalId,jdbcType=VARCHAR}, #{transacId,jdbcType=VARCHAR},
       #{billNumber,jdbcType=VARCHAR}, #{sellerId,jdbcType=VARCHAR}, #{buyerId,jdbcType=VARCHAR}, 
       #{amount,jdbcType=DECIMAL}, #{requestDate,jdbcType=TIMESTAMP}, #{expire,jdbcType=INTEGER}, 
       #{memo,jdbcType=VARCHAR}, #{feeType,jdbcType=INTEGER}, #{profit,jdbcType=DECIMAL}, 
@@ -218,7 +218,7 @@
         external_id = #{externalId,jdbcType=VARCHAR},
       </if>
       <if test="transacId != null">
-        transac_id = #{transacId,jdbcType=INTEGER},
+        transac_id = #{transacId,jdbcType=VARCHAR},
       </if>
       <if test="billNumber != null">
         bill_number = #{billNumber,jdbcType=VARCHAR},
@@ -284,7 +284,7 @@
     update ppp_tx_payment
     set payment_way = #{paymentWay,jdbcType=VARCHAR},
       external_id = #{externalId,jdbcType=VARCHAR},
-      transac_id = #{transacId,jdbcType=INTEGER},
+      transac_id = #{transacId,jdbcType=VARCHAR},
       bill_number = #{billNumber,jdbcType=VARCHAR},
       seller_id = #{sellerId,jdbcType=VARCHAR},
       buyer_id = #{buyerId,jdbcType=VARCHAR},

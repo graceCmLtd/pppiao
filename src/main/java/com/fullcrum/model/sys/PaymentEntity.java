@@ -21,7 +21,7 @@ public class PaymentEntity implements Serializable {
      */
     private String externalId;
 
-    private Integer transacId;
+    private String transacId;
 
     /**
      * 冗余字段，billNumber
@@ -156,11 +156,11 @@ IMEI,MAC,UUID
         this.externalId = externalId;
     }
 
-    public Integer getTransacId() {
+    public String getTransacId() {
         return transacId;
     }
 
-    public void setTransacId(Integer transacId) {
+    public void setTransacId(String transacId) {
         this.transacId = transacId;
     }
 

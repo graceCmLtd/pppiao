@@ -3,6 +3,7 @@ package com.fullcrum.service.impl.sys.reapay;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.dao.PaymentDao;
+import com.fullcrum.dao.TransactionDao;
 import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.PaymentException;
 import com.fullcrum.service.sys.PaymentService;
@@ -21,6 +22,9 @@ public class RongpayService implements PaymentService {
 
     @Autowired
     private PaymentDao paymentDao;
+
+    @Autowired
+    private TransactionDao transactionDao;
 
    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
    private static String gateway=ReapalWebConfig.rongpay_api+"/web/portal";
@@ -89,6 +93,7 @@ public class RongpayService implements PaymentService {
                    throw PaymentException.newPaymentException(
                            new RuntimeException("第三方支付已成功支付订单，但订单金额与数据库不一致[transac_id: "+"order_no"+", amount: "+p.getAmount().toString()+", reaPayAmount: "+total_fee+"]!"));
                }else {
+                   p.setExternalId(trade_no);
                    p.setStatus(PaymentService.PAYMENT_STATUS_SUCCESS);
                    paymentDao.updateByPrimaryKey(p);
                }
@@ -96,7 +101,9 @@ public class RongpayService implements PaymentService {
 
            }else{
                PaymentEntity p = paymentDao.selectByTxId(txId);
+               p.setExternalId(trade_no);
                p.setStatus(PaymentService.PAYMENT_STATUS_REJECT);
+               p.setErrorMsg(String.format("{code: %s, msg: %s}",result_code,result_msg));
                paymentDao.updateByPrimaryKey(p);
 //               throw PaymentException.newPaymentException(
 //                       new RuntimeException("第"));
@@ -121,6 +128,9 @@ public class RongpayService implements PaymentService {
     */
    @Override
    public String pay(PaymentEntity entity) throws PaymentException {
+       //对比ppp_transaction表验证订单id/billNumber和金额
+       transactionDao.selectTransacByTransacType(entity.getTransacId());
+
         Map<String, String> sPara = new HashMap<String, String>();
         sPara.put("seller_email",ReapalWebConfig.seller_email);
         sPara.put("merchant_id",ReapalWebConfig.merchant_id);
@@ -136,7 +146,7 @@ public class RongpayService implements PaymentService {
         sPara.put("title", entity.getBillNumber());
         sPara.put("body", entity.getBillNumber());
         //融宝金额以分为单位
-        sPara.put("total_fee", ""+entity.getAmount().multiply(BigDecimal.valueOf(10)));
+        sPara.put("total_fee", ""+entity.getAmount().movePointRight(2));
         //支付方式为银行间连时：值为1
         //支付方式为银行直连时：银行代码为B2B支付：
         //值为1
