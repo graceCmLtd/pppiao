@@ -25,8 +25,9 @@ public class RongpayService implements PaymentService {
    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
    private static String gateway=ReapalWebConfig.rongpay_api+"/web/portal";
 
+   //TODO 完善日志打印
    @Override
-   public String onPaySuccess( JSONObject request, String customerIdentification) {
+   public String onPaySuccess( JSONObject request) {
        String key = ReapalWebConfig.key;
        String merchantId = request.getString("merchant_id");
        String data = request.getString("data");
@@ -71,6 +72,7 @@ public class RongpayService implements PaymentService {
 
        String verifyStatus = "";
 
+       Integer txId = Integer.parseInt(order_no);
        //建议校验responseTxt，判读该返回结果是否由融宝发出
        if(mysign.equals(sign) ){
 
@@ -79,9 +81,28 @@ public class RongpayService implements PaymentService {
                //支付成功，如果没有做过处理，根据订单号（out_trade_no）及金额（total_fee）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                //一定要做金额判断，防止恶意窜改金额，只支付了小金额的订单。
                //如果有做过处理，不执行商户的业务程序
-           }else{
+               PaymentEntity p = paymentDao.selectByTxId(txId);
+               if (p == null){
+                   throw PaymentException.newPaymentException(
+                           new RuntimeException("第三方支付已成功支付订单，但没有在系统数据库查找到该订单[transac_id: "+"order_no"+"]!"));
+               }else if(p.getAmount().movePointRight(2).compareTo(BigDecimal.valueOf(Integer.parseInt(total_fee))) != 0){
+                   throw PaymentException.newPaymentException(
+                           new RuntimeException("第三方支付已成功支付订单，但订单金额与数据库不一致[transac_id: "+"order_no"+", amount: "+p.getAmount().toString()+", reaPayAmount: "+total_fee+"]!"));
+               }else {
+                   p.setStatus(PaymentService.PAYMENT_STATUS_SUCCESS);
+                   paymentDao.updateByPrimaryKey(p);
+               }
 
-               //支付失败处理相关订单
+
+           }else{
+               PaymentEntity p = paymentDao.selectByTxId(txId);
+               p.setStatus(PaymentService.PAYMENT_STATUS_REJECT);
+               paymentDao.updateByPrimaryKey(p);
+//               throw PaymentException.newPaymentException(
+//                       new RuntimeException("第"));
+               //打印失败日志
+               //TODO 自动调用查询接口，写入失败原因
+               System.out.printf("融宝调用支付失败，{merchant_id: %s, order_no: %s, sign: %s}", merchant_id, order_no, sign);
            }
 
            verifyStatus = "验证成功";
@@ -89,6 +110,7 @@ public class RongpayService implements PaymentService {
 
        }else{
            verifyStatus = "验证失败";
+            //打印验证失败日志
        }
        return null;
    }
