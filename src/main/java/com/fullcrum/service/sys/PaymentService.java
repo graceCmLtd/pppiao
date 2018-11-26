@@ -29,6 +29,8 @@ public interface PaymentService {
 //    REPEALED 订单撤销(分账订单退款后查询)
 //    REVOKED 订单取消(网银订单)
 //    REVERSAL 冲正',
+//    UNCONFIRM 打款中(非终态)
+//	  CONFIRM 打款成功(终态)
 	public static String PAYMENT_STATUS_PROCESSING = "PROCESSING";
 	public static String PAYMENT_STATUS_SUCCESS = "SUCCESS";
 	public static String PAYMENT_STATUS_CLOSED = "CLOSED";
@@ -37,11 +39,13 @@ public interface PaymentService {
 	public static String PAYMENT_STATUS_REPEALED = "REPEALED";
 	public static String PAYMENT_STATUS_REVOKED = "REVOKED";
 	public static String PAYMENT_STATUS_REVERSAL = "REVERSAL";
+	public static String PAYMENT_STATUS_UNCONFIRM = "UNCONFIRM";
+	public static String PAYMENT_STATUS_CONFIRM = "CONFIRM";
 
     String pay(PaymentEntity entity) throws PaymentException;
 
 
 	Map<String,Object> confirm(JSONObject jsonObject);
 
-
+	String refund(JSONObject jsonObject);
 }

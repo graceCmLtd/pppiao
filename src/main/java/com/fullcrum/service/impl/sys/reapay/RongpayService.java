@@ -8,6 +8,7 @@ import com.fullcrum.service.PaymentException;
 import com.fullcrum.service.sys.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
@@ -150,21 +151,71 @@ public class RongpayService implements PaymentService {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-		if("".equals(res) && res != null){
-			JSONObject jsStr = JSONObject.parseObject(res);
-			if("0000".equals(jsStr.getString("result_code"))){
-				try{
-
-					System.out.println(jsStr);
-				}catch (Exception e){
-					e.printStackTrace();
-					System.out.println(e.getMessage());
-				}
-			}
-		}
 		Map<String,Object> result = new HashMap<>();
-		result.put("result",res);
+		PaymentEntity paymentEntity = 	paymentDao.selectByUniqueOrderId(jsonObject.getInteger("orderId"));
+		if("".equals(res) && res != null && "SUCCESS".equals(paymentEntity.getStatus())){
+			JSONObject jsStr = JSONObject.parseObject(res);
+			try{
+				if("0000".equals(jsStr.getString("result_code"))){
+
+					result.put("result",res);
+				}else{
+
+				}
+			}catch (Exception e){
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+
+			}
+
+		}
+
+
 		return result;
+	}
+
+	@Override
+	public String refund(JSONObject jsonObject) {
+		//商户号
+		String merchant_id = jsonObject.getString("merchant_id");
+		//版本
+		String version = jsonObject.getString("version");
+		//原订单号
+		String orig_order_no = jsonObject.getString("orig_order_no");
+		//退款金额
+		String amount = jsonObject.getString("amount");
+		//备注
+		String note = jsonObject.getString("note");
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("version", version);
+		map.put("merchant_id", merchant_id);
+		map.put("order_no", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+		map.put("orig_order_no", orig_order_no);
+
+		BigDecimal total_fee = new BigDecimal(amount.toString()).movePointRight(2);
+		map.put("amount", total_fee.toString());
+		map.put("note", note);
+
+		String url_pre = ReapalWebConfig.rongpay_api;
+		String url = url_pre+"/fast/refund";
+
+		String post = null;
+		try {
+			post = ReapalSubmit.buildSubmit(map, merchant_id,url);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("返回结果post==========>" + post);
+
+		//解密返回的数据
+		try {
+			String res = DecipherWeb.decryptData(post);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "";
 	}
 
 

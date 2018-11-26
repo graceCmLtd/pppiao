@@ -155,7 +155,12 @@ public class Yop implements PaymentService {
             return result;
         }
     }
-  
+
+    @Override
+    public String refund(JSONObject jsonObject) {
+        return null;
+    }
+
     public static Map<String, String> parseResponse(String response){
 		
 		Map<String,String> jsonMap  = new HashMap<>();
