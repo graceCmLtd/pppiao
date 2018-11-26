@@ -29,9 +29,9 @@ public class ReapalWebConfig {
 	
 	public static String version = "3.1.6";
     //通知地址，由商户提供
-	public static String notify_url = "http://www.aaabbb.com/reapal_notify.jsp";
+	public static String notify_url = "http://127.0.0.1:8080/ppp/transaction/reacb";
 	//返回地址，由商户提供
-	public static String return_url = "http://www.aaabbb.com/reapal_notify.jsp";
+	public static String return_url = "http://127.0.0.1:8080/ppp/transaction/reacb";
 	//商户私钥
 	public static String privateKey = "D:\\cert\\itrus001.pfx";
 	// 私钥密码

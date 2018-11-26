@@ -496,6 +496,20 @@ public class TransactionController {
         return ret;
     }
 
+    //融宝notify url
+    //String merchantId = request.getParameter("merchant_id");
+    //	String data = request.getParameter("data");
+    //	String encryptkey = request.getParameter("encryptkey");
+    @RequestMapping("/reacb")
+    public JSONObject reaPayCallback(@RequestParam String merchantId, @RequestParam String data, @RequestParam String encryptkey) {
+        JSONObject t = new JSONObject();
+        t.put("merchant_id",merchantId);
+        t.put("data",data);
+        t.put("encryptkey",encryptkey);
+        rongpayService.onPaySuccess(t);
+        return null;
+    }
+
 	@RequestMapping("/yopConfirm")
 	public Map<String, Object> yopConfirm(@RequestBody JSONObject jsonObject){
     	return yopPaymentServiceImpl.confirm(jsonObject);
