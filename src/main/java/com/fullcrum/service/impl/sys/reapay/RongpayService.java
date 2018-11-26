@@ -257,7 +257,7 @@ public class RongpayService implements PaymentService {
 			System.out.println(e.getMessage());
 		}
 		Map<String,Object> result = new HashMap<>();
-		PaymentEntity paymentEntity = 	paymentDao.selectByUniqueOrderId((jsonObject.getInteger("orderId")));
+		PaymentEntity paymentEntity = paymentDao.selectByTxId((jsonObject.getInteger("transactionId")));
 		if(!"".equals(res)  && PaymentService.PAYMENT_STATUS_SUCCESS.equals(paymentEntity.getStatus())){
 			JSONObject jsStr = JSONObject.parseObject(res);
 			try{
@@ -324,7 +324,7 @@ public class RongpayService implements PaymentService {
 			e.printStackTrace();
 		}
 		Map<String,Object> result = new HashMap<>();
-		PaymentEntity paymentEntity = 	paymentDao.selectByUniqueOrderId((jsonObject.getInteger("orderId")));
+		PaymentEntity paymentEntity = paymentDao.selectByTxId((jsonObject.getInteger("transactionId")));
 		if(!"".equals(res)  && PaymentService.PAYMENT_STATUS_SUCCESS.equals(paymentEntity.getStatus())){
 			JSONObject jsStr = JSONObject.parseObject(res);
 			try{
