@@ -533,7 +533,7 @@ public class TransactionController {
 	@RequestMapping("/reaConfirm")
 	public Map<String, Object> reaConfirm(@RequestBody JSONObject jsonObject){
 		String amount = jsonObject.getString("amount");
-		String orderId = jsonObject.getString("");
+		String orderId = jsonObject.getString("orderId");
  		ArrayList<CompanyEntity> companyInfo = companyDao.selectByContactsId(jsonObject.getString("sellerId"));
 		StringBuffer content = new StringBuffer();
 		if(companyInfo != null){
