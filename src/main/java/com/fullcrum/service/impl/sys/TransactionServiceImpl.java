@@ -143,5 +143,11 @@ public class TransactionServiceImpl implements TransactionService {
 		transactionDao.setTransactionIntentionStatusByOrderId(jsonObject);
 	}
 
+	@Override
+	public void updateTransactionRealMoney(JSONObject jsonObject) {
+		transactionDao.updateTransactionRealMoney(jsonObject);
+		
+	}
+
 
 }

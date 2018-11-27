@@ -64,6 +64,9 @@ public interface TransactionDao {
 			+ "sellerId = #{transactionEntity.sellerId},amount = #{transactionEntity.amount},transacStatus = #{transactionEntity.transactionStatus},transacDate = #{transactionEntity.transacDate} where transacId = #{transactionEntity.transactionId}"})
 	public void updateTransaction(@Param("transactionEntity") TransactionEntity transactionEntity);
 	
+	@Update({"update ",TABLE_NAME,"set amount = #{jsonObject.preRealMoney}  where transacType = #{jsonObject.orderId}"})
+	void updateTransactionRealMoney(@Param("jsonObject") JSONObject jsonObject);
+	
 	//只更新设置transaction表中的transacStatus状态，线下交易状态
 	@Update({"update ",TABLE_NAME," set transacStatus = #{jsonObject.transacStatus} where billNumber = #{jsonObject.billNumber}"})
 	public void updateTransactionStatus(@Param("jsonObject") JSONObject jsonObject);
