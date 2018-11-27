@@ -449,7 +449,8 @@ public class TransactionController {
 
     private boolean validateTransactionEntity(PaymentEntity paymentEntity){
         return paymentEntity.getTransacId()!=null
-                && paymentEntity.getTransacId()!= 0
+                && paymentEntity.getTransacId()!= null
+                && paymentEntity.getTransacId()!= ""
                 && paymentEntity.getBillNumber()!=null
                 &&!"".equals(paymentEntity.getBillNumber().trim())
                 && paymentEntity.getBuyerId()!=null
@@ -504,7 +505,7 @@ public class TransactionController {
     //	String data = request.getParameter("data");
     //	String encryptkey = request.getParameter("encryptkey");
     @RequestMapping("/reacb")
-    public JSONObject reaPayCallback(@RequestParam String merchantId, @RequestParam String data, @RequestParam String encryptkey) {
+    public JSONObject reaPayCallback(@RequestParam(value = "merchant_id") String merchantId, @RequestParam String data, @RequestParam String encryptkey) {
         JSONObject t = new JSONObject();
         t.put("merchant_id",merchantId);
         t.put("data",data);
