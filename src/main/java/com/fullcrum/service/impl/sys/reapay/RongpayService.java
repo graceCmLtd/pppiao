@@ -236,7 +236,7 @@ public class RongpayService implements PaymentService {
 		map.put("charset", ReapalUtil.getCharset());
 		map.put("trans_time",
 				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-		map.put("notify_url", ReapalUtil.getNotify_url());
+		//map.put("notify_url", ReapalUtil.getNotify_url());
 		map.put("batch_no", batch_no);
 		map.put("batch_count", batch_count);
 		map.put("batch_amount", batch_amount);
