@@ -7,6 +7,7 @@ import com.fullcrum.dao.TransactionDao;
 import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.PaymentException;
 import com.fullcrum.service.sys.PaymentService;
+import com.fullcrum.service.sys.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -26,6 +27,9 @@ public class RongpayService implements PaymentService {
 
     @Autowired
     private TransactionDao transactionDao;
+
+    @Autowired
+    private TransactionService transactionService;
 
    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
    private static String gateway=ReapalWebConfig.rongpay_api+"/web/portal";
@@ -95,6 +99,12 @@ public class RongpayService implements PaymentService {
                }else {
                    p.setExternalId(trade_no);
                    p.setStatus(PaymentService.PAYMENT_STATUS_SUCCESS);
+                   JSONObject t = new JSONObject();
+                   t.put("intentionStatus","已支付,待背书");
+                   t.put("billNumber",p.getBillNumber());
+                   t.put("orderId",order_no);
+                   //TODO 修改接口定义！！！
+                   transactionService.updateTransactionIntentionStatus(t);
                    paymentDao.updateByPrimaryKey(p);
                }
 
