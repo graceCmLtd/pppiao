@@ -134,10 +134,14 @@ public class RongpayService implements PaymentService {
            throw PaymentException.newInvalidOrderException(
                    new RuntimeException(String.format("except only 1 transactions with id[%s], get %d", entity.getTransacId(),l.size())));
        }
-       if ( entity.getAmount().compareTo(new BigDecimal(Double.parseDouble((l.get(0).get("amount")).toString())))!=0){
-           throw PaymentException.newInvalidOrderException(
-                   new RuntimeException(String.format("invalid transaction amount, expect %s, get %s", l.get(0).get("amount").toString(),entity.getAmount().toString())));
-       }
+//       TODO transaction 的amount暂时未启用，此处先不做金额验证
+//       if (
+//               entity.getAmount().compareTo(new BigDecimal(Double.parseDouble((l.get(0).get("amount")).toString())))!=0
+//                || !entity.getBillNumber().equals(l.get(0).get("billNumber"))
+//       ){
+//           throw PaymentException.newInvalidOrderException(
+//                   new RuntimeException(String.format("invalid transaction of id[], expect %s, get %s", l.get(0).get("amount").toString(),entity.getAmount().toString())));
+//       }
 
         Map<String, String> sPara = new HashMap<String, String>();
         sPara.put("seller_email",ReapalWebConfig.seller_email);
@@ -236,7 +240,7 @@ public class RongpayService implements PaymentService {
 		map.put("charset", ReapalUtil.getCharset());
 		map.put("trans_time",
 				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-		map.put("notify_url", ReapalUtil.getNotify_url());
+		//map.put("notify_url", ReapalUtil.getNotify_url());
 		map.put("batch_no", batch_no);
 		map.put("batch_count", batch_count);
 		map.put("batch_amount", batch_amount);
@@ -349,25 +353,27 @@ public class RongpayService implements PaymentService {
 		}
 		Map<String,Object> result = new HashMap<>();
 		PaymentEntity paymentEntity = paymentDao.selectByTxId((jsonObject.getString("transactionId")));
-		if(!"".equals(res)  && PaymentService.PAYMENT_STATUS_SUCCESS.equals(paymentEntity.getStatus())){
-			JSONObject jsStr = JSONObject.parseObject(res);
-			try{
-				if("0000".equals(jsStr.getString("result_code"))){
-					paymentEntity.setStatus(PaymentService.PAYMENT_STATUS_REFUND);
-					paymentDao.updateByPrimaryKey(paymentEntity);
-					result.put("status","success");
-					result.put("result",res);
-				}else{
-					paymentEntity.setStatus(PaymentService.PAYMENT_STATUS_UNREFUND);
-					paymentDao.updateByPrimaryKey(paymentEntity);
-					result.put("status","success");
-					result.put("result",res);
+		if(paymentEntity != null){
+			if(!"".equals(res)  && PaymentService.PAYMENT_STATUS_SUCCESS.equals(paymentEntity.getStatus())){
+				JSONObject jsStr = JSONObject.parseObject(res);
+				try{
+					if("0000".equals(jsStr.getString("result_code"))){
+						paymentEntity.setStatus(PaymentService.PAYMENT_STATUS_REFUND);
+						paymentDao.updateByPrimaryKey(paymentEntity);
+						result.put("status","success");
+						result.put("result",res);
+					}else{
+						paymentEntity.setStatus(PaymentService.PAYMENT_STATUS_UNREFUND);
+						paymentDao.updateByPrimaryKey(paymentEntity);
+						result.put("status","success");
+						result.put("result",res);
+					}
+				}catch (Exception e){
+					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+					result.put("status","failed");
 				}
-			}catch (Exception e){
-				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-				result.put("status","failed");
-			}
 
+			}
 		}
 		return result;
 	}
