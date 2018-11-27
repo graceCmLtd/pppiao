@@ -495,9 +495,7 @@ public class TransactionController {
         if (!validateTransactionEntity(paymentEntity)){
             throw new InvalidParamException();
         }
-        JSONObject ret = new JSONObject();
-        ret.put("data",rongpayService.pay(paymentEntity));
-        return ret;
+        return rongpayService.pay(paymentEntity);
     }
 
     //融宝notify url
