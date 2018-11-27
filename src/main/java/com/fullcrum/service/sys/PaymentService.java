@@ -43,7 +43,7 @@ public interface PaymentService {
 	public static String PAYMENT_STATUS_UNREFUND = "UNREFUND";
 	public static String PAYMENT_STATUS_REFUND = "REFUND";
 
-    String pay(PaymentEntity entity) throws PaymentException;
+    JSONObject pay(PaymentEntity entity) throws PaymentException;
 
 
 	Map<String,Object> confirm(JSONObject jsonObject);

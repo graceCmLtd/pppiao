@@ -8,7 +8,7 @@ import java.sql.Date;
 public class YopPaymentEntity {
     private String platformMerchantNo;
     private String sellerId;
-    private Integer transacId;
+    private String transacId;
     private BigDecimal amount;
     private Integer expire;
     private Date requestDate;

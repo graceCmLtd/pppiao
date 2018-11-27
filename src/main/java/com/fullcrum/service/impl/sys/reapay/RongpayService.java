@@ -127,13 +127,14 @@ public class RongpayService implements PaymentService {
     * @return 表单提交HTML文本
     */
    @Override
-   public String pay(PaymentEntity entity) throws PaymentException {
+   public JSONObject pay(PaymentEntity entity) throws PaymentException {
        //对比ppp_transaction表验证订单id/billNumber和金额
        List<Map<String,Object>> l = transactionDao.selectTransacByTransacType(entity.getTransacId());
        if (l.size() != 1){
            throw PaymentException.newInvalidOrderException(
-                   new RuntimeException(String.format("except 1 transaction of id[%s], get %d", entity.getTransacId(),l.size())));
-       } else if (entity.getAmount().compareTo(new BigDecimal(Double.parseDouble((l.get(0).get("amount")).toString())))!=0){
+                   new RuntimeException(String.format("except only 1 transactions with id[%s], get %d", entity.getTransacId(),l.size())));
+       }
+       if ( entity.getAmount().compareTo(new BigDecimal(Double.parseDouble((l.get(0).get("amount")).toString())))!=0){
            throw PaymentException.newInvalidOrderException(
                    new RuntimeException(String.format("invalid transaction amount, expect %s, get %s", l.get(0).get("amount").toString(),entity.getAmount().toString())));
        }
@@ -218,7 +219,7 @@ public class RongpayService implements PaymentService {
        }
 
 
-        return jsonStr.toJSONString();
+        return jsonStr;
 	}
 
 	@Override
