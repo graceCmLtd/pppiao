@@ -179,17 +179,20 @@ public class RongpayService implements PaymentService {
         } catch (Exception e) {
             throw PaymentException.newPaymentException(e);
         }
-        StringBuffer sbHtml = new StringBuffer();
+        JSONObject jsonStr = new JSONObject();
         //post方式传递
-        sbHtml.append("<form id=\"rongpaysubmit\" name=\"rongpaysubmit\" action=\"").append(gateway).append("\" method=\"post\">");
-
-        sbHtml.append("<input type=\"hidden\" name=\"merchant_id\" value=\"").append(ReapalWebConfig.merchant_id).append("\"/>");
-        sbHtml.append("<input type=\"hidden\" name=\"data\" value=\"").append(maps.get("data")).append("\"/>");
-        sbHtml.append("<input type=\"hidden\" name=\"encryptkey\" value=\"").append(maps.get("encryptkey")).append("\"/>");
-
-        //submit按钮控件请不要含有name属性
-        sbHtml.append("<input type=\"submit\" class=\"button_p2p\" value=\"融宝支付确认付款\"></form>");
-
+//        sbHtml.append("<form id=\"rongpaysubmit\" name=\"rongpaysubmit\" action=\"").append(gateway).append("\" method=\"post\">");
+//
+//        sbHtml.append("<input type=\"hidden\" name=\"merchant_id\" value=\"").append(ReapalWebConfig.merchant_id).append("\"/>");
+//        sbHtml.append("<input type=\"hidden\" name=\"data\" value=\"").append(maps.get("data")).append("\"/>");
+//        sbHtml.append("<input type=\"hidden\" name=\"encryptkey\" value=\"").append(maps.get("encryptkey")).append("\"/>");
+//
+//        //submit按钮控件请不要含有name属性
+//        sbHtml.append("<input type=\"submit\" class=\"button_p2p\" value=\"融宝支付确认付款\"></form>");
+       jsonStr.put("url",gateway);
+       jsonStr.put("merchant_id",ReapalWebConfig.merchant_id);
+       jsonStr.put("data",maps.get("data"));
+       jsonStr.put("encryptkey",maps.get("encryptkey"));
         //TODO 暂时使用全局锁
        synchronized (this){
            PaymentEntity p = paymentDao.selectByTxId(entity.getTransacId());
@@ -215,7 +218,7 @@ public class RongpayService implements PaymentService {
        }
 
 
-        return sbHtml.toString();
+        return jsonStr.toJSONString();
 	}
 
 	@Override

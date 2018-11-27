@@ -446,7 +446,8 @@ public class TransactionController {
 
     private boolean validateTransactionEntity(PaymentEntity paymentEntity){
         return paymentEntity.getTransacId()!=null
-                && paymentEntity.getTransacId()!= 0
+                && paymentEntity.getTransacId()!= null
+                && paymentEntity.getTransacId()!= ""
                 && paymentEntity.getBillNumber()!=null
                 &&!"".equals(paymentEntity.getBillNumber().trim())
                 && paymentEntity.getBuyerId()!=null
