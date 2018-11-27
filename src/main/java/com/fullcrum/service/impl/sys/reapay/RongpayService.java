@@ -134,10 +134,14 @@ public class RongpayService implements PaymentService {
            throw PaymentException.newInvalidOrderException(
                    new RuntimeException(String.format("except only 1 transactions with id[%s], get %d", entity.getTransacId(),l.size())));
        }
-       if ( entity.getAmount().compareTo(new BigDecimal(Double.parseDouble((l.get(0).get("amount")).toString())))!=0){
-           throw PaymentException.newInvalidOrderException(
-                   new RuntimeException(String.format("invalid transaction amount, expect %s, get %s", l.get(0).get("amount").toString(),entity.getAmount().toString())));
-       }
+//       TODO transaction 的amount暂时未启用，此处先不做金额验证
+//       if (
+//               entity.getAmount().compareTo(new BigDecimal(Double.parseDouble((l.get(0).get("amount")).toString())))!=0
+//                || !entity.getBillNumber().equals(l.get(0).get("billNumber"))
+//       ){
+//           throw PaymentException.newInvalidOrderException(
+//                   new RuntimeException(String.format("invalid transaction of id[], expect %s, get %s", l.get(0).get("amount").toString(),entity.getAmount().toString())));
+//       }
 
         Map<String, String> sPara = new HashMap<String, String>();
         sPara.put("seller_email",ReapalWebConfig.seller_email);
