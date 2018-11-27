@@ -200,11 +200,12 @@ public class QuoteController {
 		
 		JSONObject result = new JSONObject();
 		try {
-			quoteService.updateRealMoney(jsonObject);
+			quoteService.updateRealMoney(jsonObject.getJSONObject("quoteBody"));
+			transactionService.updateTransactionRealMoney(jsonObject.getJSONObject("transactionBody"));
 			result.put("status", "success");
 			result.put("errorMsg", null);
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 			result.put("status", "fail");
 			result.put("errorMsg", e);
 		}

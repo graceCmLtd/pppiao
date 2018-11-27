@@ -8,46 +8,64 @@ import com.alibaba.fastjson.JSONObject;
 import com.fullcrum.model.sys.TransactionEntity;
 
 public interface TransactionService {
+	
+	
+	
+	//select -------------------------------
 
-	public ArrayList<Map<String,Object>> selectTransacByTransacId(String transactionId);
+	ArrayList<Map<String,Object>> selectTransacByTransacId(String transactionId);
 	
 	String getIntentionStatusByTransacType(String orderId);
 	
-	public ArrayList<Map<String,Object>> selectTransacByBillNumber(String billNumber);
+	ArrayList<Map<String,Object>> selectTransacByBillNumber(String billNumber);
 	
-	public ArrayList<Map<String,Object>> selectTransacByBuyerId(String buyerId);
+	ArrayList<Map<String,Object>> selectTransacByBuyerId(String buyerId);
 	
-	public ArrayList<Map<String,Object>> selectTransacBySellerId(String sellerId);
+	ArrayList<Map<String,Object>> selectTransacBySellerId(String sellerId);
 	
-	public void insertTransaction(TransactionEntity transactionEntity) throws Exception;
+	List<Map<String, Object>> selectTransInfo(int transactionId);
 	
-	public void insertTransaction( JSONObject transactionEntity);
-	
-	public void deleteTransaction(int transactionId);
-	
-	public void updateTransaction(TransactionEntity transactionEntity);
-	
-	public void updateTransactionIntentionStatus(JSONObject jsonObject);
-	
-	public void updateTransactionStatus(JSONObject jsonObject);
-	
-	public void setTransactionIntentionStatusByOrderId(JSONObject jsonObject);
-	
-	public List<Map<String, Object>> selectTransInfo(int transactionId);
+	List<Map<String,Object>> selectAllTrans(Integer pageSize,Integer currentPage);
 
-	public void updateTransStatus(int transactionId, String transStatus);
+	Integer getCount();
 	
-	public void setTransactionIntentionStatus(JSONObject jsonObject);
-
-	public List<Map<String,Object>> selectAllTrans(Integer pageSize,Integer currentPage);
-
-	public void updateTransStatus(String billNumber);
-
-	public Integer getCount();
-
 	List<Map<String, Object>> selectOrderIdByBillNum(String billNumber);
 
-	void updateIntentionStatusByBillNum(JSONObject setTransacInvalid);
+	
 
 	List<Map<String, Object>> selectCountByIntentionStatus(JSONObject jsonObject);
+	
+	//insert -------------------------------
+	
+	void insertTransaction(TransactionEntity transactionEntity) throws Exception;
+	
+	void insertTransaction( JSONObject transactionEntity);
+	
+	
+	//delete -------------------------
+	void deleteTransaction(int transactionId);
+	
+	
+	
+	//update -------------------------------
+	void updateTransaction(TransactionEntity transactionEntity);
+	
+	void updateTransactionIntentionStatus(JSONObject jsonObject);
+	
+	void updateTransactionStatus(JSONObject jsonObject);
+	
+	void updateTransStatus(String billNumber);
+	
+	void updateTransStatus(int transactionId, String transStatus);
+	
+	void updateIntentionStatusByBillNum(JSONObject setTransacInvalid);
+	
+	void updateTransactionRealMoney(JSONObject jsonObject);
+	
+	//set ----------------------
+	void setTransactionIntentionStatusByOrderId(JSONObject jsonObject);
+	
+	void setTransactionIntentionStatus(JSONObject jsonObject);
+
+
 }

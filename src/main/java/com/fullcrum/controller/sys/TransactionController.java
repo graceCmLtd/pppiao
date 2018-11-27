@@ -292,6 +292,7 @@ public class TransactionController {
 				quoteService.setInvalidateQuotes(invalidateQuoteParam);
 				quoteService.setValidateQuote(validateQuoteParam);
 				transactionService.updateTransactionIntentionStatus(transactionParam);
+				transactionService.updateTransactionRealMoney(transactionParam);
 				msgService.insertMsg(msgObj);
 				goEasyAPI.sendMessage(channel, message);
 				
