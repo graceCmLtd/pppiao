@@ -257,27 +257,30 @@ public class RongpayService implements PaymentService {
 			System.out.println(e.getMessage());
 		}
 		Map<String,Object> result = new HashMap<>();
-		PaymentEntity paymentEntity = paymentDao.selectByTxId((jsonObject.getInteger("transactionId")));
-		if(!"".equals(res)  && PaymentService.PAYMENT_STATUS_SUCCESS.equals(paymentEntity.getStatus())){
-			JSONObject jsStr = JSONObject.parseObject(res);
-			try{
-				if("0000".equals(jsStr.getString("result_code"))){
-					paymentEntity.setStatus(PaymentService.PAYMENT_STATUS_CONFIRM);
-					paymentDao.updateByPrimaryKey(paymentEntity);
-					result.put("status","success");
-					result.put("result",res);
-				}else{
-					paymentEntity.setStatus(PaymentService.PAYMENT_STATUS_UNCONFIRM);
-					paymentDao.updateByPrimaryKey(paymentEntity);
-					result.put("status","success");
-					result.put("result",res);
+		PaymentEntity paymentEntity = paymentDao.selectByTxId((jsonObject.getInteger("orderId")));
+		if(paymentEntity != null){
+			if(!"".equals(res)  && PaymentService.PAYMENT_STATUS_SUCCESS.equals(paymentEntity.getStatus())){
+				JSONObject jsStr = JSONObject.parseObject(res);
+				try{
+					if("0000".equals(jsStr.getString("result_code"))){
+						paymentEntity.setStatus(PaymentService.PAYMENT_STATUS_CONFIRM);
+						paymentDao.updateByPrimaryKey(paymentEntity);
+						result.put("status","success");
+						result.put("result",res);
+					}else{
+						paymentEntity.setStatus(PaymentService.PAYMENT_STATUS_UNCONFIRM);
+						paymentDao.updateByPrimaryKey(paymentEntity);
+						result.put("status","success");
+						result.put("result",res);
+					}
+				}catch (Exception e){
+					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+					result.put("status","failed");
 				}
-			}catch (Exception e){
-				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-				result.put("status","failed");
-			}
 
+			}
 		}
+
 		return result;
 	}
 

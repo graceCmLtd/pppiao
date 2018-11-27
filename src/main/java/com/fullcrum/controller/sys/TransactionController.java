@@ -1,16 +1,16 @@
 package com.fullcrum.controller.sys;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 
 import com.fullcrum.common.CheckTransactionStatus;
 import com.fullcrum.controller.sys.Exception.InvalidParamException;
+import com.fullcrum.dao.CompanyDao;
+import com.fullcrum.model.sys.CompanyEntity;
 import com.fullcrum.model.sys.PaymentEntity;
 import com.fullcrum.service.sys.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +62,9 @@ public class TransactionController {
 	
 	@Autowired
 	private  CheckTransactionStatus checkTransactionStatus;
+
+	@Autowired
+	private CompanyDao companyDao;
 
 	private Timer timer=  new Timer() ;
 	
@@ -529,7 +532,69 @@ public class TransactionController {
 	 */
 	@RequestMapping("/reaConfirm")
 	public Map<String, Object> reaConfirm(@RequestBody JSONObject jsonObject){
-		return rongpayService.confirm(jsonObject);
+		String amount = jsonObject.getString("amount");
+		String orderId = jsonObject.getString("");
+ 		ArrayList<CompanyEntity> companyInfo = companyDao.selectByContactsId(jsonObject.getString("sellerId"));
+		StringBuffer content = new StringBuffer();
+		if(companyInfo != null){
+			String bankAccount = companyInfo.get(0).getBankAccount();
+			String name = companyInfo.get(0).getContactsName();
+			String bankName = companyInfo.get(0).getBankName();
+			String bankName1 = "";//开户行 如：中国工商银行
+			String bankName2 = "";//支行或分行 如：朝阳区双井支行 或 朝阳区双井分行
+			if(bankName.contains("银行")) {
+				String [] str = bankName.split("银行");
+				bankName1 = str[0]+"银行";
+				bankName2 = str[1];
+			}
+			String addr = companyInfo.get(0).getSignUpAddr();
+			List<Map<String,String>> list = addressResolution(addr);
+			String province = "";
+			String city = "";
+			if(list.size() > 0){
+				province = list.get(0).get("province");
+				city = list.get(0).get("city");
+			}
+
+			String phoneNum = companyInfo.get(0).getContactsPhone();
+			//content = "1,"+bankAccount+","+name+","+bankName1+","+bankName2+",,"+"公,"+amount+","+"CNY,"+province+","+city+","+phoneNum+",,,,"+orderId+",,,,";
+			content.append("1,").append(bankAccount+",").append(name+",").append(bankName1+",").append(bankName2+",,公,").append(amount+",CNY,").append(province+",").append(city+",").append(phoneNum+",,,,").append(orderId+",,,,");
+		}
+		Integer temp = UUID.randomUUID().toString().hashCode();
+		while (temp < 0) {
+			temp = UUID.randomUUID().toString().hashCode();
+		}
+		String batch_no = 1+String.format("%014d", temp);
+		JSONObject json = new JSONObject();
+		json.put("batch_no",batch_no);
+		json.put("batch_amount",amount);
+		json.put("batch_count","1");
+		json.put("pay_type","1");
+		json.put("content",content);
+		json.put("orderId",orderId);
+		return rongpayService.confirm(json);
+	}
+	public static List<Map<String,String>> addressResolution(String address){
+		String regex="((?<province>[^省]+省|.+自治区)|上海|北京|天津|重庆)(?<city>[^市]+市|.+自治州)(?<county>[^县]+县|.+区|.+镇|.+局)?(?<town>[^区]+区|.+镇)?(?<village>.*)";
+		Matcher m=Pattern.compile(regex).matcher(address);
+		String province=null,city=null,county=null,town=null,village=null;
+		List<Map<String,String>> table=new ArrayList<Map<String,String>>();
+		Map<String,String> row=null;
+		while(m.find()){
+			row=new LinkedHashMap<String,String>();
+			province=m.group("province");
+			row.put("province", province==null?"":province.trim());
+			city=m.group("city");
+			row.put("city", city==null?"":city.trim());
+			county=m.group("county");
+			row.put("county", county==null?"":county.trim());
+			town=m.group("town");
+			row.put("town", town==null?"":town.trim());
+			village=m.group("village");
+			row.put("village", village==null?"":village.trim());
+			table.add(row);
+		}
+		return table;
 	}
 
 	/**
