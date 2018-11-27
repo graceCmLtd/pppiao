@@ -291,7 +291,7 @@ public class TransactionController {
 				System.out.println("seller oprator 1 : ");
 				quoteService.setInvalidateQuotes(invalidateQuoteParam);
 				quoteService.setValidateQuote(validateQuoteParam);
-				transactionService.updateTransactionIntentionStatus(transactionParam);
+				transactionService.updateTransactionIntentionStatusAndBuyerId(transactionParam);
 				transactionService.updateTransactionRealMoney(transactionParam);
 				msgService.insertMsg(msgObj);
 				goEasyAPI.sendMessage(channel, message);
