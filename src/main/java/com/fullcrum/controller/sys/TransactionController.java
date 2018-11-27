@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import com.fullcrum.common.CheckTransactionStatus;
 import com.fullcrum.controller.sys.Exception.InvalidParamException;
@@ -504,13 +505,13 @@ public class TransactionController {
     //	String data = request.getParameter("data");
     //	String encryptkey = request.getParameter("encryptkey");
     @RequestMapping("/reacb")
-    public JSONObject reaPayCallback(@RequestParam(value = "merchant_id") String merchantId, @RequestParam String data, @RequestParam String encryptkey) {
+    public void reaPayCallback(HttpServletResponse response, @RequestParam(value = "merchant_id") String merchantId, @RequestParam String data, @RequestParam String encryptkey) throws Exception{
         JSONObject t = new JSONObject();
         t.put("merchant_id",merchantId);
         t.put("data",data);
         t.put("encryptkey",encryptkey);
         rongpayService.onPaySuccess(t);
-        return null;
+        response.sendRedirect("/#/release/orderws/all");
     }
 
 	@RequestMapping("/yopConfirm")
