@@ -83,6 +83,9 @@ public interface TransactionDao {
 		
 	//更新设置transaction表中intentionStatus 和 买家Id
 	@Update({"update ",TABLE_NAME," set intentionStatus = #{jsonObject.intentionStatus} ,buyerId = #{jsonObject.quoterId} where transacType = #{jsonObject.orderId}"})
+	public void updateTransactionIntentionStatusAndBuyerId(@Param("jsonObject") JSONObject jsonObject);
+	
+	@Update({"update ",TABLE_NAME," set intentionStatus = #{jsonObject.intentionStatus}  where transacType = #{jsonObject.orderId}"})
 	public void updateTransactionIntentionStatus(@Param("jsonObject") JSONObject jsonObject);
 	
 	@Select({"select DISTINCT a.transacId,a.billNumber,a.amount,a.transacStatus,a.transacDate," + 
