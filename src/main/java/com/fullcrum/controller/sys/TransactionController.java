@@ -572,6 +572,7 @@ public class TransactionController {
 		json.put("pay_type","1");
 		json.put("content",content);
 		json.put("orderId",orderId);
+		json.put("billNumber",jsonObject.getString("billNumber"));
 		return rongpayService.confirm(json);
 	}
 	public static List<Map<String,String>> addressResolution(String address){
