@@ -28,7 +28,7 @@ public interface CompanyDao {
 	
 	@Insert({"insert  ",TABLE_NAME,"(",INSERT_FIELDS,") values ( #{companyEntity.companyName},#{companyEntity.contactsId},#{companyEntity.contactsName},#{companyEntity.contactsPhone},#{companyEntity.contactsEmail},"
 			+ "#{companyEntity.contactsQQ},#{companyEntity.bankAccountName},#{companyEntity.bankAccount},#{companyEntity.bankName},#{companyEntity.picId},#{companyEntity.signUpAddr},"
-			+ "#{companyEntity.updateDate},'未审核'),#{companyEntity.bankCode},#{companyEntity.contactIDCardNo}"}  )
+			+ "#{companyEntity.updateDate},'未审核',#{companyEntity.bankCode},#{companyEntity.contactIDCardNo})"}  )
 	public void  insertCompany(@Param("companyEntity") CompanyEntity companyEntity);
 	
 	@Delete({"delete from " , TABLE_NAME,"where companyName = #{companyEntity.companyName}"})
