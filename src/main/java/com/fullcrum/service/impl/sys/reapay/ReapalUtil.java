@@ -36,7 +36,7 @@ public class ReapalUtil {
 	protected static String pubKeyUrl = resourceBundle.getString("pubKeyUrl");// 公钥
 	protected static String url = resourceBundle.getString("url");
 	protected static String notify_url = resourceBundle.getString("notify_url");// 回调地址
-	protected static String version = resourceBundle.getString("version");// 版本
+	protected static String version = resourceBundle.getString("agentVersion");// 版本
 	protected static String charset = resourceBundle.getString("charset");// 编码
 	protected static String sign_type = resourceBundle.getString("sign_type");// 签名方式，暂时仅支持MD5
 

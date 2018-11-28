@@ -52,6 +52,8 @@ public interface TransactionService {
 	
 	void updateTransactionIntentionStatus(JSONObject jsonObject);
 	
+	void updateTransactionIntentionStatusAndBuyerId(JSONObject jsonObject);
+	
 	void updateTransactionStatus(JSONObject jsonObject);
 	
 	void updateTransStatus(String billNumber);

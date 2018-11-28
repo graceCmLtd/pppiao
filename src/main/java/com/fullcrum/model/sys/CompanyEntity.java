@@ -57,6 +57,26 @@ public class CompanyEntity {
 
 	private Date updateTimeStamp;
 
+	private String bankCode;//开户行行号
+
+	public String getBankCode() {
+		return bankCode;
+	}
+
+	public void setBankCode(String bankCode) {
+		this.bankCode = bankCode;
+	}
+
+	public String getContactIDCardNo() {
+		return contactIDCardNo;
+	}
+
+	public void setContactIDCardNo(String contactIDCardNo) {
+		this.contactIDCardNo = contactIDCardNo;
+	}
+
+	private String contactIDCardNo;//联系人身份证证件号码
+
 	public Date getUpdateTimeStamp() {
 		return updateTimeStamp;
 	}

@@ -66,7 +66,7 @@ public class ReapalWebConfig {
 	public static String rongpay_api = resourceBundle.getString("rongPayAPI");
 	public static String notify_url = resourceBundle.getString("notify_url");// 回调地址
 	public static String return_url = resourceBundle.getString("return_url");// 回调地址
-	public static String version = resourceBundle.getString("version");// 版本
+	public static String version = resourceBundle.getString("payVersion");// 版本
 	public static String charset = resourceBundle.getString("charset");// 编码
 	public static String sign_type = resourceBundle.getString("sign_type");// 签名方式，暂时仅支持MD5
 

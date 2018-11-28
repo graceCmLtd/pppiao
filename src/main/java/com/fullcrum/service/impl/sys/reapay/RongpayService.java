@@ -239,6 +239,13 @@ public class RongpayService implements PaymentService {
 	@Override
 	public Map<String, Object> confirm(JSONObject jsonObject) {
 
+   	//修改订单的状态为已签收时需要的参数
+		JSONObject intentionObj = new JSONObject();
+		intentionObj.put("intentionStatus","已签收");
+		intentionObj.put("billNumber",jsonObject.getString("billNumber"));
+   		intentionObj.put("orderId",jsonObject.getString("orderId"));
+
+
 		String batch_no = jsonObject.getString("batch_no").trim();
 		String batch_count = jsonObject.getString("batch_count").trim();
 		String batch_amount = jsonObject.getString("batch_amount").trim();
@@ -299,6 +306,7 @@ public class RongpayService implements PaymentService {
 				try{
 					if("0000".equals(jsStr.getString("result_code"))){
 						paymentEntity.setStatus(PaymentService.PAYMENT_STATUS_CONFIRM);
+						transactionDao.setTransactionIntentionStatus(intentionObj);
 						paymentDao.updateByPrimaryKey(paymentEntity);
 						result.put("status","success");
 						result.put("result",res);
@@ -370,6 +378,7 @@ public class RongpayService implements PaymentService {
 					if("0000".equals(jsStr.getString("result_code"))){
 						paymentEntity.setStatus(PaymentService.PAYMENT_STATUS_REFUND);
 						paymentDao.updateByPrimaryKey(paymentEntity);
+						transactionDao.setTransactionIntentionStatus(jsonObject.getJSONObject("intentionObj"));
 						result.put("status","success");
 						result.put("result",res);
 					}else{

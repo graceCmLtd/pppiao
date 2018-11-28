@@ -3,22 +3,33 @@
 <mapper namespace="com.fullcrum.dao.CompanyPicsDao" >
 	<resultMap type="com.fullcrum.model.sys.CompanyPicsEntity" id="companyPicsMap">
 		<id column="picsId" property="picsId"/>
-		<result column="picsContent" property="picsContent"/>
+		<result column="pic1Content" property="pic1Content"/>
 		<result column="updateDate" property="updateDate"/>
 		<result column="contactsId" property="contactsId"/>
+		<result column="pic2Content" property="pic2Content"/>
+		<result column="pic1IDCard" property="pic1IDCard"/>
+		<result column="pic2IDCard" property="pic2IDCard"/>
+		<result column="" property=""/>
 	</resultMap>
 	
 	<update id="updatePic">
 		<if test="companyPicsEntity != null ">
 			<![CDATA[update ppp_company_pics set ]]>
-			<if test="companyPicsEntity.picContent != null ">
-				picContent = #{companyPicsEntity.picContent} ,
+			<if test="companyPicsEntity.pic1Content != null ">
+				pic1Content = #{companyPicsEntity.pic1Content} ,
 			</if>
-			
 			<if test="companyPicsEntity.updateDate != null">
-				updateDate = #{companyPicsEntity.updateDate}
+				updateDate = #{companyPicsEntity.updateDate},
 			</if>
-			
+			<if test="companyPicsEntity.pic2Content != null ">
+				pic2Content = #{companyPicsEntity.pic2Content} ,
+			</if>
+			<if test="companyPicsEntity.pic1IDCard != null ">
+				pic1IDCard = #{companyPicsEntity.pic1IDCard} ,
+			</if>
+			<if test="companyPicsEntity.pic2IDCard != null ">
+				pic2IDCard = #{companyPicsEntity.pic2IDCard}
+			</if>
 			<where>
 				<if test="companyPicsEntity.contactsId != null">
 					contactsId = #{companyPicsEntity.contactsId}

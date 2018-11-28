@@ -10,7 +10,8 @@
 .springBeans
 .sts4-cache
 src/main/resources/application.yml
-
+src/main/resources/key/product.cer
+src/main/resources/key/product.pfx
 ### IntelliJ IDEA ###
 .idea
 *.iws

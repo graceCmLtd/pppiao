@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import com.fullcrum.common.CheckTransactionStatus;
 import com.fullcrum.controller.sys.Exception.InvalidParamException;
@@ -291,7 +292,7 @@ public class TransactionController {
 				System.out.println("seller oprator 1 : ");
 				quoteService.setInvalidateQuotes(invalidateQuoteParam);
 				quoteService.setValidateQuote(validateQuoteParam);
-				transactionService.updateTransactionIntentionStatus(transactionParam);
+				transactionService.updateTransactionIntentionStatusAndBuyerId(transactionParam);
 				transactionService.updateTransactionRealMoney(transactionParam);
 				msgService.insertMsg(msgObj);
 				goEasyAPI.sendMessage(channel, message);
@@ -504,13 +505,13 @@ public class TransactionController {
     //	String data = request.getParameter("data");
     //	String encryptkey = request.getParameter("encryptkey");
     @RequestMapping("/reacb")
-    public JSONObject reaPayCallback(@RequestParam(value = "merchant_id") String merchantId, @RequestParam String data, @RequestParam String encryptkey) {
+    public void reaPayCallback(HttpServletResponse response, @RequestParam(value = "merchant_id") String merchantId, @RequestParam String data, @RequestParam String encryptkey) throws Exception{
         JSONObject t = new JSONObject();
         t.put("merchant_id",merchantId);
         t.put("data",data);
         t.put("encryptkey",encryptkey);
         rongpayService.onPaySuccess(t);
-        return null;
+        response.sendRedirect("/#/release/orderws/all");
     }
 
 	@RequestMapping("/yopConfirm")
@@ -533,7 +534,7 @@ public class TransactionController {
 	@RequestMapping("/reaConfirm")
 	public Map<String, Object> reaConfirm(@RequestBody JSONObject jsonObject){
 		String amount = jsonObject.getString("amount");
-		String orderId = jsonObject.getString("");
+		String orderId = jsonObject.getString("orderId");
  		ArrayList<CompanyEntity> companyInfo = companyDao.selectByContactsId(jsonObject.getString("sellerId"));
 		StringBuffer content = new StringBuffer();
 		if(companyInfo != null){
@@ -572,6 +573,7 @@ public class TransactionController {
 		json.put("pay_type","1");
 		json.put("content",content);
 		json.put("orderId",orderId);
+		json.put("billNumber",jsonObject.getString("billNumber"));
 		return rongpayService.confirm(json);
 	}
 	public static List<Map<String,String>> addressResolution(String address){
