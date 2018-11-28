@@ -15,7 +15,7 @@ import com.fullcrum.model.sys.CompanyEntity;
 public interface CompanyDao {
 	
 	String TABLE_NAME = "ppp_company";
-	String INSERT_FIELDS = "companyName,contactsId ,contactsName, contactsPhone ,contactsEmail ,contactsQQ ,bankAccountName ,bankAccount,bankName,picId ,signUpAddr ,updateDate,role ";
+	String INSERT_FIELDS = "companyName,contactsId ,contactsName, contactsPhone ,contactsEmail ,contactsQQ ,bankAccountName ,bankAccount,bankName,picId ,signUpAddr ,updateDate,role,bankCode,contactIDCardNo ";
 	
 	@Select({"select * from ",TABLE_NAME,"order by updateTimeStamp desc limit #{currentPage},#{pageSize}"  })
 	@ResultMap("companyMap")
@@ -28,7 +28,7 @@ public interface CompanyDao {
 	
 	@Insert({"insert  ",TABLE_NAME,"(",INSERT_FIELDS,") values ( #{companyEntity.companyName},#{companyEntity.contactsId},#{companyEntity.contactsName},#{companyEntity.contactsPhone},#{companyEntity.contactsEmail},"
 			+ "#{companyEntity.contactsQQ},#{companyEntity.bankAccountName},#{companyEntity.bankAccount},#{companyEntity.bankName},#{companyEntity.picId},#{companyEntity.signUpAddr},"
-			+ "#{companyEntity.updateDate},'未审核')"}  )
+			+ "#{companyEntity.updateDate},'未审核'),#{companyEntity.bankCode},#{companyEntity.contactIDCardNo}"}  )
 	public void  insertCompany(@Param("companyEntity") CompanyEntity companyEntity);
 	
 	@Delete({"delete from " , TABLE_NAME,"where companyName = #{companyEntity.companyName}"})

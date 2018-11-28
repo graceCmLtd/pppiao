@@ -15,6 +15,8 @@
 		<result column="signUpAddr" property="signUpAddr"/>
 		<result column="updateDate" property="updateDate"/>
 		<result column="role" property="role"/>
+		<result column="bankCode" property="bankCode"/>
+		<result column="contactIDCardNo" property="contactIDCardNo"/>
 	</resultMap>
 	
 	<update id="update">
@@ -51,7 +53,13 @@
 				updateDate =#{companyEntity.updateDate},
 			</if>
 			<if test="companyEntity.role != null" >
-				role =#{companyEntity.role}
+				role =#{companyEntity.role},
+			</if>
+			<if test="companyEntity.bankCode != null" >
+				bankCode =#{companyEntity.bankCode},
+			</if>
+			<if test="companyEntity.contactIDCardNo != null" >
+				contactIDCardNo =#{companyEntity.contactIDCardNo}
 			</if>
 			<where>
 				<if test="companyEntity.contactsId != null">
