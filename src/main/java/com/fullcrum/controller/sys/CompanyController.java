@@ -116,9 +116,16 @@ public class CompanyController {
 		CompanyPicsEntity companyPicsEntity = JSONObject.toJavaObject(jsonObject.getJSONObject("companyPics"), CompanyPicsEntity.class);
 		companyPicsEntity.setUpdateDate(new Date(new java.util.Date().getTime()));
         companyEntity.setRole("未审核");
-		companyService.update(companyEntity);
-		companyPicsService.updateCompanyPics(companyPicsEntity);
-		return "success";
+        try{
+			companyService.update(companyEntity);
+			companyPicsService.updateCompanyPics(companyPicsEntity);
+			return "success";
+		}catch (Exception e){
+        	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        	return "failed";
+
+		}
+
 	}
 	
 }
