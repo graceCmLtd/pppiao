@@ -18,9 +18,6 @@
 			<if test="companyPicsEntity.pic1Content != null ">
 				pic1Content = #{companyPicsEntity.pic1Content} ,
 			</if>
-			<if test="companyPicsEntity.updateDate != null">
-				updateDate = #{companyPicsEntity.updateDate},
-			</if>
 			<if test="companyPicsEntity.pic2Content != null ">
 				pic2Content = #{companyPicsEntity.pic2Content} ,
 			</if>
@@ -28,7 +25,10 @@
 				pic1IDCard = #{companyPicsEntity.pic1IDCard} ,
 			</if>
 			<if test="companyPicsEntity.pic2IDCard != null ">
-				pic2IDCard = #{companyPicsEntity.pic2IDCard}
+				pic2IDCard = #{companyPicsEntity.pic2IDCard},
+			</if>
+			<if test="companyPicsEntity.updateDate != null">
+				updateDate = #{companyPicsEntity.updateDate}
 			</if>
 			<where>
 				<if test="companyPicsEntity.contactsId != null">

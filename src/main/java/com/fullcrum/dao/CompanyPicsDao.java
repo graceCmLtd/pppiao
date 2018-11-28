@@ -26,7 +26,7 @@ public interface CompanyPicsDao {
 			"#{companyPicsEntity.pic2Content},#{companyPicsEntity.pic1IDCard},#{companyPicsEntity.pic2IDCard} )"})
 	public void insertCompanyPics(@Param("companyPicsEntity") CompanyPicsEntity companyPicsEntity);
 
-	@Insert({"insert " ,TABLE_NAME_1,"(",INSERT_FIELDS," ) values (#{jsonObject.picContent},#{jsonObject.updateDate},#{jsonObject.contactsId},#{jsonObject.pic2Content},#{jsonObject.pic1IDCard},#{jsonObject.pic2IDCard})"})
+	@Insert({"insert " ,TABLE_NAME_1,"(",INSERT_FIELDS," ) values (#{jsonObject.pic1Content},#{jsonObject.updateDate},#{jsonObject.contactsId},#{jsonObject.pic2Content},#{jsonObject.pic1IDCard},#{jsonObject.pic2IDCard})"})
 	public void insertCompanyPicsByJson(@Param("jsonObject") JSONObject jsonObject );
 	
 	

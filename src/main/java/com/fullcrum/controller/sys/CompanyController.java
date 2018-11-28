@@ -110,19 +110,22 @@ public class CompanyController {
 	}
 	
 	@RequestMapping("/updateCompany")
-	public String updateBill(@RequestBody JSONObject jsonObject) {
+	public JSONObject updateBill(@RequestBody JSONObject jsonObject) {
 		CompanyEntity companyEntity = JSONObject.toJavaObject(jsonObject.getJSONObject("companyInfo"), CompanyEntity.class);
 		companyEntity.setUpdateDate(new Date(new java.util.Date().getTime()));
 		CompanyPicsEntity companyPicsEntity = JSONObject.toJavaObject(jsonObject.getJSONObject("companyPics"), CompanyPicsEntity.class);
 		companyPicsEntity.setUpdateDate(new Date(new java.util.Date().getTime()));
         companyEntity.setRole("未审核");
+        JSONObject result = new JSONObject();
         try{
 			companyService.update(companyEntity);
 			companyPicsService.updateCompanyPics(companyPicsEntity);
-			return "success";
+			result.put("status","success");
+			return result;
 		}catch (Exception e){
         	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        	return "failed";
+        	result.put("status","success");
+        	return result;
 
 		}
 
