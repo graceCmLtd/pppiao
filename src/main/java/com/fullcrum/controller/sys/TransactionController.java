@@ -548,15 +548,9 @@ public class TransactionController {
 				bankName1 = str[0]+"银行";
 				bankName2 = str[1];
 			}
-			String addr = companyInfo.get(0).getSignUpAddr();
-			List<Map<String,String>> list = addressResolution(addr);
-			String province = "";
-			String city = "";
-			if(list.size() > 0){
-				province = list.get(0).get("province");
-				city = list.get(0).get("city");
-			}
-
+			String [] addr = companyInfo.get(0).getSignUpAddr().split("-");
+			String province = addr[0];
+			String city =  addr[1];
 			String phoneNum = companyInfo.get(0).getContactsPhone();
 			//content = "1,"+bankAccount+","+name+","+bankName1+","+bankName2+",,"+"公,"+amount+","+"CNY,"+province+","+city+","+phoneNum+",,,,"+orderId+",,,,";
 			content.append("1,").append(bankAccount+",").append(name+",").append(bankName1+",").append(bankName2+",,公,").append(amount+",CNY,").append(province+",").append(city+",").append(phoneNum+",,,,").append(orderId+",,,,");
@@ -575,28 +569,6 @@ public class TransactionController {
 		json.put("orderId",orderId);
 		json.put("billNumber",jsonObject.getString("billNumber"));
 		return rongpayService.confirm(json);
-	}
-	public static List<Map<String,String>> addressResolution(String address){
-		String regex="((?<province>[^省]+省|.+自治区)|上海|北京|天津|重庆)(?<city>[^市]+市|.+自治州)(?<county>[^县]+县|.+区|.+镇|.+局)?(?<town>[^区]+区|.+镇)?(?<village>.*)";
-		Matcher m=Pattern.compile(regex).matcher(address);
-		String province=null,city=null,county=null,town=null,village=null;
-		List<Map<String,String>> table=new ArrayList<Map<String,String>>();
-		Map<String,String> row=null;
-		while(m.find()){
-			row=new LinkedHashMap<String,String>();
-			province=m.group("province");
-			row.put("province", province==null?"":province.trim());
-			city=m.group("city");
-			row.put("city", city==null?"":city.trim());
-			county=m.group("county");
-			row.put("county", county==null?"":county.trim());
-			town=m.group("town");
-			row.put("town", town==null?"":town.trim());
-			village=m.group("village");
-			row.put("village", village==null?"":village.trim());
-			table.add(row);
-		}
-		return table;
 	}
 
 	/**
