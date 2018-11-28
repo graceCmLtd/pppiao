@@ -216,7 +216,8 @@ public class RongpayService implements PaymentService {
                    && (!PaymentService.PAYMENT_STATUS_CLOSED.equals(p.getStatus()))
                    && (!PaymentService.PAYMENT_STATUS_REPEALED.equals(p.getStatus()))
                    && (!PaymentService.PAYMENT_STATUS_REVOKED.equals(p.getStatus()))
-                   && (!PaymentService.PAYMENT_STATUS_TIME_OUT.equals(p.getStatus())))
+                   && (!PaymentService.PAYMENT_STATUS_TIME_OUT.equals(p.getStatus()))
+                   && (!PaymentService.PAYMENT_STATUS_SENDING.equals(p.getStatus())))
            ){
                throw PaymentException.newInvalidOrderException(new RuntimeException("重复付款"));
            }else if (p!=null){
