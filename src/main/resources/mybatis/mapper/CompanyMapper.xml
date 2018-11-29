@@ -49,9 +49,6 @@
 			<if test="companyEntity.signUpAddr != null" >
 				signUpAddr =#{companyEntity.signUpAddr},
 			</if>
-			<if test="companyEntity.updateDate != null" >
-				updateDate =#{companyEntity.updateDate},
-			</if>
 			<if test="companyEntity.role != null" >
 				role =#{companyEntity.role},
 			</if>
@@ -59,7 +56,10 @@
 				bankCode =#{companyEntity.bankCode},
 			</if>
 			<if test="companyEntity.contactIDCardNo != null" >
-				contactIDCardNo =#{companyEntity.contactIDCardNo}
+				contactIDCardNo =#{companyEntity.contactIDCardNo},
+			</if>
+			<if test="companyEntity.updateDate != null" >
+				updateDate =#{companyEntity.updateDate}
 			</if>
 			<where>
 				<if test="companyEntity.contactsId != null">
